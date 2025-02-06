@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
+const SERVER_URL = 'http://localhost:9613';
+
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail]       = useState('');
@@ -11,22 +13,36 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+  
     if (!email || !password) {
       setError('Email and password are required.');
       return;
     }
-    
-    try {
-      // Replace with your actual login API call.
-      console.log('Logging in with', email, password);
-      // Example: await axios.post('/api/login', { email, password });
-      
-      // On successful login, navigate to your dashboard.
+  
+  try {
+      const response = await fetch(`${SERVER_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ emailOrPhone: email, password }),
+      });
+  
+      const data = await response.json();
+      console.log(data)
+  
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed.');
+      }
+  
+      // Store the token (for example, in localStorage)
+      localStorage.setItem('token', data.token);
+  
+      // Navigate to dashboard
       navigate('/dashboard');
     } catch (err) {
-      console.error(err);
-      setError('Login failed. Please check your credentials.');
+      console.error('Login error:', err);
+      setError(err.message);
     }
   };
 
@@ -39,7 +55,7 @@ const Login = () => {
           <div className="form-group">
             <label>Email</label>
             <input
-              type="email"
+              type="text"
               className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
