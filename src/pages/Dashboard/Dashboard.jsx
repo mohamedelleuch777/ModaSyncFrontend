@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Topbar from '../../components/Topbar';
+import CollectionsStory from '../../components/CollectionsStory';
 
 const SERVER_URL = 'http://localhost:9613';
 
@@ -99,6 +100,7 @@ const fetchSamples = async (subcollectionId) => {
     <div className="dashboard-container">
       <Topbar />
       <input className='dashboard-search' type="search" placeholder="Search" />
+      <CollectionsStory />
       {
         false && (
           <>

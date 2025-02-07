@@ -144,6 +144,7 @@ body {
   border-radius: 1.5rem;
   margin: auto;
   margin-top: 0;
+  margin-bottom: 0;
   outline: none;
   color: #fff;
 }
@@ -176,6 +177,38 @@ body {
   border-radius: 50%;
   background-color: #6da1a3;
 }
+
+.collections-story.collections-story-containter {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 10px;
+  padding-top: 1rem;
+  padding-bottom: 0;
+  gap: 1rem;
+  margin: auto;
+  margin-top: .5rem;
+  overflow: hidden;
+  overflow-x: scroll;
+  max-width: calc(100% - 20px);
+}
+
+.collections-story.collections-story-containter .story-image {
+  width: 5rem;
+  height: 5rem;
+  padding: 1px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px 1px;
+  border: none;
+}
+
+.collections-story.collections-story-containter .story-label {
+  font-size: .64rem;
+  text-align: center;
+  margin: .4rem auto;
+}
+
+
 
 
 
