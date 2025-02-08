@@ -6,7 +6,12 @@
   font-display: swap;
 }
 
-
+h1, h2, h3, h4, h5, h6 {
+  user-select: none; /* Standard, most browsers */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ */
+}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -243,6 +248,46 @@ body {
 
 .leftmenu-overlay.show {
   display: block;
+}
+
+.leftmenu.leftmenu-containter .title-container {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #3f7b7396;
+}
+
+.leftmenu.leftmenu-containter .title-container .app-name {
+  font-size: 5vw;
+  font-weight: 700;
+  color: #fff;
+}
+
+.leftmenu.leftmenu-containter .logo {
+  width: 13vw;
+  height: 13vw;
+  margin: auto;
+  margin-right: 0;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.leftmenu.leftmenu-containter .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+  gap: 10px;
+  background-color: #6da49c;
+}
+
+.leftmenu.leftmenu-containter .menu-item-icon {
+  display: flex;
 }
 
 
