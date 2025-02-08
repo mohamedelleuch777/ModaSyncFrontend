@@ -1,10 +1,10 @@
 import React from 'react';
 import { List, PersonFill, BellFill } from 'react-bootstrap-icons'; // Import individual icons
 
-function Topbar() {
+function Topbar({ setIsMenuOpen }) {
   return (
     <div className="topbar topbar-containter">
-      <div className="button menu">
+      <div className="button menu" onClick={() => setIsMenuOpen(true)}>
         <List color="white" size={30} /> {/* Render a blue arrow-right icon */}
       </div>
       <div className="buttons-container">

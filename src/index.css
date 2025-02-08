@@ -209,6 +209,39 @@ body {
 }
 
 
+/* LeftMenu */
+.leftmenu.leftmenu-containter {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: calc(-70vw - 20px);
+  flex-direction: column;
+  padding: 10px;
+  width: 70vw;
+  height: calc(100vh - 20px);
+  background-color: #015148b8;
+  border-radius: 0 20px 20px 0;
+  backdrop-filter: blur(3px);
+  transition: left 0.3s ease-in-out;
+}
 
+.leftmenu.leftmenu-containter.show {
+  left: 0;
+  transition: left 0.3s ease-in-out;
+}
+
+.leftmenu-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.leftmenu-overlay.show {
+  display: block;
+}
 
 

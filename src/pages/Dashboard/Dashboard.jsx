@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Topbar from '../../components/Topbar';
 import CollectionsStory from '../../components/CollectionsStory';
+import Leftmenu from '../../components/Leftmenu';
 
 const SERVER_URL = 'http://localhost:9613';
 
@@ -12,6 +13,7 @@ const Dashboard = () => {
   const [samples, setSamples] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [selectedSubcollection, setSelectedSubcollection] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -98,7 +100,8 @@ const fetchSamples = async (subcollectionId) => {
 
   return (
     <div className="dashboard-container">
-      <Topbar />
+      <Topbar setIsMenuOpen={setIsMenuOpen}/>
+      <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <input className='dashboard-search' type="search" placeholder="Search" />
       <CollectionsStory />
       {
