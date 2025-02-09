@@ -22,9 +22,9 @@ export function useApi() {
     if (data) {
       options.body = JSON.stringify(data); // Stringify data for POST/PUT/PATCH
     }
-
+    
+    // debugger
     const response = await fetch(`${API_BASE_URL}${url}`, options);
-
     if (response.status === 401) {
       navigate('/login');
       return null; // Or throw an error
