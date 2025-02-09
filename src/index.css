@@ -199,6 +199,12 @@ body {
   max-width: calc(100% - 20px);
 }
 
+.collections-story.collections-story-containter .story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .collections-story.collections-story-containter .story-image {
   width: 5rem;
   height: 5rem;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { List, PersonFill, BellFill } from 'react-bootstrap-icons';
+import React, { useEffect } from 'react';
+import { get, useApi } from '../hooks/apiHooks';
 
 const stories = [
   { id: 1, name: 'Collection Eté 2024', image: 'https://i.pinimg.com/736x/8b/84/2d/8b842da000f098e8d6711d215679e51f.jpg' },
@@ -10,16 +10,35 @@ const stories = [
   { id: 6, name: 'Collection summerß 2025', image: 'https://i.pinimg.com/736x/73/89/f2/7389f2ba86f53d464fe67381daf6dead.jpg' },
 ];
 
-function SubCollections() {
+function SubCollections({ selectedCollectionId }) {
+  const [subCollections, setSubCollections] = React.useState([]);
+  const apiFetch = useApi();
+
+  // ✅ Get all collections
+  const fetchCollections = async () => {
+    const data = await get(apiFetch, '/api/subCollections/' + selectedCollectionId, {});
+    setSubCollections(data);
+  };
+
+  useEffect(() => {
+    console.log("From subcollections", selectedCollectionId);
+    fetchCollections();
+  }, [selectedCollectionId]);
+
   return (
     <div className="sub-collections sub-collections-containter">
       {
-        stories && stories.map((story) => (
+        subCollections && subCollections.map((story) => (
           <div className="sub-collection" key={story.id}>
             <img className='sub-collection-image' src={story.image} alt={story.name} />
             <p className='sub-collection-label'>{story.name}</p>
           </div>
         ))
+      }
+      {
+        (subCollections && subCollections.length === 0) || (
+          <div>Empty sub collections</div>
+        )
       }
     </div>
   );

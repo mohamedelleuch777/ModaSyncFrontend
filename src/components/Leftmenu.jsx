@@ -1,5 +1,6 @@
-import React from 'react';
-import { HouseFill, PersonFill, BellFill, ListTask, AirplaneFill, AlarmFill } from 'react-bootstrap-icons'; // Import individual icons
+import React, { useEffect } from 'react';
+import { useApi, get } from '../hooks/apiHooks';
+import { HouseFill, PersonFill, BellFill, ListTask, AirplaneFill, AlarmFill } from 'react-bootstrap-icons';
 import logo from '../assets/img/logo.svg';
 
 const menuItems = [
@@ -10,6 +11,12 @@ const menuItems = [
 ];
 
 function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
+  // const apiFetch = useApi();
+
+  // Load collections when the component mounts.
+  useEffect(() => {
+    // fetchSubCollections(collection_id);
+  }, []);
 
   return (
     <>
