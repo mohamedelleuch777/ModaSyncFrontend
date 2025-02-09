@@ -1,5 +1,5 @@
 import React from 'react';
-import { HouseFill, PersonFill, BellFill, ListTask } from 'react-bootstrap-icons'; // Import individual icons
+import { HouseFill, PersonFill, BellFill, ListTask, AirplaneFill, AlarmFill } from 'react-bootstrap-icons'; // Import individual icons
 import logo from '../assets/img/logo.svg';
 
 const menuItems = [
