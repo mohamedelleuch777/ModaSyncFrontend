@@ -135,9 +135,10 @@ body {
   background-size: cover;
   background-position: center;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   box-sizing: border-box;
-  overflow-x: scroll;
+  overflow: hidden;
+  padding-bottom: 0;
 }
 
 .dashboard-search {
@@ -229,6 +230,7 @@ body {
   backdrop-filter: blur(3px);
   transition: left 0.3s ease-in-out;
   box-shadow: 0 0 18px 5px #242424;
+  z-index: 1;
 }
 
 .leftmenu.leftmenu-containter.show {
@@ -239,6 +241,7 @@ body {
 .leftmenu-overlay {
   display: none;
   position: fixed;
+  z-index: 1;
   top: 0;
   left: 0;
   width: 100vw;
@@ -290,4 +293,51 @@ body {
   display: flex;
 }
 
+/* SubCollections */
+
+.sub-collections.sub-collections-containter {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  flex: 1;
+  left: -1rem;
+  width: calc(100vw - 2rem);
+  position: relative;
+  overflow-y: scroll;
+  padding: 1rem;
+  padding-bottom: 0;
+  background-color: #fff;
+  border-radius: 20px 20px 0 0;
+  margin-top: 20px;
+}
+
+.sub-collections.sub-collections-containter .sub-collection {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  gap: 10px;
+  background-color: #fff;
+  transition: background-color 0.3s ease-in-out;
+  color: #07564C;
+  box-shadow: 0 0 16px -5px #6da49c;
+}
+
+.sub-collections.sub-collections-containter .sub-collection .sub-collection-image {
+  width: 5rem;
+  height: 5rem;
+  padding: 1px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px 1px;
+  border: none;
+}
+
+.sub-collections.sub-collections-containter .sub-collection .sub-collection-label {
+  font-size: .75rem;
+  text-align: center;
+  margin: .4rem auto;
+}
 

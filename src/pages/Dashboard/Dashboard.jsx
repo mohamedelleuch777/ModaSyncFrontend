@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Topbar from '../../components/Topbar';
 import CollectionsStory from '../../components/CollectionsStory';
 import Leftmenu from '../../components/Leftmenu';
+import SubCollections from '../../components/SubCollections';
 
 const SERVER_URL = 'http://localhost:9613';
 
@@ -104,6 +105,7 @@ const fetchSamples = async (subcollectionId) => {
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <input className='dashboard-search' type="search" placeholder="Search" />
       <CollectionsStory />
+      <SubCollections />
       {
         false && (
           <>
