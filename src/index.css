@@ -382,8 +382,14 @@ body {
 }
 
 .sub-collections.sub-collections-containter .sub-collection .sub-collection-label {
+  font-size: .95rem;
+  text-align: left;
+  margin: .4rem auto;
+}
+
+.sub-collections.sub-collections-containter .sub-collection .samples-count-label {
   font-size: .75rem;
-  text-align: center;
+  text-align: left;
   margin: .4rem auto;
 }
 
