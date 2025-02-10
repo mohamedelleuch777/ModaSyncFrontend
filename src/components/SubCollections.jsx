@@ -26,7 +26,6 @@ function SubCollections({ selectedCollectionId }) {
   };
 89
   useEffect(() => {
-    console.log("From subcollections", selectedCollectionId);
     fetchCollections();
     if (subCollections !== -1) {
       setIsLoading(false);
@@ -50,7 +49,7 @@ function SubCollections({ selectedCollectionId }) {
               (subCollections && subCollections.length === 0) && (
                 <div className="sub-collections-empty">
                   <h3>Empty sub collections</h3>
-                  <BinocularsFill size={35} />
+                  <BinocularsFill size={35} color='#6da49c'/>
                 </div>
               )
             }
