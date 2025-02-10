@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
 import { get, useApi } from '../hooks/apiHooks';
+import { BinocularsFill } from 'react-bootstrap-icons'
+import LoadingSpinner from './LoadingSpinner';
+
+
 
 const stories = [
   { id: 1, name: 'Collection Eté 2024', image: 'https://i.pinimg.com/736x/8b/84/2d/8b842da000f098e8d6711d215679e51f.jpg' },
@@ -11,6 +15,7 @@ const stories = [
 ];
 
 function SubCollections({ selectedCollectionId }) {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [subCollections, setSubCollections] = React.useState([]);
   const apiFetch = useApi();
 
@@ -19,25 +24,37 @@ function SubCollections({ selectedCollectionId }) {
     const data = await get(apiFetch, '/api/subCollections/' + selectedCollectionId, {});
     setSubCollections(data);
   };
-
+89
   useEffect(() => {
     console.log("From subcollections", selectedCollectionId);
     fetchCollections();
+    if (subCollections !== -1) {
+      setIsLoading(false);
+    }
   }, [selectedCollectionId]);
 
   return (
     <div className="sub-collections sub-collections-containter">
       {
-        subCollections && subCollections.map((story) => (
-          <div className="sub-collection" key={story.id}>
-            <img className='sub-collection-image' src={story.image} alt={story.name} />
-            <p className='sub-collection-label'>{story.name}</p>
-          </div>
-        ))
-      }
-      {
-        (subCollections && subCollections.length === 0) || (
-          <div>Empty sub collections</div>
+        isLoading ? <LoadingSpinner /> : (
+          <>
+            {
+              subCollections && subCollections.map((story) => (
+                <div className="sub-collection" key={story.id}>
+                  <img className='sub-collection-image' src={story.image} alt={story.name} />
+                  <p className='sub-collection-label'>{story.name}</p>
+                </div>
+              ))
+            }
+            {
+              (subCollections && subCollections.length === 0) && (
+                <div className="sub-collections-empty">
+                  <h3>Empty sub collections</h3>
+                  <BinocularsFill size={35} />
+                </div>
+              )
+            }
+          </>
         )
       }
     </div>
