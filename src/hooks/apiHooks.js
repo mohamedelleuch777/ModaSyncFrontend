@@ -6,12 +6,11 @@ import { API_BASE_URL } from '../constants';
 export function useApi() {
   const navigate = useNavigate();
 
-  const apiFetch = async (url, method = 'GET', data = null) => { // Add method and data parameters
+  const apiFetch = async (url, method = 'GET', data = null) => {
     const token = localStorage.getItem('token');
     const headers = {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json', // Keep this for consistency
-      // Add other common headers here if needed
+      'Content-Type': 'application/json',
     };
 
     const options = {
@@ -20,28 +19,23 @@ export function useApi() {
     };
 
     if (data) {
-      options.body = JSON.stringify(data); // Stringify data for POST/PUT/PATCH
-    }
-    
-    // debugger
-    const response = await fetch(`${API_BASE_URL}${url}`, options);
-    if (response.status === 401) {
-      navigate('/login');
-      return null; // Or throw an error
+      options.body = JSON.stringify(data);
     }
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.message || `API Error: ${response.status}`);
+    try { //  Add try-catch *inside* apiFetch
+      const response = await fetch(`${API_BASE_URL}${url}`, options);
+
+      if (response.status === 401) {
+        navigate('/login');
+        return null; //  Or throw new Error('Unauthorized');
+      }
+
+      return response.json();
+
+    } catch (error) {
+      console.error('Error in apiFetch:', error);
+      throw error;
     }
-
-    // Handle empty responses (e.g., 204 No Content)
-    if (response.status === 204) {
-        return null; // Or return an empty object/array, as appropriate
-    }
-
-
-    return response.json();
   };
 
   return apiFetch;

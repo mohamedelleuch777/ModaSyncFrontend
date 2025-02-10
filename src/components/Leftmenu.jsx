@@ -1,22 +1,18 @@
-import React, { useEffect } from 'react';
-import { useApi, get } from '../hooks/apiHooks';
-import { HouseFill, PersonFill, BellFill, ListTask, AirplaneFill, AlarmFill } from 'react-bootstrap-icons';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { HouseFill, PersonFill, BellFill, ListTask, BoxArrowLeft } from 'react-bootstrap-icons';
 import logo from '../assets/img/logo.svg';
 
-const menuItems = [
-  { id: 1, name: 'Home', icon: <HouseFill color="white" size={20} /> },
-  { id: 2, name: 'Profile', icon: <PersonFill color="white" size={20} /> },
-  { id: 3, name: 'Notifications', icon: <BellFill color="white" size={20} /> },
-  { id: 4, name: 'My Task', icon: <ListTask color="white" size={20} /> }
-];
-
 function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
-  // const apiFetch = useApi();
+  const navigate = useNavigate();
 
-  // Load collections when the component mounts.
-  useEffect(() => {
-    // fetchSubCollections(collection_id);
-  }, []);
+  const menuItems = [
+    { id: 1, name: 'Home', icon: <HouseFill color="white" size={20}/>, action: () => console.log('Home') },
+    { id: 2, name: 'Profile', icon: <PersonFill color="white" size={20} />, action: () => console.log('Profile')  },
+    { id: 3, name: 'Notifications', icon: <BellFill color="white" size={20} />, action: () => console.log('Notifications')  },
+    { id: 4, name: 'My Task', icon: <ListTask color="white" size={20} />, action: () => console.log('My Task')  },
+    { id: 5, name: 'Logout', icon: <BoxArrowLeft color="white" size={20} />, action: () => { delete localStorage.token; navigate('/login') }  }
+  ];
 
   return (
     <>
@@ -28,7 +24,7 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
         </div>
         {
           menuItems && menuItems.map((item) => (
-            <div className="menu-item" key={item.id}>
+            <div className="menu-item" key={item.id} onClick={item.action}>
               <div className="menu-item-icon">
                 {item.icon}
               </div>

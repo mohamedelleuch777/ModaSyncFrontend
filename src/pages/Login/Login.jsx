@@ -1,49 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-const SERVER_URL = 'http://localhost:9613';
+import { useApi, post } from '../../hooks/apiHooks';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError]       = useState('');
-
+  const [error, setError]       = useState('');  
+  const apiFetch = useApi();
+  
+  // ✅ Get all collections
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // 🚀 Prevents the form from reloading the page
     setError('');
-  
-    if (!email || !password) {
-      setError('Email and password are required.');
-      return;
+    const data = await post(apiFetch, '/api/auth/login', {
+      emailOrPhone: email,
+      password
+    });
+    console.log(data);
+    if (!data.token) {
+      setError(data.error || 'Login failed.');
     }
-  
-  try {
-      const response = await fetch(`${SERVER_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ emailOrPhone: email, password }),
-      });
-  
-      const data = await response.json();
-      console.log(data)
-  
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed.');
-      }
-  
-      // Store the token (for example, in localStorage)
+    else {
       localStorage.setItem('token', data.token);
-  
-      // Navigate to dashboard
       navigate('/');
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.message);
     }
-  };
+  };  
 
   return (
     <div className="login-container">

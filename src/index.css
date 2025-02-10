@@ -295,6 +295,10 @@ body {
   background-color: #6da49c;
 }
 
+.leftmenu.leftmenu-containter .menu-item:last-child {
+  margin-top: auto;
+}
+
 .leftmenu.leftmenu-containter .menu-item-icon {
   display: flex;
 }
