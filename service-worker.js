@@ -1,6 +1,7 @@
-console.log('file loaded')
 const CACHE_NAME = 'api-image-cache-v1';
 import { IMAGE_SOURCE_URL, IMAGE_SOURCE_PATHNAME } from "./src/constants";
+
+console.log('✅ caching service worker loaded successfully');
 
 self.addEventListener('fetch', event => {
   const { request } = event;

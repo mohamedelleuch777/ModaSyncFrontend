@@ -5,24 +5,6 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'" />
     <title>Vite + React</title>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js', { type: 'module' })
-          .then(registration => {
-            console.log('Service Worker registered with scope:', registration.scope);
-          })
-          .catch(error => {
-            console.log('Service Worker registration failed:', error);
-          });
-      }
-
-
-      const eventSource = new EventSource("http://localhost:9613/api/events");
-      eventSource.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        console.log("Received SSE:", data);
-      };
-    </script>
   </head>
   <body>
     <div id="root"></div>
