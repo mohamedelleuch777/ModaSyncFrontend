@@ -11,6 +11,10 @@ function CollectionsStory({ setSelectedCollectionId }) {
     setStories(data);
   };
 
+  const handleCreateStory = () => {
+    setSelectedCollectionId(-1);
+  };
+
   // Load collections when the component mounts.
   useEffect(() => {
     fetchCollections();
@@ -18,6 +22,10 @@ function CollectionsStory({ setSelectedCollectionId }) {
 
   return (
     <div className="collections-story collections-story-containter">
+      <div className="story" onClick={() => handleCreateStory()}>
+        <span className='story-image'>➕</span>
+        <p className='story-label'>{'Create Collection'}</p>
+      </div>
       {
         stories && stories.map((story) => (
           <div className="story" key={story.id} onClick={() => setSelectedCollectionId(story.id)}>

@@ -26,6 +26,11 @@ function SubCollections({ selectedCollectionId }) {
       {
         isLoading ? <LoadingSpinner /> : (
           <>
+              <div className="sub-collection">
+                Add New Sub Collection
+                <span className='sub-collection-image'>➕</span>
+              </div>
+            <div style={{ overflowY: 'scroll' }}>
             {
               subCollections && subCollections.map((subCollection) => (
                 <div className="sub-collection" key={subCollection.id}>
@@ -37,6 +42,7 @@ function SubCollections({ selectedCollectionId }) {
                 </div>
               ))
             }
+            </div>
             {
               (subCollections && subCollections.length === 0) && (
                 <div className="sub-collections-empty">

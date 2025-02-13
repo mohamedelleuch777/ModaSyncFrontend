@@ -21,7 +21,7 @@ function App() {
               console.log('❌ Service Worker registration failed:', error);
             });
         } else {
-          console.log('⚡ Service Worker already registered:', existingRegistration.scope);
+          console.log('🚀 Service Worker already registered:', existingRegistration.scope);
         }
       });
     }

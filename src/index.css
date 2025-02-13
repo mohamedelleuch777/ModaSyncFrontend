@@ -231,6 +231,13 @@ body {
   align-items: center;
 }
 
+.collections-story.collections-story-containter .story-image:first-child {
+  text-align: center;
+  line-height: 5rem;
+  background-color: #fff;
+  font-size: 1.6rem;
+}
+
 .collections-story.collections-story-containter .story-image {
   width: 5rem;
   height: 5rem;
@@ -351,6 +358,7 @@ body {
 .sub-collections.sub-collections-containter .sub-collection {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -370,6 +378,17 @@ body {
   justify-content: center;
   align-items: center;
   color: #6da49c;
+}
+
+.sub-collections.sub-collections-containter .sub-collection span.sub-collection-image {
+  width: 1.7rem;
+  height: 1.7rem;
+  text-align: center;
+  line-height: 1.8rem;
+  background-color: #fff;
+  font-size: 1.6rem;
+  box-shadow: 0 0 9px 0px #6da49c;
+  border-radius: 50%;
 }
 
 .sub-collections.sub-collections-containter .sub-collection .sub-collection-image {
