@@ -6,17 +6,22 @@ import { API_BASE_URL } from '../constants';
 export function useApi() {
   const navigate = useNavigate();
 
-  const apiFetch = async (url, method = 'GET', data = null) => {
+  const apiFetch = async (url, method = 'GET', data = null, header = null) => {
     const token = localStorage.getItem('token');
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
 
-    const options = {
+    let options = {
       method,
       headers,
     };
+
+    if (header) {
+      options = header;
+      options.headers.Authorization = `Bearer ${token}`;
+    }
 
     if (data) {
       options.body = JSON.stringify(data);
@@ -49,8 +54,8 @@ export async function post(apiFetch, url, data) {
     return apiFetch(url, 'POST', data);
 }
 
-export async function put(apiFetch, url, data) {
-  return apiFetch(url, 'PUT', data);
+export async function put(apiFetch, url, data, header) {
+  return apiFetch(url, 'PUT', data, header);
 }
 export async function patch(apiFetch, url, data) {
     return apiFetch(url, 'PATCH', data);

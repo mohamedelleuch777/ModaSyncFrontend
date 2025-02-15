@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { get, useApi } from '../hooks/apiHooks';
 
 function CollectionsStory({ setSelectedCollectionId }) {
   const [stories, setStories] = React.useState([]);
+  const navigate = useNavigate();
   const apiFetch = useApi();
 
   // ✅ Get all collections
@@ -13,6 +15,7 @@ function CollectionsStory({ setSelectedCollectionId }) {
 
   const handleCreateStory = () => {
     setSelectedCollectionId(-1);
+    navigate('/create-collection');
   };
 
   // Load collections when the component mounts.
