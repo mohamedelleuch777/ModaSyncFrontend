@@ -5,6 +5,7 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import CreateCollection from './pages/CreateCollection/CreateCollection';
+import CreateSubCollection from './pages/CreateCollection/CreateSubCollection';
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create-collection" element={<CreateCollection />} />
+        <Route path="/create-sub-collection" element={<CreateSubCollection />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

@@ -9,6 +9,10 @@ const Dashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCollectionId, setSelectedCollectionId] = useState(-1);
 
+  useEffect(() => {
+    localStorage.selectedCollectionId = selectedCollectionId;
+  }, [selectedCollectionId]);
+
   return (
     <div className="dashboard-container">
       <Topbar setIsMenuOpen={setIsMenuOpen}/>

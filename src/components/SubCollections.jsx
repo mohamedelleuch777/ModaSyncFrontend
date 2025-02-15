@@ -2,18 +2,24 @@ import React, { useEffect } from 'react';
 import { get, useApi } from '../hooks/apiHooks';
 import { BinocularsFill } from 'react-bootstrap-icons'
 import LoadingSpinner from './LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 function SubCollections({ selectedCollectionId }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [subCollections, setSubCollections] = React.useState([]);
   const apiFetch = useApi();
+  const navigate = useNavigate();
 
   // ✅ Get all collections
   const fetchCollections = async () => {
     const data = await get(apiFetch, '/api/subCollections/' + selectedCollectionId, {});
     setSubCollections(data);
   };
-89
+
+  const handleCreateSubcollection = (e) => {
+    navigate('/create-sub-collection');
+  };
+
   useEffect(() => {
     fetchCollections();
     if (subCollections !== -1) {
@@ -28,7 +34,7 @@ function SubCollections({ selectedCollectionId }) {
           <>
               <div className="sub-collection">
                 Add New Sub Collection
-                <span className='sub-collection-image'>➕</span>
+                <span className='sub-collection-image' onClick={handleCreateSubcollection}>➕</span>
               </div>
             <div style={{ overflowY: 'scroll' }}>
             {
@@ -37,6 +43,7 @@ function SubCollections({ selectedCollectionId }) {
                   <img className='sub-collection-image' src={subCollection.image} alt={subCollection.name} />
                   <div>
                     <p className='sub-collection-label'>Name: {subCollection.name}</p>
+                    <p className='sub-collection-description'>{subCollection.description}</p>
                     <p className='samples-count-label'>Samples Count: {subCollection.count}</p>
                   </div>
                 </div>
