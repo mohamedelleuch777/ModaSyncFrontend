@@ -42,7 +42,7 @@ function SubCollections({ selectedCollectionId }) {
                 <div className="sub-collection" key={subCollection.id}>
                   <img className='sub-collection-image' src={subCollection.image} alt={subCollection.name} />
                   <div>
-                    <p className='sub-collection-label'>Name: {subCollection.name}</p>
+                    <p className='sub-collection-label'>{subCollection.name}</p>
                     <p className='sub-collection-description'>{subCollection.description}</p>
                     <p className='samples-count-label'>Samples Count: {subCollection.count}</p>
                   </div>

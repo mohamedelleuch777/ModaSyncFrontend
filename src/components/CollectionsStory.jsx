@@ -8,7 +8,7 @@ function CollectionsStory({ setSelectedCollectionId }) {
   const apiFetch = useApi();
 
   // ✅ Get all collections
-  const fetchCollections = async () => {
+  const fetchCollections = async (e) => {
     const data = await get(apiFetch, '/api/collections', {});
     setStories(data);
   };
@@ -16,6 +16,20 @@ function CollectionsStory({ setSelectedCollectionId }) {
   const handleCreateStory = () => {
     setSelectedCollectionId(-1);
     navigate('/create-collection');
+  };
+  
+  const selectStory = (id,e) => {
+    e.stopPropagation();
+    setSelectedCollectionId(id);
+    let selectedHtmlElement = e.target;
+    while (selectedHtmlElement.tagName !== 'DIV') {
+      selectedHtmlElement = selectedHtmlElement.parentElement;
+    }
+    const listOfAllStories = document.querySelectorAll('.collections-story.collections-story-containter .story');
+    listOfAllStories.forEach(story => {
+      story.classList.remove('active');
+    });
+    selectedHtmlElement.classList.add('active');
   };
 
   // Load collections when the component mounts.
@@ -31,8 +45,8 @@ function CollectionsStory({ setSelectedCollectionId }) {
       </div>
       {
         stories && stories.map((story) => (
-          <div className="story" key={story.id} onClick={() => setSelectedCollectionId(story.id)}>
-            <img className='story-image' src={story.image} alt={story.name} />
+          <div className="story" key={story.id} onClick={(e) => selectStory(story.id,e)}>
+            <img className='story-image' src={story.imxzage} alt={story.name} />
             <p className='story-label'>{story.name}</p>
           </div>
         ))

@@ -255,6 +255,12 @@ body {
   border: none;
 }
 
+.collections-story.collections-story-containter .active .story-label {
+  font-size: .85rem;
+  font-weight: 700;
+  font-family: monospace;
+}
+
 .collections-story.collections-story-containter .story-label {
   font-size: .64rem;
   text-align: center;
@@ -382,6 +388,11 @@ body {
   justify-content: space-between;
 }
 
+.sub-collections.sub-collections-containter .sub-collection > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .sub-collections.sub-collections-containter .sub-collections-empty {
   display: flex;
   flex-direction: column;
@@ -413,19 +424,20 @@ body {
 }
 
 .sub-collections.sub-collections-containter .sub-collection .sub-collection-label {
-  font-size: .95rem;
+  font-size: 1rem;
   text-align: left;
   margin: .4rem auto;
+  font-weight: 700;
+  font-family: monospace;
 }
 
 .sub-collections.sub-collections-containter .sub-collection .sub-collection-description {
-  /* text-wrap: nowrap;
-  width: calc(100% - 2rem);
-  overflow: hidden;
-  text-overflow: ellipsis; */
+  text-wrap: nowrap;
   font-size: .95rem;
   text-align: left;
-  margin: .4rem auto;
+  margin: .4rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sub-collections.sub-collections-containter .sub-collection .samples-count-label {
