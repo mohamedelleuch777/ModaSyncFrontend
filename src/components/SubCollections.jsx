@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { get, useApi } from '../hooks/apiHooks';
-import { BinocularsFill } from 'react-bootstrap-icons'
+import { BinocularsFill, TrashFill, BuildingFillAdd, XCircleFill } from 'react-bootstrap-icons'
 import LoadingSpinner from './LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import ButtonSliderWrapper from './ButtonSliderWrapper';
 
-function SubCollections({ selectedCollectionId }) {
+function SubCollections({ selectedCollectionId, collectionName }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [subCollections, setSubCollections] = React.useState([]);
   const apiFetch = useApi();
@@ -13,19 +13,27 @@ function SubCollections({ selectedCollectionId }) {
 
   // ✅ Get all collections
   const fetchCollections = async () => {
+    setIsLoading(true);
     const data = await get(apiFetch, '/api/subCollections/' + selectedCollectionId, {});
     setSubCollections(data);
+    setIsLoading(false);
   };
 
   const handleCreateSubcollection = (e) => {
     navigate('/create-sub-collection');
   };
 
+  const handleDeleteSubcollection = (e) => {
+    if (window.confirm("Are you sure that you want to delete <" +  collectionName + "> collection?")) {
+      console.log("User clicked Yes");
+    } else {
+      console.log("User clicked No");
+    }
+    
+  };
+
   useEffect(() => {
     fetchCollections();
-    if (subCollections !== -1) {
-      setIsLoading(false);
-    }
   }, [selectedCollectionId]);
 
   return (
@@ -33,11 +41,17 @@ function SubCollections({ selectedCollectionId }) {
       {
         isLoading ? <LoadingSpinner /> : (
           <>
+              {
+              (subCollections && collectionName !== '') && (
               <div className="sub-collection">
-                Add New Sub Collection
-                <span className='sub-collection-image' onClick={handleCreateSubcollection}>➕</span>
-              </div>
-            <div style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+                {collectionName}
+                  <section>
+                    <span className='sub-collection-image' onClick={handleDeleteSubcollection}>🗑️</span>
+                    <span className='sub-collection-image' onClick={handleCreateSubcollection}>➕</span>
+                  </section>
+              </div>)
+              }
+            <div style={{ overflowY: 'scroll', overflowX: 'hidden', paddingTop: 47 }}>
             {
               subCollections && subCollections.map((subCollection) => (
                 <ButtonSliderWrapper key={subCollection.id}>
@@ -50,7 +64,8 @@ function SubCollections({ selectedCollectionId }) {
                     </div>
                   </div>
                   {/* extra buttons */}
-                  <button style={{flex: 1, minWidth: 120, margin: 4}}>fs</button>
+                  <button className='cta-button success'><BuildingFillAdd size={35} color='#fff'/></button>
+                  <button className='cta-button danger'><TrashFill size={35} color='#fff'/></button>
                 </ButtonSliderWrapper>
               ))
             }
@@ -58,8 +73,17 @@ function SubCollections({ selectedCollectionId }) {
             {
               (subCollections && subCollections.length === 0) && (
                 <div className="sub-collections-empty">
-                  <h3>Empty sub collections</h3>
-                  <BinocularsFill size={35} color='#6da49c'/>
+                {
+                  collectionName === '' ? 
+                    <div style={{textAlign: 'center'}}>
+                      <h3>No sub collection was selected</h3> 
+                      <XCircleFill size={35} color='#6da49c'/>
+                    </div> : 
+                    <div style={{textAlign: 'center'}}>
+                      <h3>Empty sub collections</h3>
+                      <BinocularsFill size={35} color='#6da49c'/>
+                    </div>
+                }
                 </div>
               )
             }

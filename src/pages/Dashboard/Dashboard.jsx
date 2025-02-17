@@ -8,6 +8,7 @@ import SubCollections from '../../components/SubCollections';
 const Dashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCollectionId, setSelectedCollectionId] = useState(-1);
+  const [collectionName, setCollectionName] = useState('');
 
   useEffect(() => {
     localStorage.selectedCollectionId = selectedCollectionId;
@@ -18,8 +19,8 @@ const Dashboard = () => {
       <Topbar setIsMenuOpen={setIsMenuOpen}/>
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <input className='dashboard-search' type="search" placeholder="Search" />
-      <CollectionsStory setSelectedCollectionId={setSelectedCollectionId} />
-      <SubCollections selectedCollectionId={selectedCollectionId} />
+      <CollectionsStory setSelectedCollectionId={setSelectedCollectionId} setCollectionName={setCollectionName} />
+      <SubCollections selectedCollectionId={selectedCollectionId} collectionName={collectionName} />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { get, useApi } from '../hooks/apiHooks';
 
-function CollectionsStory({ setSelectedCollectionId }) {
+function CollectionsStory({ setSelectedCollectionId, setCollectionName }) {
   const [stories, setStories] = React.useState([]);
   const navigate = useNavigate();
   const apiFetch = useApi();
@@ -18,9 +18,10 @@ function CollectionsStory({ setSelectedCollectionId }) {
     navigate('/create-collection');
   };
   
-  const selectStory = (id,e) => {
+  const selectStory = (story, e) => {
     e.stopPropagation();
-    setSelectedCollectionId(id);
+    setSelectedCollectionId(story.id);
+    setCollectionName(story.name);
     let selectedHtmlElement = e.target;
     while (selectedHtmlElement.tagName !== 'DIV') {
       selectedHtmlElement = selectedHtmlElement.parentElement;
@@ -45,7 +46,7 @@ function CollectionsStory({ setSelectedCollectionId }) {
       </div>
       {
         stories && stories.map((story) => (
-          <div className="story" key={story.id} onClick={(e) => selectStory(story.id,e)}>
+          <div className="story" key={story.id} onClick={(e) => selectStory(story,e)}>
             <img className='story-image' src={story.imxzage} alt={story.name} />
             <p className='story-label'>{story.name}</p>
           </div>
