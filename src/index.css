@@ -382,6 +382,19 @@ body {
   color: #07564C;
   box-shadow: 0 0 16px -5px var(--primary-color);
   margin: 5px;
+  min-width: calc(100% - 2rem);
+}
+
+.sub-collections.sub-collections-containter .sub-collection-wrapper {
+  display: flex;
+  /* width: calc(100% + 80px); */
+  overflow-x: scroll;
+  scrollbar-width: 0;  /* For Firefox */
+  -ms-overflow-style: none; /* For IE and Edge */
+}
+
+.sub-collections.sub-collections-containter .sub-collection-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .sub-collections.sub-collections-containter > .sub-collection:first-child {
