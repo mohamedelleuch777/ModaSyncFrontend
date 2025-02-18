@@ -26,7 +26,7 @@ function ButtonSliderWrapper({ children }) {
   };
 
   return (
-    <div ref={divWrapper} className="sub-collection-wrapper" onScroll={handleScroll} onTouchEnd={endScroll}>
+    <div ref={divWrapper} className="button-slider-wrapper" onScroll={handleScroll} onTouchEnd={endScroll}>
       {children}
     </div>
   );

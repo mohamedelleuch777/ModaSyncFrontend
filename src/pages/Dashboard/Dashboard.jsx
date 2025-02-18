@@ -5,7 +5,7 @@ import CollectionsStory from '../../components/CollectionsStory';
 import Leftmenu from '../../components/Leftmenu';
 import SubCollections from '../../components/SubCollections';
 
-const Dashboard = () => {
+const Dashboard = ({ setSelectedSubCollectionId, setSelectedSubCollectionName }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCollectionId, setSelectedCollectionId] = useState(-1);
   const [collectionName, setCollectionName] = useState('');
@@ -29,7 +29,13 @@ const Dashboard = () => {
         setCollectionName={setCollectionName}
         setUpdateCollectionView={setUpdateCollectionView} 
       />
-      <SubCollections selectedCollectionId={selectedCollectionId} collectionName={collectionName} updateCollectionView={updateCollectionView} />
+      <SubCollections 
+        selectedCollectionId={selectedCollectionId} 
+        collectionName={collectionName} 
+        updateCollectionView={updateCollectionView} 
+        setSelectedSubCollectionId={setSelectedSubCollectionId}
+        setSelectedSubCollectionName={setSelectedSubCollectionName}
+      />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
@@ -7,9 +7,12 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import CreateCollection from './pages/CreateCollection/CreateCollection';
 import CreateSubCollection from './pages/CreateCollection/CreateSubCollection';
 import CreateSample from './pages/CreateSample/CreateSample';
+import ListSamples from './pages/CreateSample/ListSamples';
 
 
 function App() {
+  const [selectedSubCollectionId, setSelectedSubCollectionId] = useState(null);
+  const [selectedSubCollectionName, setSelectedSubCollectionName] = useState('');
 
   // Memoize service worker registration
   const registerCachingServiceWorker = useCallback(() => {
@@ -51,8 +54,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/create-collection" element={<CreateCollection />} />
         <Route path="/create-sub-collection" element={<CreateSubCollection />} />
+        <Route path="/list-samples" element={<ListSamples selectedSubCollectionId={selectedSubCollectionId} selectedSubCollectionName={selectedSubCollectionName}/>} />
         <Route path="/create-sample" element={<CreateSample />} />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard setSelectedSubCollectionId={setSelectedSubCollectionId} setSelectedSubCollectionName={setSelectedSubCollectionName} />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

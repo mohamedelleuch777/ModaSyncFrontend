@@ -5,7 +5,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import ButtonSliderWrapper from './ButtonSliderWrapper';
 
-function SubCollections({ selectedCollectionId, collectionName, updateCollectionView }) {
+function SubCollections({ selectedCollectionId, collectionName, updateCollectionView, setSelectedSubCollectionId, setSelectedSubCollectionName }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [subCollections, setSubCollections] = React.useState([]);
   const apiFetch = useApi();
@@ -51,6 +51,12 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
     }
   }
 
+  const handleSubCollectionSelection = (subCollection) => {
+    setSelectedSubCollectionId(subCollection.id);
+    setSelectedSubCollectionName(subCollection.name);
+    navigate('/list-samples')
+  }
+
   useEffect(() => {
     fetchCollections();
   }, [selectedCollectionId]);
@@ -74,7 +80,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
             {
               subCollections && subCollections.map((subCollection) => (
                 <ButtonSliderWrapper key={subCollection.id}>
-                  <div className="sub-collection">
+                  <div className="sub-collection" onClick={() => handleSubCollectionSelection(subCollection)}>
                     <img className='sub-collection-image' src={subCollection.image} alt={subCollection.name} />
                     <div>
                       <p className='sub-collection-label'>{subCollection.name}</p>
