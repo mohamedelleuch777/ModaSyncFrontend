@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { get, useApi } from '../hooks/apiHooks';
 
-function CollectionsStory({ setSelectedCollectionId, setCollectionName }) {
+function CollectionsStory({ setSelectedCollectionId, setCollectionName, setUpdateCollectionView }) {
   const [stories, setStories] = React.useState([]);
   const navigate = useNavigate();
   const apiFetch = useApi();
@@ -36,6 +36,7 @@ function CollectionsStory({ setSelectedCollectionId, setCollectionName }) {
   // Load collections when the component mounts.
   useEffect(() => {
     fetchCollections();
+    setUpdateCollectionView(() => fetchCollections);
   }, []);
 
   return (

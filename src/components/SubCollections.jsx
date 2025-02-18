@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { get, useApi } from '../hooks/apiHooks';
+import { get, del, useApi } from '../hooks/apiHooks';
 import { BinocularsFill, TrashFill, BuildingFillAdd, XCircleFill } from 'react-bootstrap-icons'
 import LoadingSpinner from './LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import ButtonSliderWrapper from './ButtonSliderWrapper';
 
-function SubCollections({ selectedCollectionId, collectionName }) {
+function SubCollections({ selectedCollectionId, collectionName, updateCollectionView }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [subCollections, setSubCollections] = React.useState([]);
   const apiFetch = useApi();
@@ -19,13 +19,24 @@ function SubCollections({ selectedCollectionId, collectionName }) {
     setIsLoading(false);
   };
 
+  // ✅ Delete collections
+  const deleteCollection = async () => {
+    setIsLoading(true);
+    const data = await del(apiFetch, '/api/collections/' + selectedCollectionId, {});
+    if (!data.error) {
+      setSubCollections([]);
+      updateCollectionView();
+    }
+    setIsLoading(false);
+  };
+
   const handleCreateSubcollection = (e) => {
     navigate('/create-sub-collection');
   };
 
   const handleDeleteSubcollection = (e) => {
     if (window.confirm("Are you sure that you want to delete <" +  collectionName + "> collection?")) {
-      console.log("User clicked Yes");
+      deleteCollection();
     } else {
       console.log("User clicked No");
     }

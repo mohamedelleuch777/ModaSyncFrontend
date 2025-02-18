@@ -1,5 +1,5 @@
 // src/constants.js
-export const API_BASE_URL = 'http://192.168.1.2:9613';
+export const API_BASE_URL = 'http://192.168.164.16:9613';
 export const IMAGE_SOURCE_URL = 'https://i.pinimg.com';
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
 export const DEFAULT_TIMEOUT = 5000;

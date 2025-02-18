@@ -9,18 +9,27 @@ const Dashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCollectionId, setSelectedCollectionId] = useState(-1);
   const [collectionName, setCollectionName] = useState('');
+  const [updateCollectionView, setUpdateCollectionView] = useState(null);
 
   useEffect(() => {
     localStorage.selectedCollectionId = selectedCollectionId;
   }, [selectedCollectionId]);
+
+  useEffect(() => {
+    console.log(updateCollectionView)
+  }, [updateCollectionView]);
 
   return (
     <div className="dashboard-container">
       <Topbar setIsMenuOpen={setIsMenuOpen}/>
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <input className='dashboard-search' type="search" placeholder="Search" />
-      <CollectionsStory setSelectedCollectionId={setSelectedCollectionId} setCollectionName={setCollectionName} />
-      <SubCollections selectedCollectionId={selectedCollectionId} collectionName={collectionName} />
+      <CollectionsStory 
+        setSelectedCollectionId={setSelectedCollectionId}
+        setCollectionName={setCollectionName}
+        setUpdateCollectionView={setUpdateCollectionView} 
+      />
+      <SubCollections selectedCollectionId={selectedCollectionId} collectionName={collectionName} updateCollectionView={updateCollectionView} />
     </div>
   );
 };
