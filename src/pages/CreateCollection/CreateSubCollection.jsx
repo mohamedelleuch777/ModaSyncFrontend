@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { put, post, useApi } from '../../hooks/apiHooks';
 import { API_BASE_URL } from '../../constants';
+import Topbar from '../../components/Topbar';
+import Leftmenu from '../../components/Leftmenu';
 
 const CreateSubCollection = () => {
   const navigate = useNavigate();
   const apiFetch = useApi();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
@@ -70,6 +73,8 @@ const CreateSubCollection = () => {
 
   return (
     <div className="create-collection-container">
+      <Topbar setIsMenuOpen={setIsMenuOpen}/>
+      <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <div className="create-collection-card">
         <h2 className="create-collection-title">Create New SubCollection</h2>
         {error && <p className="error-text">{error}</p>}

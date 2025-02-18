@@ -7,7 +7,7 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: 1, name: 'Home', icon: <HouseFill color="white" size={20}/>, action: () => console.log('Home') },
+    { id: 1, name: 'Home', icon: <HouseFill color="white" size={20}/>, action: () => navigate('/') },
     { id: 2, name: 'Profile', icon: <PersonFill color="white" size={20} />, action: () => console.log('Profile')  },
     { id: 3, name: 'Notifications', icon: <BellFill color="white" size={20} />, action: () => console.log('Notifications')  },
     { id: 4, name: 'My Task', icon: <ListTask color="white" size={20} />, action: () => console.log('My Task')  },
