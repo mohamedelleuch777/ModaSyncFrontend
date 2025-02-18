@@ -43,6 +43,14 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
     
   };
 
+  const handleCreateSample = ( action ) => {
+    switch(action) {
+      case 'create':
+        navigate('create-sample');
+      break;
+    }
+  }
+
   useEffect(() => {
     fetchCollections();
   }, [selectedCollectionId]);
@@ -75,8 +83,8 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
                     </div>
                   </div>
                   {/* extra buttons */}
-                  <button className='cta-button success'><BuildingFillAdd size={35} color='#fff'/></button>
-                  <button className='cta-button danger'><TrashFill size={35} color='#fff'/></button>
+                  <button className='cta-button success'><BuildingFillAdd size={35} color='#fff' onClick={() => handleCreateSample('create')}/></button>
+                  <button className='cta-button danger'><TrashFill size={35} color='#fff' onClick={() => handleCreateSample('delete')}/></button>
                 </ButtonSliderWrapper>
               ))
             }

@@ -6,6 +6,7 @@ import Register from './pages/Register/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import CreateCollection from './pages/CreateCollection/CreateCollection';
 import CreateSubCollection from './pages/CreateCollection/CreateSubCollection';
+import CreateSample from './pages/CreateSample/CreateSample';
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/create-collection" element={<CreateCollection />} />
         <Route path="/create-sub-collection" element={<CreateSubCollection />} />
+        <Route path="/create-sample" element={<CreateSample />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
