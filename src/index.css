@@ -21,6 +21,8 @@ h1, h2, h3, h4, h5, h6 {
   --primary-color: #6da49c;
   --secondary-color: #05574c;
   --tertiary-color: #fff;
+  --success-color: #348c34;
+  --danger-color: #d90000;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -136,7 +138,7 @@ body {
   width: 100%;
   padding: 0.75rem;
   color: #07564C;
-  background-color: var(--primary-color);;
+  background-color: var(--primary-color);
   border: none;
   border-radius: 50px;
   font-size: 1rem;
@@ -340,7 +342,7 @@ body {
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
   gap: 10px;
-  background-color: var(--primary-color);;
+  background-color: var(--primary-color);
 }
 
 .leftmenu.leftmenu-containter .menu-item:last-child {
@@ -482,11 +484,11 @@ body {
 }
 
 .sub-collections.sub-collections-containter .cta-button.success {
-  background-color: #348c34;
+  background-color: var(--success-color);
 }
 
 .sub-collections.sub-collections-containter .cta-button.danger {
-  background-color: #d90000;
+  background-color: var(--danger-color);
 }
 
 /* Create Collection */
@@ -584,7 +586,7 @@ body {
 }
 
 .error-text {
-  color: red;
+  color: var(--danger-color);
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
@@ -676,7 +678,7 @@ body {
 
 .delete-sample-button {
   min-width: 100px;
-  background-color: red;
+  background-color: var(--danger-color);
   color: white;
   border: none;
   margin: .5rem 0;
