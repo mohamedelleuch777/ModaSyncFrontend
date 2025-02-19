@@ -67,7 +67,7 @@ const CreateCollection = () => {
       setError(data2.error);
     } else {
         alert("Collection created successfully!");
-        navigate('/');
+        navigate(-1);
     }
   };
 

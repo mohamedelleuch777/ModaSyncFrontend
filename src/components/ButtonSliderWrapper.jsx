@@ -11,7 +11,7 @@ function ButtonSliderWrapper({ children }) {
     if (countingInterval) {
       clearInterval(countingInterval);
       setCountingInterval(null);
-      console.log('clearing interval');
+      // console.log('clearing interval');
     }
     const { scrollLeft, scrollWidth, clientWidth } = e.target;
     setMaxScrollHorizontalValue(scrollWidth - clientWidth)
@@ -39,7 +39,7 @@ function ButtonSliderWrapper({ children }) {
         });
       }, 10000); // force close if stay opened and IDLE for 10 seconds
       setCountingInterval(interval);
-      console.log('setting interval');
+      // console.log('setting interval');
     }, 1000)
   };
 

@@ -534,7 +534,7 @@ body {
   background-color: var(--secondary-color);
 }
 
-.create-sample-card {
+/* .create-sample-card {
   background: white;
   padding: 2rem;
   border-radius: 10px;
@@ -542,12 +542,12 @@ body {
   max-width: 400px;
   margin: auto;
   text-align: center;
-}
+} */
 
 .create-sample-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: var(--primary-color);
+  color: var(--tertiary-color);
   text-align: left;
 }
 
@@ -564,8 +564,6 @@ body {
 
 .create-sample-form .form-input {
   padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   font-size: 1rem;
   box-sizing: border-box;
 }
@@ -617,6 +615,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  padding-top: 55px;
 }
 
 .list-samples-title {
@@ -698,3 +697,37 @@ body {
   text-align: center;
 }
 
+.samples-header-collection-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  gap: 1.5rem;
+  background-color: #fff;
+  transition: background-color 0.3sease-in-out;
+  color: #07564C;
+  box-shadow: 0 0 16px -5px var(--primary-color);
+  margin: 5px;
+  min-width: calc(100% - 1.2rem);
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  width: 100%;
+  border-radius: 20px 20px 0 0;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.samples-header-collection-name span.cta-buttons {
+  min-width: 26px;
+  min-height: 26px;
+  padding: 4px;
+  text-align: center;
+  line-height: 1.8rem;
+  background-color: #fff;
+  font-size: 1.1rem;
+  box-shadow: 0 0 9px 0px var(--primary-color);
+  border-radius: 50%;
+  margin: 0 8px;
+  margin-left: auto;
+}

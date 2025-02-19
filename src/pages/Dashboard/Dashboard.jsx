@@ -1,5 +1,6 @@
 // Dashboard.js
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Topbar from '../../components/Topbar';
 import CollectionsStory from '../../components/CollectionsStory';
 import Leftmenu from '../../components/Leftmenu';
@@ -10,14 +11,19 @@ const Dashboard = ({ setSelectedSubCollectionId, setSelectedSubCollectionName })
   const [selectedCollectionId, setSelectedCollectionId] = useState(-1);
   const [collectionName, setCollectionName] = useState('');
   const [updateCollectionView, setUpdateCollectionView] = useState(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("location.selectedCollectionId", location);
+    if (location.state) {
+        setSelectedCollectionId(location.state.selectedCollection.id);
+        setCollectionName(location.state.selectedCollection.name);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     localStorage.selectedCollectionId = selectedCollectionId;
   }, [selectedCollectionId]);
-
-  useEffect(() => {
-    console.log(updateCollectionView)
-  }, [updateCollectionView]);
 
   return (
     <div className="dashboard-container">

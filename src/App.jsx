@@ -55,9 +55,9 @@ function App() {
         <Route path="/create-collection" element={<CreateCollection />} />
         <Route path="/create-sub-collection" element={<CreateSubCollection />} />
         <Route path="/list-samples" element={<ListSamples selectedSubCollectionId={selectedSubCollectionId} selectedSubCollectionName={selectedSubCollectionName}/>} />
-        <Route path="/create-sample" element={<CreateSample />} />
+        <Route path="/create-sample" element={<CreateSample  selectedSubCollectionName={selectedSubCollectionId}/>} />
         <Route path="/" element={<Dashboard setSelectedSubCollectionId={setSelectedSubCollectionId} setSelectedSubCollectionName={setSelectedSubCollectionName} />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

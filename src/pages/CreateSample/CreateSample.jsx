@@ -5,7 +5,7 @@ import { API_BASE_URL } from '../../constants';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
 
-const CreateSample = () => {
+const CreateSample = ({ selectedSubCollectionName }) => {
   const navigate = useNavigate();
   const apiFetch = useApi();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,8 +57,8 @@ const CreateSample = () => {
     const imageUrl = data.fileUrl;
 
     const data2 = await post(apiFetch, '/api/samples', {
+      subcollectionId: selectedSubCollectionName,
       name,
-      description,
       imageUrl
     });
 
@@ -66,7 +66,7 @@ const CreateSample = () => {
       setError(data2.error);
     } else {
       alert("Sample created successfully!");
-      navigate('/');
+      navigate(-1);
     }
   };
 
@@ -88,14 +88,6 @@ const CreateSample = () => {
               onChange={(e) => setName(e.target.value)}
               placeholder="Sample Name"
               required
-            />
-          </div>
-          <div className="form-group">
-            <textarea
-              className="form-input"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Description"
             />
           </div>
           <div className="form-group">

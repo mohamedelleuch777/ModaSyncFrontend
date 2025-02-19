@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { get, del, useApi } from '../../hooks/apiHooks';
 import { TrashFill } from 'react-bootstrap-icons';
 import Topbar from '../../components/Topbar';
@@ -7,6 +8,7 @@ import ButtonSliderWrapper from '../../components/ButtonSliderWrapper';
 import './ListSamples';
 
 const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => {
+  const navigate = useNavigate();
   const apiFetch = useApi();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [samples, setSamples] = useState([]);
@@ -56,7 +58,15 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
 
       <div className="list-samples-card">
-        <h2 className="list-samples-title">{ selectedSubCollectionName }</h2>
+        {
+            (samples && selectedSubCollectionName !== '') && (
+            <div className="samples-header-collection-name">
+            {selectedSubCollectionName}
+            <section>
+                <span className='cta-buttons' onClick={() => navigate('/create-sample')}>➕</span>
+            </section>
+            </div>)
+        }
         {error && <p className="error-text">{error}</p>}
 
         <div className="samples-list">

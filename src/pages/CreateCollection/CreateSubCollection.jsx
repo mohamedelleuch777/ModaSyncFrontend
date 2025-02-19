@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { put, post, useApi } from '../../hooks/apiHooks';
+import { get, post, useApi } from '../../hooks/apiHooks';
 import { API_BASE_URL } from '../../constants';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
@@ -66,8 +66,10 @@ const CreateSubCollection = () => {
     if (data2.error) {
       setError(data2.error);
     } else {
+      const data3 = await get(apiFetch, '/api/collections/' + collectionId, {});
+      console.log(data3)
       alert("SubCollection created successfully!");
-      navigate('/');
+      navigate('/', { state: { selectedCollection: data3 } });
     }
   };
 
