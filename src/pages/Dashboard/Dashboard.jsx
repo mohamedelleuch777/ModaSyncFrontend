@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Topbar from '../../components/Topbar';
-import CollectionsStory from '../../components/CollectionsStory';
 import Leftmenu from '../../components/Leftmenu';
+import CollectionsStory from '../../components/CollectionsStory';
 import SubCollections from '../../components/SubCollections';
 
 const Dashboard = ({ setSelectedSubCollectionId, setSelectedSubCollectionName }) => {

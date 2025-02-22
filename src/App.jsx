@@ -8,6 +8,7 @@ import CreateCollection from './pages/CreateCollection/CreateCollection';
 import CreateSubCollection from './pages/CreateCollection/CreateSubCollection';
 import CreateSample from './pages/CreateSample/CreateSample';
 import ListSamples from './pages/CreateSample/ListSamples';
+import SampleDetailsPage from './pages/SamplesDetails/SampleDetails';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/samples-details" element={<SampleDetailsPage />} />
         <Route path="/create-collection" element={<CreateCollection />} />
         <Route path="/create-sub-collection" element={<CreateSubCollection />} />
         <Route path="/list-samples" element={<ListSamples selectedSubCollectionId={selectedSubCollectionId} selectedSubCollectionName={selectedSubCollectionName}/>} />
