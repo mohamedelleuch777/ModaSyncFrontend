@@ -5,8 +5,10 @@ import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
 import CollectionsStory from '../../components/CollectionsStory';
 import SubCollections from '../../components/SubCollections';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Dashboard = ({ setSelectedSubCollectionId, setSelectedSubCollectionName }) => {
+  const [isLoading, setIsLoading] = React.useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCollectionId, setSelectedCollectionId] = useState(-1);
   const [collectionName, setCollectionName] = useState('');
@@ -29,19 +31,25 @@ const Dashboard = ({ setSelectedSubCollectionId, setSelectedSubCollectionName })
     <div className="dashboard-container">
       <Topbar setIsMenuOpen={setIsMenuOpen}/>
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-      <input className='dashboard-search' type="search" placeholder="Search" />
-      <CollectionsStory 
-        setSelectedCollectionId={setSelectedCollectionId}
-        setCollectionName={setCollectionName}
-        setUpdateCollectionView={setUpdateCollectionView} 
-      />
-      <SubCollections 
-        selectedCollectionId={selectedCollectionId} 
-        collectionName={collectionName} 
-        updateCollectionView={updateCollectionView} 
-        setSelectedSubCollectionId={setSelectedSubCollectionId}
-        setSelectedSubCollectionName={setSelectedSubCollectionName}
-      />
+      { isLoading && <LoadingSpinner /> }
+      {
+        <section className="dashboard-sub-container" style={{ display: isLoading ? 'none' : 'flex' }}>
+          <input className='dashboard-search' type="search" placeholder="Search" />
+          <CollectionsStory 
+            setSelectedCollectionId={setSelectedCollectionId}
+            setCollectionName={setCollectionName}
+            setUpdateCollectionView={setUpdateCollectionView}
+            setLoading={setIsLoading} 
+          />
+          <SubCollections 
+            selectedCollectionId={selectedCollectionId} 
+            collectionName={collectionName} 
+            updateCollectionView={updateCollectionView} 
+            setSelectedSubCollectionId={setSelectedSubCollectionId}
+            setSelectedSubCollectionName={setSelectedSubCollectionName}
+          />
+        </section>
+      }
     </div>
   );
 };

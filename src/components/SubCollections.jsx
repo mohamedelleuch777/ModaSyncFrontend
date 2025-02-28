@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { get, del, useApi } from '../hooks/apiHooks';
-import { BinocularsFill, TrashFill, BuildingFillAdd, XCircleFill } from 'react-bootstrap-icons'
+import { BinocularsFill, TrashFill, BuildingFillAdd, XCircleFill, Collection } from 'react-bootstrap-icons'
 import LoadingSpinner from './LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import ButtonSliderWrapper from './ButtonSliderWrapper';
@@ -19,10 +19,10 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
     setIsLoading(false);
   };
 
-  // ✅ Delete collections
-  const deleteCollection = async () => {
+  // ✅ Delete sub-collections
+  const deleteSubCollection = async (subCollection_ID) => {
     setIsLoading(true);
-    const data = await del(apiFetch, '/api/collections/' + selectedCollectionId, {});
+    const data = await del(apiFetch, '/api/subCollections/' + subCollection_ID, {});
     if (!data.error) {
       setSubCollections([]);
       updateCollectionView();
@@ -34,9 +34,9 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
     navigate('/create-sub-collection');
   };
 
-  const handleDeleteSubcollection = (e) => {
-    if (window.confirm("Are you sure that you want to delete <" +  collectionName + "> collection?")) {
-      deleteCollection();
+  const handleDeleteSubcollection = (e, subCollection) => {
+    if (window.confirm("Are you sure that you want to delete <" +  subCollection.name + "> sub collection?")) {
+      deleteSubCollection(subCollection.id);
     } else {
       console.log("User clicked No");
     }
@@ -81,6 +81,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
               subCollections && subCollections.map((subCollection) => (
                 <ButtonSliderWrapper key={subCollection.id}>
                   <div className="sub-collection" onClick={() => handleSubCollectionSelection(subCollection)}>
+                    {console.log(subCollection)}
                     <img className='sub-collection-image' src={subCollection.image} alt={subCollection.name} />
                     <div>
                       <p className='sub-collection-label'>{subCollection.name}</p>
@@ -90,7 +91,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
                   </div>
                   {/* extra buttons */}
                   <button className='cta-button success'><BuildingFillAdd size={35} color='#fff' onClick={() => handleCreateSample('create')}/></button>
-                  <button className='cta-button danger'><TrashFill size={35} color='#fff' onClick={() => handleCreateSample('delete')}/></button>
+                  <button className='cta-button danger'><TrashFill size={35} color='#fff' onClick={(e) => handleDeleteSubcollection(e,subCollection)}/></button>
                 </ButtonSliderWrapper>
               ))
             }

@@ -52,6 +52,10 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
     }
   };
 
+  const handleSampleSelection = (sample) => {
+    navigate(`/samples-details`, { state: { sample } });
+  };
+
   return (
     <div className="list-samples-container">
       <Topbar setIsMenuOpen={setIsMenuOpen} />
@@ -73,8 +77,8 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
           {samples.length > 0 ? (
             samples.map((sample) => (
               <ButtonSliderWrapper key={sample.id}>
-                <div className="sample-item">
-                  <img className="sample-image" src={sample.imageUrl} alt={sample.name} />
+                <div className="sample-item" onClick={() => handleSampleSelection(sample)}>
+                  <img className="sample-image" src={sample.image} alt={sample.name} />
                   <div className="sample-info">
                     <p className="sample-name">{sample.name}</p>
                     <p className="sample-description">{sample.description}</p>
