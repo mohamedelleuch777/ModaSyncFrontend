@@ -4,9 +4,11 @@ import { put, post, useApi } from '../../hooks/apiHooks';
 import { API_BASE_URL } from '../../constants';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const CreateCollection = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const apiFetch = useApi();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [name, setName] = useState('');
@@ -56,12 +58,13 @@ const CreateCollection = () => {
     
     const imageUrl = data.fileUrl;
     
+    setIsLoading(true);
     const data2 = await post(apiFetch, '/api/collections', {
       name,
       description: "no-description",
       imageUrl
     });
-
+    setIsLoading(false);
 
     if (data2.error) {
       setError(data2.error);
@@ -105,7 +108,9 @@ const CreateCollection = () => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="create-collection-button">Create</button>
+          <button type="submit" className="create-collection-button">
+            {isLoading ? <LoadingSpinner /> : 'Create Collection'}
+          </button>
         </form>
       </div>
     </div>

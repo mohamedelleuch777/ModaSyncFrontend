@@ -19,6 +19,17 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
     setIsLoading(false);
   };
 
+  // ✅ Delete collections
+  const deleteCollection = async () => {
+    setIsLoading(true);
+    const data = await del(apiFetch, '/api/collections/' + selectedCollectionId, {});
+    if (!data.error) {
+      setSubCollections([]);
+      updateCollectionView();
+    }
+    setIsLoading(false);
+  };
+
   // ✅ Delete sub-collections
   const deleteSubCollection = async (subCollection_ID) => {
     setIsLoading(true);
@@ -35,8 +46,18 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
   };
 
   const handleDeleteSubcollection = (e, subCollection) => {
+    console.log(subCollection);
     if (window.confirm("Are you sure that you want to delete <" +  subCollection.name + "> sub collection?")) {
       deleteSubCollection(subCollection.id);
+    } else {
+      console.log("User clicked No");
+    }
+    
+  };
+
+  const handleDeleteCollection = (e) => {
+    if (window.confirm("Are you sure that you want to delete <" +  collectionName + "> collection?")) {
+      deleteCollection();
     } else {
       console.log("User clicked No");
     }
@@ -71,7 +92,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
               <div className="sub-collection">
                 {collectionName}
                   <section>
-                    <span className='sub-collection-image' onClick={handleDeleteSubcollection}>🗑️</span>
+                    <span className='sub-collection-image' onClick={handleDeleteCollection}>🗑️</span>
                     <span className='sub-collection-image' onClick={handleCreateSubcollection}>➕</span>
                   </section>
               </div>)

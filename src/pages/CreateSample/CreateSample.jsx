@@ -4,8 +4,10 @@ import { post, useApi } from '../../hooks/apiHooks';
 import { API_BASE_URL } from '../../constants';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const CreateSample = ({ selectedSubCollectionName }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const apiFetch = useApi();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,20 +49,22 @@ const CreateSample = ({ selectedSubCollectionName }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+    
     const data = await uploadPicture();
     if (!data) {
       setError('Failed to upload image');
       return;
     }
-
+    
     const imageUrl = data.fileUrl;
-
+    
+    setIsLoading(true);
     const data2 = await post(apiFetch, '/api/samples', {
       subcollectionId: selectedSubCollectionName,
       name,
       imageUrl
     });
+    setIsLoading(false);
 
     if (data2.error) {
       setError(data2.error);
@@ -98,7 +102,9 @@ const CreateSample = ({ selectedSubCollectionName }) => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="create-sample-button">Create</button>
+          <button type="submit" className="create-sample-button">
+            {isLoading ? <LoadingSpinner /> : 'Create Sample'}
+          </button>
         </form>
       </div>
     </div>

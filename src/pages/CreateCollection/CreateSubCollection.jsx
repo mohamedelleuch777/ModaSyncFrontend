@@ -4,8 +4,10 @@ import { get, post, useApi } from '../../hooks/apiHooks';
 import { API_BASE_URL } from '../../constants';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const CreateSubCollection = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const apiFetch = useApi();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,12 +58,15 @@ const CreateSubCollection = () => {
 
     const imageUrl = data.fileUrl;
     const collectionId = localStorage.selectedCollectionId || -1;
+
+    setIsLoading(true);
     const data2 = await post(apiFetch, '/api/subCollections', {
       collectionId: parseInt(collectionId), // Ensure it's a number
       name,
       description,
       imageUrl
     });
+    setIsLoading(false);
 
     if (data2.error) {
       setError(data2.error);
@@ -117,7 +122,9 @@ const CreateSubCollection = () => {
               accept="image/*"
             />
           </div>
-          <button type="submit" className="create-collection-button">Create</button>
+          <button type="submit" className="create-collection-button">
+            {isLoading ? <LoadingSpinner /> : 'Create SubCollection'}
+          </button>
         </form>
       </div>
     </div>

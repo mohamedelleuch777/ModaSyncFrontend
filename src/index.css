@@ -528,6 +528,7 @@ body {
   border: navajowhite;
   background-color: var(--primary-color);
   color: var(--tertiary-color);
+  min-height: 47.5px;
 }
 
 .form-group {
