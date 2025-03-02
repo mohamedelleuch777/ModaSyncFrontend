@@ -528,7 +528,7 @@ body {
   border: navajowhite;
   background-color: var(--primary-color);
   color: var(--tertiary-color);
-  min-height: 47.5px;
+  height: 47.5px;
 }
 
 .form-group {
@@ -591,6 +591,7 @@ body {
   cursor: pointer;
   font-size: 1rem;
   transition: 0.3s ease-in-out;
+  height: 47.5px;
 }
 
 .create-sample-button:hover {
@@ -810,6 +811,7 @@ body {
   padding-bottom: 0;
   overflow: hidden;
   overflow-y: scroll;
+  max-width: 25%;
 }
 
 .sample-details-container .thumbnail-container .thumbnail-image {
@@ -857,4 +859,25 @@ body {
 
 .zoom-window-image {
   touch-action: pinch-zoom;
+}
+
+.btn-add-image {
+  width: calc(100% - 10px);
+  height: 50px;
+  border-radius: 7px;
+  border: none;
+  margin: 5px;
+  margin-top: 0;
+  background-color: var(--success-color);
+  box-shadow: 0 0 10px -2px var(--tertiary-color);
+}
+
+.btn-delete-image {
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
+  margin: 2px;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
 }

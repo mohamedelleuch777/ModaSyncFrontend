@@ -9,6 +9,7 @@ import CreateSubCollection from './pages/CreateCollection/CreateSubCollection';
 import CreateSample from './pages/CreateSample/CreateSample';
 import ListSamples from './pages/CreateSample/ListSamples';
 import SampleDetailsPage from './pages/SamplesDetails/SampleDetails';
+import AddImageToSample from './pages/SamplesDetails/AddImageToSample';
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path="/create-sub-collection" element={<CreateSubCollection />} />
         <Route path="/list-samples" element={<ListSamples selectedSubCollectionId={selectedSubCollectionId} selectedSubCollectionName={selectedSubCollectionName}/>} />
         <Route path="/create-sample" element={<CreateSample  selectedSubCollectionName={selectedSubCollectionId}/>} />
+        <Route path="/add-image-sample" element={<AddImageToSample />} />
         <Route path="/" element={<Dashboard setSelectedSubCollectionId={setSelectedSubCollectionId} setSelectedSubCollectionName={setSelectedSubCollectionName} />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

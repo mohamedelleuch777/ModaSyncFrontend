@@ -22,6 +22,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
     if (!selectedSubCollectionId) return;
 
     try {
+      // const data = await get(apiFetch, `/api/samples/${selectedSubCollectionId}`, {});
       const data = await get(apiFetch, `/api/samples/${selectedSubCollectionId}`, {});
       if (data.error) {
         setError(data.error);
@@ -75,6 +76,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
 
         <div className="samples-list">
           {samples.length > 0 ? (
+            console.log(samples),
             samples.map((sample) => (
               <ButtonSliderWrapper key={sample.id}>
                 <div className="sample-item" onClick={() => handleSampleSelection(sample)}>

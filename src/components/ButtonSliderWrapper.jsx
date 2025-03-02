@@ -1,10 +1,11 @@
 import React from "react";
 
-function ButtonSliderWrapper({ children }) {
+function ButtonSliderWrapper(props) {
   const [scrollValue, setScrollValue] = React.useState(0);
   const [maxScrollHorizontalValue, setMaxScrollHorizontalValue] = React.useState(0);
   const divWrapper = React.useRef(null);
   const [countingInterval, setCountingInterval] = React.useState(null);
+  const [myKey] = React.useState(props.key || 0);
 
 
   const handleScroll = (e) => {
@@ -44,8 +45,8 @@ function ButtonSliderWrapper({ children }) {
   };
 
   return (
-    <div ref={divWrapper} className="button-slider-wrapper" onScroll={handleScroll} onTouchEnd={endScroll}>
-      {children}
+    <div key={myKey} ref={divWrapper} className="button-slider-wrapper" onScroll={handleScroll} onTouchEnd={endScroll}>
+      {props.children}
     </div>
   );
 }

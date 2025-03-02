@@ -52,7 +52,6 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
     } else {
       console.log("User clicked No");
     }
-    
   };
 
   const handleDeleteCollection = (e) => {
