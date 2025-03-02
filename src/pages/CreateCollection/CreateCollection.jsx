@@ -50,15 +50,16 @@ const CreateCollection = () => {
     e.preventDefault();
     setError('');
     
+    setIsLoading(true);
     const data = await uploadPicture();
     if (!data) {
         setError('Failed to upload image');
+        setIsLoading(false);
         return;
     }
     
     const imageUrl = data.fileUrl;
     
-    setIsLoading(true);
     const data2 = await post(apiFetch, '/api/collections', {
       name,
       description: "no-description",

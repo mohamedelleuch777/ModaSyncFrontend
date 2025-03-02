@@ -5,6 +5,7 @@ import { TrashFill } from 'react-bootstrap-icons';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
 import ButtonSliderWrapper from '../../components/ButtonSliderWrapper';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import './ListSamples';
 
 const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => {
@@ -13,6 +14,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [samples, setSamples] = useState([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchSamples();
@@ -33,6 +35,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
       console.error('Error fetching samples:', err);
       setError('Failed to fetch samples.');
     }
+    setIsLoading(false);
   };
 
   const handleDelete = async (sampleId) => {
@@ -74,28 +77,31 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
         }
         {error && <p className="error-text">{error}</p>}
 
-        <div className="samples-list">
-          {samples.length > 0 ? (
-            console.log(samples),
-            samples.map((sample) => (
-              <ButtonSliderWrapper key={sample.id}>
-                <div className="sample-item" onClick={() => handleSampleSelection(sample)}>
-                  <img className="sample-image" src={sample.image} alt={sample.name} />
-                  <div className="sample-info">
-                    <p className="sample-name">{sample.name}</p>
-                    <p className="sample-description">{sample.description}</p>
+        {
+          isLoading ? <LoadingSpinner /> :
+          <div className="samples-list">
+            {samples.length > 0 ? (
+              console.log(samples),
+              samples.map((sample) => (
+                <ButtonSliderWrapper key={sample.id}>
+                  <div className="sample-item" onClick={() => handleSampleSelection(sample)}>
+                    <img className="sample-image" src={sample.image} alt={sample.name} />
+                    <div className="sample-info">
+                      <p className="sample-name">{sample.name}</p>
+                      <p className="sample-description">{sample.description}</p>
+                    </div>
                   </div>
-                </div>
-                {/* Slide to Reveal Delete Button */}
-                <button className="delete-sample-button" onClick={() => handleDelete(sample.id)}>
-                    <TrashFill size={25}/>
-                </button>
-              </ButtonSliderWrapper>
-            ))
-          ) : (
-            <p className="no-samples-text">No samples found for this sub-collection.</p>
-          )}
-        </div>
+                  {/* Slide to Reveal Delete Button */}
+                  <button className="delete-sample-button" onClick={() => handleDelete(sample.id)}>
+                      <TrashFill size={25}/>
+                  </button>
+                </ButtonSliderWrapper>
+              ))
+            ) : (
+              <p className="no-samples-text">No samples found for this sub-collection.</p>
+            )}
+          </div>
+        }
       </div>
     </div>
   );

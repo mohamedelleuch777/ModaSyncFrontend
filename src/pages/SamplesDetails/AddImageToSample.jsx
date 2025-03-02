@@ -51,9 +51,12 @@ const AddImageToSample = () => {
     e.preventDefault();
     setError('');
     
+    setIsLoading(true);
+
     const data = await uploadPicture();
     if (!data) {
       setError('Failed to upload image');
+      setIsLoading(false);
       return;
     }
     
@@ -62,7 +65,6 @@ const AddImageToSample = () => {
     const imagePath = data.filePath;
     
     
-    setIsLoading(true);
     const data2 = await post(apiFetch, `/api/pictures/${selectedSample.id}`, {
       title,
       imagePath,

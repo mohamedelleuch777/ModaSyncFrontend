@@ -50,15 +50,16 @@ const CreateSample = ({ selectedSubCollectionName }) => {
     e.preventDefault();
     setError('');
     
+    setIsLoading(true);
     const data = await uploadPicture();
     if (!data) {
       setError('Failed to upload image');
+      setIsLoading(false);
       return;
     }
     
     const imageUrl = data.fileUrl;
     
-    setIsLoading(true);
     const data2 = await post(apiFetch, '/api/samples', {
       subcollectionId: selectedSubCollectionName,
       name,

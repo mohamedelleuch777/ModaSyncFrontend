@@ -50,16 +50,17 @@ const CreateSubCollection = () => {
     e.preventDefault();
     setError('');
 
+    setIsLoading(true);
     const data = await uploadPicture();
     if (!data) {
       setError('Failed to upload image');
+      setIsLoading(false);
       return;
     }
 
     const imageUrl = data.fileUrl;
     const collectionId = localStorage.selectedCollectionId || -1;
 
-    setIsLoading(true);
     const data2 = await post(apiFetch, '/api/subCollections', {
       collectionId: parseInt(collectionId), // Ensure it's a number
       name,
