@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
-import { BuildingFillAdd, XLg, ZoomIn } from "react-bootstrap-icons";
+import { BuildingFillAdd, XLg, ZoomIn, RouterFill, Discord, DiscFill } from "react-bootstrap-icons";
+import DynamicIcon from "../../components/DynamicIcon";
 import ZoomableImage from "../../components/ZoomableImage";
 import ButtonSliderWrapper from "../../components/ButtonSliderWrapper";
 import { useApi, get, del } from "../../hooks/apiHooks";
+import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
 
 const SampleDetailsPage = () => {
   const { state: { sample } } = useLocation();
@@ -17,6 +20,7 @@ const SampleDetailsPage = () => {
   // const zoomWindowImageRef = React.createRef();
   const [zoomWindowImageRef, setZoomWindowImageRef] = React.useState(null);
   const [imageList, setImageList] = React.useState([]);
+  const [timelineList, setTimelineList] = React.useState([]);
 
   const apiFetch = useApi();
 
@@ -58,10 +62,35 @@ const SampleDetailsPage = () => {
     fetchSamples_Images();
   }
 
+  const openConversation = () => {
+    console.log("dddd")
+  }
+
   React.useEffect(() => {
     // debugger 
     fetchSamples_Images();
     console.log(sample)
+    const tempTimeline = []
+    for (let i = 0; i < sample.timeline.length; i++) {
+      tempTimeline.push({
+        style: {
+          colors: {
+            background: 'rgb(33, 150, 243)',
+            foreground: 'white',
+            iconBackground: 'rgb(33, 150, 243)',
+            iconForeground: 'white',
+          },
+          iconName: "NodePlusFill"
+        },
+        content: {
+          title: "Sample Creation",
+          subtitle: "Stylist",
+          text: "The Stylist has created a new sample",
+          date: sample.timeline[i].timestamp
+        }
+      })
+    }
+    setTimelineList(tempTimeline)
   },[])
 
   return (
@@ -81,6 +110,9 @@ const SampleDetailsPage = () => {
             <ZoomIn  color="#444" size={52} style={{position: 'absolute', top: 10, left: 11}}/>
             <ZoomIn onClick={makeZoom} color="#fff" size={50} style={{position: 'relative', zIndex: 1}}/>
           </div>
+          <span style={{position: "absolute", right: 7, bottom: 0}} onClick={openConversation}>
+            <DynamicIcon iconName="ChatFill" size={30} color="#fff" />
+          </span>
         </div> }
         <div className="zoom-window" style={{display: isShowZoomWindow ? 'flex' : 'none'}}>
           <XLg size={35} color="#df0000" style={{position: 'absolute', top: 10, right: 11, zIndex: 1}} onClick={() => setIsShowZoomWindow(false)}/>
@@ -102,26 +134,52 @@ const SampleDetailsPage = () => {
                 <BuildingFillAdd color="white" size={20} />
               </button>
             </div>
-            <ButtonSliderWrapper>
-                <section style={{minWidth: '100%'}}>
-                  <img src={sample.image} alt="secondary main-image" className="thumbnail-image active" />
-                </section>
-                <button className="btn-delete-image" onClick={() => deleteImage(sample.id)}>Delete</button>
-            </ButtonSliderWrapper>
+
+                <div style={{maxWidth: 80}}>
+                    <ButtonSliderWrapper>
+                        <section style={{minWidth: '100%'}}>
+                          <img src={sample.image} alt="secondary main-image" className="thumbnail-image active" />
+                        </section>
+                        <button className="btn-delete-image" onClick={() => deleteImage(sample.id)}>Delete</button>
+                    </ButtonSliderWrapper>
+                </div>
             {
               imageList && imageList.map((image, index) => (
                 // {console.log(image)}
-                <ButtonSliderWrapper key={index}>
-                    <section style={{minWidth: '100%'}}>
-                      <img src={image.image_url} alt="secondary image" className="thumbnail-image active" />
-                    </section>
-                    <button className="btn-delete-image" onClick={() => deleteImage(image.id)}>Delete</button>
-                </ButtonSliderWrapper>
+                <div style={{maxWidth: 80}}>
+                    <ButtonSliderWrapper key={index}>
+                        <section style={{minWidth: '100%'}}>
+                          <img src={image.image_url} alt="secondary image" className="thumbnail-image active" />
+                        </section>
+                        <button className="btn-delete-image" onClick={() => deleteImage(image.id)}>Delete</button>
+                    </ButtonSliderWrapper>
+                </div>
               ))
             }
         </div>
       </div>
       <section className="sample-details-section">
+      <VerticalTimeline>
+      {
+        timelineList.map((data, index) => 
+          <VerticalTimelineElement
+            key={index}
+            className="vertical-timeline-element--work"
+            contentStyle={{ background: 'var(--primary-color)', color: '#fff' }}
+            contentArrowStyle={{ borderRight: '7px solid  var(--primary-color)' }}
+            // date={data.content.date}
+            iconStyle={{ background: 'var(--primary-color)', color: '#fff' }}
+            icon={<DynamicIcon iconName={data.style.iconName} size={32} color="white" />}
+          >
+            <h3 className="vertical-timeline-element-title">{data.content.title}</h3>
+            {/* <h4 className="vertical-timeline-element-subtitle">{data.content.subtitle}</h4>
+            <p>
+              {data.content.text}
+            </p> */}
+          </VerticalTimelineElement>
+        )
+      }
+      </VerticalTimeline>
       </section>
     </div>
   );

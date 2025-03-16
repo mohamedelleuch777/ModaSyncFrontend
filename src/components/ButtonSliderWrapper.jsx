@@ -1,11 +1,11 @@
 import React from "react";
 
-function ButtonSliderWrapper(props) {
+function ButtonSliderWrapper(props, key) {
   const [scrollValue, setScrollValue] = React.useState(0);
   const [maxScrollHorizontalValue, setMaxScrollHorizontalValue] = React.useState(0);
   const divWrapper = React.useRef(null);
   const [countingInterval, setCountingInterval] = React.useState(null);
-  const [myKey] = React.useState(props.key || 0);
+  const [myKey] = React.useState(key || 0);
 
 
   const handleScroll = (e) => {

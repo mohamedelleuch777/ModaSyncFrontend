@@ -422,6 +422,7 @@ body {
   overflow-x: scroll;
   scrollbar-width: 0;  /* For Firefox */
   -ms-overflow-style: none; /* For IE and Edge */
+  /* max-width: 80px; */
 }
 
 .button-slider-wrapper::-webkit-scrollbar {
@@ -785,7 +786,9 @@ body {
   left: -1rem;
   background-color: var(--tertiary-color);
   border-radius: 1rem 1rem 0 0;
-  overflow: hidden;
+  overflow: scroll;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .sample-details-upper-images-container {
@@ -806,12 +809,13 @@ body {
   border-radius: 15px 0 0 15px;
   box-shadow: 0 0 8px 3px var(--primary-color);
   margin: 8px;
+  flex: 1;
 }
 
 .sample-details-container .main-image-overlay {
   margin: 8px;
   position: absolute;
-  width: calc(75% - 16px - 3px);
+  width: calc(100% - 95px);
   height: calc(100% - 16px);
   border-radius: 15px 0 0 15px;
   background: radial-gradient(#0000, #0007);
@@ -895,4 +899,82 @@ body {
   padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.timeline-container {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.timeline-content {
+  background-color: #f4f6fa;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.year {
+  color: #2f69ff;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.title {
+  color: #333;
+  margin: 5px 0;
+}
+
+.description {
+  color: #666;
+  font-size: 0.9em;
+  margin: 0;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  background-color: #2f69ff;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.line {
+  width: 2px;
+  height: 50px;
+  background-color: #2f69ff;
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vertical-timeline-element-content {
+  padding: 9px !important;
+  border-radius: 50px !important;
+  padding-left: 15px !important;
+  background-color: var(--primary-color) !important;
+}
+
+.vertical-timeline-element-date {
+  display: none !important;
+}
+
+.vertical-timeline-element-icon.shadow-size-small {
+  box-shadow: 0 0px 0 4px #dddddd !important;
+}
+
+.vertical-timeline-element-content-arrow {
+  right: calc(100% - 1px) !important;
 }
