@@ -2,22 +2,26 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
-import { BuildingFillAdd, XLg, ZoomIn, RouterFill, Discord, DiscFill } from "react-bootstrap-icons";
+import { BuildingFillAdd, XLg, ZoomIn } from "react-bootstrap-icons";
 import DynamicIcon from "../../components/DynamicIcon";
 import ZoomableImage from "../../components/ZoomableImage";
 import ButtonSliderWrapper from "../../components/ButtonSliderWrapper";
 import { useApi, get, del } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
+import { jwtDecode } from "jwt-decode";
+import { SAMPLE_STATUS, USER_ROLES } from "../../constants";
 
 const SampleDetailsPage = () => {
   const { state: { sample } } = useLocation();
+  const [token,] = useState(jwtDecode(localStorage.getItem('token'), ""));
+  const [role,] = useState(token.role);
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isImageOverlayShown, setIsImageOverlayShown] = useState(false);
   const [isShowZoomWindow, setIsShowZoomWindow] = useState(false);
   const mainImageRef = React.createRef();
-  // const zoomWindowImageRef = React.createRef();
+  const [afterContent, setAfterContent] = useState("");
   const [zoomWindowImageRef, setZoomWindowImageRef] = React.useState(null);
   const [imageList, setImageList] = React.useState([]);
   const [timelineList, setTimelineList] = React.useState([]);
@@ -63,7 +67,14 @@ const SampleDetailsPage = () => {
   }
 
   const openConversation = () => {
-    console.log("dddd")
+    console.log("dddd", token, role)
+  }
+
+  const getMostRecentTimeline = () => {
+    if (sample.timeline.length > 0) {
+      return sample.timeline[0];
+    }
+    return null;
   }
 
   React.useEffect(() => {
@@ -71,21 +82,49 @@ const SampleDetailsPage = () => {
     fetchSamples_Images();
     console.log(sample)
     const tempTimeline = []
+    /**
+     * task logic
+     */
+    const lastTimeline = getMostRecentTimeline();
+    switch(role) {
+      case USER_ROLES.STYLIST:
+        if (lastTimeline.status === SAMPLE_STATUS.NEW) tempTimeline.push({
+          style: {
+            colors: {
+              background: 'rgb(33, 150, 243)',
+              foreground: 'white',
+              iconBackground: 'rgb(33, 150, 243)',
+              iconForeground: 'white',
+            },
+            iconName: "PatchQuestionFill"
+          },
+          content: {
+            title: "End Current Task",
+            subtitle: `to: ${USER_ROLES.MANAGER}`,
+            text: "",
+            date: 'Confirm Task'
+          }
+        })
+        break;
+    }
+    /**
+     * end of task logic
+     */
     for (let i = 0; i < sample.timeline.length; i++) {
       tempTimeline.push({
         style: {
           colors: {
-            background: 'rgb(33, 150, 243)',
+            background: 'var(--primary-color)',
             foreground: 'white',
-            iconBackground: 'rgb(33, 150, 243)',
+            iconBackground: 'var(--primary-color)',
             iconForeground: 'white',
           },
           iconName: "NodePlusFill"
         },
         content: {
           title: "Sample Creation",
-          subtitle: "Stylist",
-          text: "The Stylist has created a new sample",
+          subtitle: role,
+          text: "",
           date: sample.timeline[i].timestamp
         }
       })
@@ -130,23 +169,24 @@ const SampleDetailsPage = () => {
         </div>
         <div className="thumbnail-container" onClick={selectImage}>
             <div>
-              <button className="btn-add-image" onClick={addImageToSample}>
-                <BuildingFillAdd color="white" size={20} />
-              </button>
+              { (role === USER_ROLES.STYLIST) &&
+                <button className="btn-add-image" onClick={addImageToSample}>
+                  <BuildingFillAdd color="white" size={20} />
+                </button>
+              }
             </div>
-
-                <div style={{maxWidth: 80}}>
-                    <ButtonSliderWrapper>
-                        <section style={{minWidth: '100%'}}>
-                          <img src={sample.image} alt="secondary main-image" className="thumbnail-image active" />
-                        </section>
-                        <button className="btn-delete-image" onClick={() => deleteImage(sample.id)}>Delete</button>
-                    </ButtonSliderWrapper>
-                </div>
+            <div style={{maxWidth: 80}}>
+                <ButtonSliderWrapper>
+                    <section style={{minWidth: '100%'}}>
+                      <img src={sample.image} alt="secondary main-image" className="thumbnail-image active" />
+                    </section>
+                    <button className="btn-delete-image" onClick={() => deleteImage(sample.id)}>Delete</button>
+                </ButtonSliderWrapper>
+            </div>
             {
               imageList && imageList.map((image, index) => (
                 // {console.log(image)}
-                <div style={{maxWidth: 80}}>
+                <div style={{maxWidth: 80}} key={index}>
                     <ButtonSliderWrapper key={index}>
                         <section style={{minWidth: '100%'}}>
                           <img src={image.image_url} alt="secondary image" className="thumbnail-image active" />
@@ -165,17 +205,19 @@ const SampleDetailsPage = () => {
           <VerticalTimelineElement
             key={index}
             className="vertical-timeline-element--work"
-            contentStyle={{ background: 'var(--primary-color)', color: '#fff' }}
-            contentArrowStyle={{ borderRight: '7px solid  var(--primary-color)' }}
+            contentStyle={{ background: data.style.colors.background, color: data.style.colors.foreground, "--after-content": `"${data.content.date}"`}}
+            contentArrowStyle={{ borderRight: `7px solid  ${data.style.colors.background}` }}
             // date={data.content.date}
-            iconStyle={{ background: 'var(--primary-color)', color: '#fff' }}
+            iconStyle={{ background: data.style.colors.iconBackground, color: data.style.colors.iconForeground }}
             icon={<DynamicIcon iconName={data.style.iconName} size={32} color="white" />}
+            onClick={() => console.log(data)}
           >
             <h3 className="vertical-timeline-element-title">{data.content.title}</h3>
-            {/* <h4 className="vertical-timeline-element-subtitle">{data.content.subtitle}</h4>
-            <p>
+            <h6 className="vertical-timeline-element-subtitle">{data.content.subtitle}</h6>
+            {/* <p>
               {data.content.text}
             </p> */}
+            <span className="vertical-timeline-bottom-badge" onClick={() => console.log(data)}>{data.content.date}</span>
           </VerticalTimelineElement>
         )
       }

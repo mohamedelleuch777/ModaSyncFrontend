@@ -23,6 +23,7 @@ h1, h2, h3, h4, h5, h6 {
   --tertiary-color: #fff;
   --success-color: #348c34;
   --danger-color: #d90000;
+  --zoomCoeff: 0.6vw;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -960,21 +961,79 @@ body {
   transform: translateX(-50%);
 }
 
+.vertical-timeline-element--work.vertical-timeline-element {
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    margin-bottom: calc(3.5rem + var(--zoomCoeff));
+}
+
 .vertical-timeline-element-content {
   padding: 9px !important;
-  border-radius: 50px !important;
+  border-radius: 25px 25px 0 25px !important;
   padding-left: 15px !important;
-  background-color: var(--primary-color) !important;
+  /* background-color: var(--primary-color) !important; */
+  font-size: calc(12px + var(--zoomCoeff)) !important;
+  flex: 1;
+  margin-left: 20px !important;
 }
+
+/* .vertical-timeline-element-content::after {
+  content: var(--after-content, "no date ") !important;
+  position: absolute;
+  background-color: var(--tertiary-color);
+  color: var(--primary-color);
+  bottom: calc(var(--after-shift) - var(--zoomCoeff)) !important;
+  right: 0;
+  padding: 5px 15px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: -2px 2px 0 0px #ddd;
+  font-size: calc(10px + var(--zoomCoeff));
+  border-right: 2px solid #dddddd;
+} */
 
 .vertical-timeline-element-date {
   display: none !important;
 }
 
 .vertical-timeline-element-icon.shadow-size-small {
+  position: relative;
   box-shadow: 0 0px 0 4px #dddddd !important;
+  top: calc(5px + var(--zoomCoeff));
 }
 
 .vertical-timeline-element-content-arrow {
   right: calc(100% - 1px) !important;
+  top: calc(19px + var(--zoomCoeff)) !important;
+}
+
+.vertical-timeline-bottom-badge {
+  position: absolute;
+  background-color: var(--tertiary-color);
+  color: var(--primary-color);
+  bottom: calc(var(--after-shift) - var(--zoomCoeff)) !important;
+  right: 0;
+  padding: 5px 15px;
+  border-radius: 0 0 15px 15px;
+  box-shadow: -2px 2px 0 0px #ddd;
+  font-size: calc(10px + var(--zoomCoeff));
+  border-right: 2px solid #dddddd;
+}
+
+@media screen and (max-width: 400px) {
+  :root {
+    --after-shift: -26px;
+  }
+} 
+
+@media screen and (min-width: 401px) and (max-width: 600px) {
+  :root {
+    --after-shift: -27.5px;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  :root {
+    --after-shift: -28px;
+  }
 }
