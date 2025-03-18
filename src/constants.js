@@ -1,5 +1,5 @@
 // src/constants.js
-// export const API_BASE_URL = 'http://192.168.0.100:9613';
+// export const API_BASE_URL = 'http://192.168.1.13:9613';
 export const API_BASE_URL = 'http://api-modasync.xilyor.com';
 export const IMAGE_SOURCE_URL = 'http://static.xilyor.com';
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
@@ -13,7 +13,8 @@ export const USER_ROLES = {
   TESTER: 'Tester'
 };
 export const SAMPLE_STATUS = {
-    // 'new',              
+    // 'new',           
+    // 'edit',   
     // 'in_review',        
     // 'in_development',   
     // 'development_done', 
@@ -27,6 +28,7 @@ export const SAMPLE_STATUS = {
     // 'preparing_traces', 
     // 'ready'    
   NEW: 'new',
+  EDIT: 'edit',
   IN_REVIEW: 'in_review',
   IN_DEVELOPMENT: 'in_development',
   DEVELOPMENT_DONE: 'development_done',

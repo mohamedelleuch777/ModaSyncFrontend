@@ -6,7 +6,7 @@ import { BuildingFillAdd, XLg, ZoomIn } from "react-bootstrap-icons";
 import DynamicIcon from "../../components/DynamicIcon";
 import ZoomableImage from "../../components/ZoomableImage";
 import ButtonSliderWrapper from "../../components/ButtonSliderWrapper";
-import { useApi, get, del } from "../../hooks/apiHooks";
+import { useApi, get, del, put } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
@@ -21,7 +21,6 @@ const SampleDetailsPage = () => {
   const [isImageOverlayShown, setIsImageOverlayShown] = useState(false);
   const [isShowZoomWindow, setIsShowZoomWindow] = useState(false);
   const mainImageRef = React.createRef();
-  const [afterContent, setAfterContent] = useState("");
   const [zoomWindowImageRef, setZoomWindowImageRef] = React.useState(null);
   const [imageList, setImageList] = React.useState([]);
   const [timelineList, setTimelineList] = React.useState([]);
@@ -77,40 +76,106 @@ const SampleDetailsPage = () => {
     return null;
   }
 
+  const getIconNameFromStatus = (timeline) => {
+    switch (timeline.status) {
+      case SAMPLE_STATUS.NEW:
+        return {iconName: "NodePlusFill", title: "New Sample"};
+      case SAMPLE_STATUS.EDIT:
+        return {iconName: "Exposure", title: "Edit Sample"};
+      case SAMPLE_STATUS.IN_REVIEW:
+        return {iconName: "Eyeglasses", title: "In Review"};
+      case SAMPLE_STATUS.IN_DEVELOPMENT:
+        return {iconName: "FileDiffFill", title: "Under Development"};
+      case SAMPLE_STATUS.DEVELOPMENT_DONE:
+        return {iconName: "FileCodeFill", title: "Development Done"};
+      case SAMPLE_STATUS.EXTERNAL_TASK:
+        return {iconName: "BoxArrowUpLeft", title: "External Task"};
+      case SAMPLE_STATUS.IN_PRODUCTION:
+        return {iconName: "FiletypeExe", title: "In Production"};
+      case SAMPLE_STATUS.TESTING:
+        return {iconName: "BracesAsterisk", title: "Testing"};
+      case SAMPLE_STATUS.ACCEPTED:
+        return {iconName: "BookmarkCheckFill", title: "Accepted"};
+      case SAMPLE_STATUS.REJECTED:
+        return {iconName: "BookmarkXFill", title: "Rejected"};
+      case SAMPLE_STATUS.READJUSTMENT:
+        return {iconName: "WrenchAdjustableCircleFill", title: "Readjustment"};
+      case SAMPLE_STATUS.CUT_PHASE:
+        return {iconName: "Scissors", title: "In Cut Phase"};
+      case SAMPLE_STATUS.PREPARING_TRACES:
+        return {iconName: "SignRailroadFill", title: "Preparing Traces"};
+      case SAMPLE_STATUS.READY:
+        return {iconName: "BookmarkStarFill", title: "Ready"};
+      default:
+        return {iconName: "Ban", title: "Unknown Status"};
+    }
+  }
+
   React.useEffect(() => {
     // debugger 
     fetchSamples_Images();
     console.log(sample)
     const tempTimeline = []
     /**
-     * task logic
+     * task logic: blue badge: next task
      */
     const lastTimeline = getMostRecentTimeline();
+    const mold = {
+      style: {
+        colors: {
+          background: 'rgb(33, 150, 243)',
+          foreground: 'white',
+          iconBackground: 'rgb(33, 150, 243)',
+          iconForeground: 'white',
+        },
+        iconName: undefined
+      },
+      content: {
+        title: undefined,
+        subtitle: undefined,
+        text: "",
+        date: undefined
+      }
+    }
     switch(role) {
       case USER_ROLES.STYLIST:
-        if (lastTimeline.status === SAMPLE_STATUS.NEW) tempTimeline.push({
-          style: {
-            colors: {
-              background: 'rgb(33, 150, 243)',
-              foreground: 'white',
-              iconBackground: 'rgb(33, 150, 243)',
-              iconForeground: 'white',
-            },
-            iconName: "PatchQuestionFill"
-          },
-          content: {
-            title: "End Current Task",
-            subtitle: `to: ${USER_ROLES.MANAGER}`,
-            text: "",
-            date: 'Confirm Task'
-          }
-        })
+        if (lastTimeline.status === SAMPLE_STATUS.NEW) {
+          mold.style.iconName = "PatchQuestionFill";
+          mold.content.title    = "End Current Task"
+          mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.EDIT) {
+          mold.style.iconName = "PatchQuestionFill";
+          mold.content.title    = "End Current Task"
+          mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        break;
+      case USER_ROLES.MANAGER:
+        if (lastTimeline.status === SAMPLE_STATUS.IN_REVIEW) {
+          mold.style.iconName = "PatchQuestionFill";
+          mold.content.title    = "End Current Task"
+          mold.content.subtitle = `to: ${USER_ROLES.MODELIST} or to ${USER_ROLES.STYLIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EDIT)}>Reject</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>Approve</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
         break;
     }
     /**
      * end of task logic
      */
     for (let i = 0; i < sample.timeline.length; i++) {
+      const { iconName, title } = getIconNameFromStatus(sample.timeline[i]);
       tempTimeline.push({
         style: {
           colors: {
@@ -119,11 +184,11 @@ const SampleDetailsPage = () => {
             iconBackground: 'var(--primary-color)',
             iconForeground: 'white',
           },
-          iconName: "NodePlusFill"
+          iconName: iconName // "NodePlusFill"
         },
         content: {
-          title: "Sample Creation",
-          subtitle: role,
+          title: title,
+          subtitle: `by: ${sample.timeline[i].user.role}: ${sample.timeline[i].user.name}`,
           text: "",
           date: sample.timeline[i].timestamp
         }
@@ -131,6 +196,13 @@ const SampleDetailsPage = () => {
     }
     setTimelineList(tempTimeline)
   },[])
+
+  const changeStatusTo = async (newStatus) => {
+    const res = await put(apiFetch, `/api/samples/${sample.id}`, {
+      status: newStatus
+    });
+    console.log(res)
+  }
 
   return (
     <div className="sample-details-container">
@@ -217,7 +289,7 @@ const SampleDetailsPage = () => {
             {/* <p>
               {data.content.text}
             </p> */}
-            <span className="vertical-timeline-bottom-badge" onClick={() => console.log(data)}>{data.content.date}</span>
+            <span className="vertical-timeline-bottom-badge">{data.content.date}</span>
           </VerticalTimelineElement>
         )
       }
