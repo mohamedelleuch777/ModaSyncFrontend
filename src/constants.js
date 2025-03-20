@@ -1,6 +1,6 @@
 // src/constants.js
-export const API_BASE_URL = 'http://192.168.1.13:9613';
-// export const API_BASE_URL = 'http://api-modasync.xilyor.com';
+// export const API_BASE_URL = 'http://192.168.1.13:9613';
+export const API_BASE_URL = 'http://api-modasync.xilyor.com';
 export const IMAGE_SOURCE_URL = 'http://static.xilyor.com';
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
 export const DEFAULT_TIMEOUT = 5000;

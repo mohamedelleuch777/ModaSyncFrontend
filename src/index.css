@@ -1038,6 +1038,16 @@ body {
   left: calc(50% - 5px);
 }
 
+.new-badge .vertical-timeline-element-icon.shadow-size-small::before {
+  position: absolute;
+  content: '';
+  width: 4px;
+  height: 250px;
+  background-color: var(--primary-color);
+  top: 100px;
+  left: calc(50% - 2px);
+}
+
 .ready-badge .vertical-timeline-element-content {
   background-color: var(--secondary-color) !important;
 }

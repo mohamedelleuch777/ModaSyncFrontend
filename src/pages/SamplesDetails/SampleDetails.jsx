@@ -159,7 +159,7 @@ const SampleDetailsPage = () => {
         if (lastTimeline.status === SAMPLE_STATUS.IN_REVIEW) {
           mold.content.subtitle = `to: ${USER_ROLES.MODELIST} or to ${USER_ROLES.STYLIST}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EDIT)}>Reject</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EDIT)}>❌ Reject</span>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>✅ Approve</span>
                                   </div>
           tempTimeline.push(mold)
@@ -232,7 +232,7 @@ const SampleDetailsPage = () => {
           date: formatTimestamp(sample.timeline[i].timestamp)
         },
         classes: {
-          badge: status === SAMPLE_STATUS.READY ? "ready-badge" : ""
+          badge: status === SAMPLE_STATUS.READY ? "ready-badge" : (status === SAMPLE_STATUS.NEW ? "new-badge" : "")
         }
       })
     }
