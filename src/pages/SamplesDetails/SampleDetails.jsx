@@ -10,7 +10,9 @@ import { useApi, get, del, put } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
-import { SAMPLE_STATUS, USER_ROLES } from "../../constants";
+import { SAMPLE_STATUS, USER_ROLES, getIconNameFromStatus } from "../../constants";
+import { format } from "date-fns";
+import { enGB, fr } from "date-fns/locale"; // Import French locale
 
 const SampleDetailsPage = () => {
   const { state: { sample } } = useLocation();
@@ -24,6 +26,8 @@ const SampleDetailsPage = () => {
   const [zoomWindowImageRef, setZoomWindowImageRef] = React.useState(null);
   const [imageList, setImageList] = React.useState([]);
   const [timelineList, setTimelineList] = React.useState([]);
+  const [cssPrimaryColor, setCssPrimaryColor] = useState(null);
+  const [cssQuaternaryColor, setCssQuaternaryColor] = useState(null);
 
   const apiFetch = useApi();
 
@@ -42,6 +46,10 @@ const SampleDetailsPage = () => {
     selectedHtmlElement.classList.add('active');
     mainImageRef.current.src = selectedHtmlElement.src;
   };
+
+  function formatTimestamp(timestamp) {
+    return format(new Date(timestamp), "📅 EEE dd-MM-yyyy ⌚ HH:mm", { locale: enGB });
+  }
 
   const makeZoom = () => {
     zoomWindowImageRef.current.src = mainImageRef.current.src
@@ -76,43 +84,16 @@ const SampleDetailsPage = () => {
     return null;
   }
 
-  const getIconNameFromStatus = (timeline) => {
-    switch (timeline.status) {
-      case SAMPLE_STATUS.NEW:
-        return {iconName: "NodePlusFill", title: "New Sample"};
-      case SAMPLE_STATUS.EDIT:
-        return {iconName: "Exposure", title: "Edit Sample"};
-      case SAMPLE_STATUS.IN_REVIEW:
-        return {iconName: "Eyeglasses", title: "In Review"};
-      case SAMPLE_STATUS.IN_DEVELOPMENT:
-        return {iconName: "FileDiffFill", title: "Under Development"};
-      case SAMPLE_STATUS.DEVELOPMENT_DONE:
-        return {iconName: "FileCodeFill", title: "Development Done"};
-      case SAMPLE_STATUS.EXTERNAL_TASK:
-        return {iconName: "BoxArrowUpLeft", title: "External Task"};
-      case SAMPLE_STATUS.IN_PRODUCTION:
-        return {iconName: "FiletypeExe", title: "In Production"};
-      case SAMPLE_STATUS.TESTING:
-        return {iconName: "BracesAsterisk", title: "Testing"};
-      case SAMPLE_STATUS.ACCEPTED:
-        return {iconName: "BookmarkCheckFill", title: "Accepted"};
-      case SAMPLE_STATUS.REJECTED:
-        return {iconName: "BookmarkXFill", title: "Rejected"};
-      case SAMPLE_STATUS.READJUSTMENT:
-        return {iconName: "WrenchAdjustableCircleFill", title: "Readjustment"};
-      case SAMPLE_STATUS.CUT_PHASE:
-        return {iconName: "Scissors", title: "In Cut Phase"};
-      case SAMPLE_STATUS.PREPARING_TRACES:
-        return {iconName: "SignRailroadFill", title: "Preparing Traces"};
-      case SAMPLE_STATUS.READY:
-        return {iconName: "BookmarkStarFill", title: "Ready"};
-      default:
-        return {iconName: "Ban", title: "Unknown Status"};
-    }
+  const readCssVariables = () => {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const primaryColor = rootStyle.getPropertyValue("--primary-color").trim();
+    const quaternaryColor = rootStyle.getPropertyValue("--quaternary-color").trim();
+    setCssPrimaryColor(primaryColor);
+    setCssQuaternaryColor(quaternaryColor);
   }
 
   React.useEffect(() => {
-    // debugger 
+    readCssVariables();
     fetchSamples_Images();
     console.log(sample)
     const tempTimeline = []
@@ -123,49 +104,107 @@ const SampleDetailsPage = () => {
     const mold = {
       style: {
         colors: {
-          background: 'rgb(33, 150, 243)',
+          background: 'var(--quaternary-color)',
           foreground: 'white',
-          iconBackground: 'rgb(33, 150, 243)',
-          iconForeground: 'white',
+          iconBackground: 'var(--quaternary-color)',
+          iconForeground: 'white'
         },
-        iconName: undefined
+        iconName: "PatchQuestionFill"
       },
       content: {
-        title: undefined,
+        title: "End Current Task",
         subtitle: undefined,
         text: "",
         date: undefined
+      },
+      classes: {
+        badge: 'next-task'
       }
     }
     switch(role) {
       case USER_ROLES.STYLIST:
         if (lastTimeline.status === SAMPLE_STATUS.NEW) {
-          mold.style.iconName = "PatchQuestionFill";
-          mold.content.title    = "End Current Task"
           mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>✅ Confirm</span>
                                   </div>
           tempTimeline.push(mold)
         }
         else if (lastTimeline.status === SAMPLE_STATUS.EDIT) {
-          mold.style.iconName = "PatchQuestionFill";
-          mold.content.title    = "End Current Task"
           mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.DEVELOPMENT_DONE ||
+                 lastTimeline.status === SAMPLE_STATUS.EXTERNAL_TASK_DONE
+        ) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.EXECUTIVE_WORKER} `;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EXTERNAL_TASK)}>↖️ External Task</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_PRODUCTION)}>⏭️ Execution</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.EXTERNAL_TASK) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EXTERNAL_TASK_DONE)}>🔚 End External Task</span>
                                   </div>
           tempTimeline.push(mold)
         }
         break;
       case USER_ROLES.MANAGER:
         if (lastTimeline.status === SAMPLE_STATUS.IN_REVIEW) {
-          mold.style.iconName = "PatchQuestionFill";
-          mold.content.title    = "End Current Task"
           mold.content.subtitle = `to: ${USER_ROLES.MODELIST} or to ${USER_ROLES.STYLIST}`;
           mold.content.date     = <div>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.EDIT)}>Reject</span>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>Approve</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>✅ Approve</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        break;
+      case USER_ROLES.MODELIST:
+        if (lastTimeline.status === SAMPLE_STATUS.IN_DEVELOPMENT ||
+            lastTimeline.status === SAMPLE_STATUS.READJUSTMENT) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.DEVELOPMENT_DONE)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.CUT_PHASE) {
+          mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.PREPARING_TRACES)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.PREPARING_TRACES) {
+          mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.READY)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        break;
+      case USER_ROLES.EXECUTIVE_WORKER:
+        if (lastTimeline.status === SAMPLE_STATUS.IN_PRODUCTION) {
+          mold.content.subtitle = `to: ${USER_ROLES.TESTER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.TESTING)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        break;
+      case USER_ROLES.TESTER:
+        if (lastTimeline.status === SAMPLE_STATUS.TESTING) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.MODELIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.CUT_PHASE)}>✅ Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>📏 Reajust</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.REJECTED)}>❌ Reject</span>
                                   </div>
           tempTimeline.push(mold)
         }
@@ -175,7 +214,7 @@ const SampleDetailsPage = () => {
      * end of task logic
      */
     for (let i = 0; i < sample.timeline.length; i++) {
-      const { iconName, title } = getIconNameFromStatus(sample.timeline[i]);
+      const { iconName, title, status } = getIconNameFromStatus(sample.timeline[i]);
       tempTimeline.push({
         style: {
           colors: {
@@ -190,7 +229,10 @@ const SampleDetailsPage = () => {
           title: title,
           subtitle: `by: ${sample.timeline[i].user.role}: ${sample.timeline[i].user.name}`,
           text: "",
-          date: sample.timeline[i].timestamp
+          date: formatTimestamp(sample.timeline[i].timestamp)
+        },
+        classes: {
+          badge: status === SAMPLE_STATUS.READY ? "ready-badge" : ""
         }
       })
     }
@@ -271,32 +313,57 @@ const SampleDetailsPage = () => {
         </div>
       </div>
       <section className="sample-details-section">
-      <VerticalTimeline>
-      {
-        timelineList.map((data, index) => 
-          <VerticalTimelineElement
-            key={index}
-            className="vertical-timeline-element--work"
-            contentStyle={{ background: data.style.colors.background, color: data.style.colors.foreground, "--after-content": `"${data.content.date}"`}}
-            contentArrowStyle={{ borderRight: `7px solid  ${data.style.colors.background}` }}
-            // date={data.content.date}
-            iconStyle={{ background: data.style.colors.iconBackground, color: data.style.colors.iconForeground }}
-            icon={<DynamicIcon iconName={data.style.iconName} size={32} color="white" />}
-            onClick={() => console.log(data)}
-          >
-            <h3 className="vertical-timeline-element-title">{data.content.title}</h3>
-            <h6 className="vertical-timeline-element-subtitle">{data.content.subtitle}</h6>
-            {/* <p>
-              {data.content.text}
-            </p> */}
-            <span className="vertical-timeline-bottom-badge">{data.content.date}</span>
-          </VerticalTimelineElement>
-        )
-      }
-      </VerticalTimeline>
+        <div className="bottom-overlay-shadow"></div>
+        <VerticalTimeline
+          layout="1-column-left"
+          lineColor={cssPrimaryColor} 
+        >
+          {
+            timelineList.map((data, index) => 
+              <VerticalTimelineElement
+                key={index}
+                className={"vertical-timeline-element--work " + data.classes.badge}
+                contentStyle={{ background: data.style.colors.background, color: data.style.colors.foreground, "--after-content": `"${data.content.date}"`}}
+                contentArrowStyle={{ borderRight: `7px solid  ${data.style.colors.background}` }}
+                // date={data.content.date}
+                iconStyle={{ background: data.style.colors.iconBackground, color: data.style.colors.iconForeground }}
+                icon={<DynamicIcon iconName={data.style.iconName} size={32} color="white" />}
+                onClick={() => console.log(data)}
+              >
+                <h3 className="vertical-timeline-element-title">{data.content.title}</h3>
+                <h6 className="vertical-timeline-element-subtitle">{data.content.subtitle}</h6>
+                {/* <p>
+                  {data.content.text}
+                </p> */}
+                <span className="vertical-timeline-bottom-badge">{data.content.date}</span>
+              </VerticalTimelineElement>
+            )
+          }
+          <EmptyElementN_Times count={5} /> 
+        </VerticalTimeline>
       </section>
     </div>
   );
 };
 
 export default SampleDetailsPage;
+
+
+const EmptyElementN_Times = ({ count }) => {
+  return (
+    <>
+      {[...Array(count)].map((_, index) => (
+        <VerticalTimelineElement
+        key={index} // Unique key for React
+        className="vertical-timeline-element--work last-child"
+        contentStyle={{ background: "#fff", color: "#fff" }}
+        iconStyle={{ background: "#fff", color: "#fff" }}
+      >
+        <h3 className="vertical-timeline-element-title">{" "}</h3>
+        <h6 className="vertical-timeline-element-subtitle">{" "}</h6>
+        <span className="vertical-timeline-bottom-badge">{" "}</span>
+      </VerticalTimelineElement>
+      ))}
+    </>
+  );
+};

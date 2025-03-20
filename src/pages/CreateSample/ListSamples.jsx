@@ -7,6 +7,8 @@ import Leftmenu from '../../components/Leftmenu';
 import ButtonSliderWrapper from '../../components/ButtonSliderWrapper';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './ListSamples';
+import DynamicIcon from '../../components/DynamicIcon';
+import { getIconNameFromStatus } from '../../constants';
 
 const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => {
   const navigate = useNavigate();
@@ -89,6 +91,10 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
                     <div className="sample-info">
                       <p className="sample-name">{sample.name}</p>
                       <p className="sample-description">{sample.description}</p>
+                      <div className="sample-status">
+                        Status: <span>{getIconNameFromStatus(sample.timeline[0]).status}</span>
+                        <DynamicIcon iconName={getIconNameFromStatus(sample.timeline[0]).iconName} color="var(--primary-color)" />
+                      </div>
                     </div>
                   </div>
                   {/* Slide to Reveal Delete Button */}
