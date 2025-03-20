@@ -10,7 +10,7 @@ import { useApi, get, del, put } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
-import { SAMPLE_STATUS, USER_ROLES, getIconNameFromStatus } from "../../constants";
+import { SAMPLE_STATUS, USER_ROLES, getIconNameFromStatus, messageBox } from "../../constants";
 import { format } from "date-fns";
 import { enGB, fr } from "date-fns/locale"; // Import French locale
 
@@ -243,12 +243,16 @@ const SampleDetailsPage = () => {
     const res = await put(apiFetch, `/api/samples/${sample.id}`, {
       status: newStatus
     });
-    console.log(res)
+    if (res.error) {
+      messageBox(res.error, 'error');
+    } else {
+      messageBox(res.message);
+      navigate(-1);
+    }
   }
 
   return (
     <div className="sample-details-container">
-
       <Topbar setIsMenuOpen={setIsMenuOpen}/>
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <div className="sample-details-upper-images-container">

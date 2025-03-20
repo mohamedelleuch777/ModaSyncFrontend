@@ -70,7 +70,7 @@ const CreateSample = ({ selectedSubCollectionName }) => {
     if (data2.error) {
       setError(data2.error);
     } else {
-      alert("Sample created successfully!");
+      messageBox("Sample created successfully!");
       navigate(-1);
     }
   };

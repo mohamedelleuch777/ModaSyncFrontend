@@ -1,3 +1,7 @@
+import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // src/constants.js
 // export const API_BASE_URL = 'http://192.168.1.13:9613';
 export const API_BASE_URL = 'http://api-modasync.xilyor.com';
@@ -82,4 +86,65 @@ export const getIconNameFromStatus = (timeline) => {
       default:
         return {iconName: "Ban", title: "Unknown Status", status: null};
     }
+  }
+
+  export const isNextTaskMine = (timeline) => {
+    const token = jwtDecode(localStorage.getItem('token'));
+    const role = token.role;
+    switch(role) {
+      case USER_ROLES.STYLIST:
+        if (timeline.status === SAMPLE_STATUS.NEW) {
+          return true;
+        }
+        else if (timeline.status === SAMPLE_STATUS.EDIT) {
+          return true;
+        }
+        else if (timeline.status === SAMPLE_STATUS.DEVELOPMENT_DONE ||
+                  timeline.status === SAMPLE_STATUS.EXTERNAL_TASK_DONE
+        ) {
+          return true;
+        }
+        else if (timeline.status === SAMPLE_STATUS.EXTERNAL_TASK) {
+          return true;
+        }
+        break;
+      case USER_ROLES.MANAGER:
+        if (timeline.status === SAMPLE_STATUS.IN_REVIEW) {
+          return true;
+        }
+        break;
+      case USER_ROLES.MODELIST:
+        if (timeline.status === SAMPLE_STATUS.IN_DEVELOPMENT ||
+            timeline.status === SAMPLE_STATUS.READJUSTMENT) {
+              return true;
+        }
+        else if (timeline.status === SAMPLE_STATUS.CUT_PHASE) {
+          return true;
+        }
+        else if (timeline.status === SAMPLE_STATUS.PREPARING_TRACES) {
+          return true;
+        }
+        break;
+      case USER_ROLES.EXECUTIVE_WORKER:
+        if (timeline.status === SAMPLE_STATUS.IN_PRODUCTION) {
+          return true;
+        }
+        break;
+      case USER_ROLES.TESTER:
+        if (timeline.status === SAMPLE_STATUS.TESTING) {
+          return true;
+        }
+        break;
+    }
+  }
+
+  export const messageBox = (msg, type = "info") => {
+    const types = {
+      success: toast.success,
+      error: toast.error,
+      warning: toast.warn,
+      info: toast.info,
+    };
+  
+    (types[type] || toast.info)(msg);
   }

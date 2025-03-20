@@ -85,15 +85,6 @@ body {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* Login.css */
 .login-container {
   display: flex;
@@ -690,6 +681,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
   margin-right: 1rem;
+  box-shadow: 0 0 9px 3px var(--primary-color);
 }
 
 .sample-info {
@@ -698,11 +690,24 @@ body {
 }
 
 .sample-name {
+  display: flex;
+  justify-content: space-between;
   font-size: 1rem;
   font-weight: bold;
   color: var(--primary-color);
   margin: 0;
   margin-bottom: 8px;
+}
+
+.sample-name .red-dot {
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  background-color: var(--danger-color);
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6), 0 0 12px rgba(255, 0, 0, 0.4);
+  border: 2px solid rgba(255, 0, 0, 0.8);
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 .sample-description {
@@ -1116,5 +1121,29 @@ body {
 @media screen and (min-width: 601px) {
   :root {
     --after-shift: -28px;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }

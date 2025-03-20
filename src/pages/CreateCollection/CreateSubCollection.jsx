@@ -74,7 +74,7 @@ const CreateSubCollection = () => {
     } else {
       const data3 = await get(apiFetch, '/api/collections/' + collectionId, {});
       console.log(data3)
-      alert("SubCollection created successfully!");
+      messageBox("SubCollection created successfully!");
       navigate('/', { state: { selectedCollection: data3 } });
     }
   };

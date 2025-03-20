@@ -8,7 +8,7 @@ import ButtonSliderWrapper from '../../components/ButtonSliderWrapper';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './ListSamples';
 import DynamicIcon from '../../components/DynamicIcon';
-import { getIconNameFromStatus } from '../../constants';
+import { getIconNameFromStatus, isNextTaskMine } from '../../constants';
 
 const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
         setError(response.error);
       } else {
         setSamples(samples.filter(sample => sample.id !== sampleId));
-        alert('Sample deleted successfully!');
+        messageBox('Sample deleted successfully!');
       }
     } catch (err) {
       console.error('Error deleting sample:', err);
@@ -89,7 +89,10 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
                   <div className="sample-item" onClick={() => handleSampleSelection(sample)}>
                     <img className="sample-image" src={sample.image} alt={sample.name} />
                     <div className="sample-info">
-                      <p className="sample-name">{sample.name}</p>
+                      <p className="sample-name">
+                        <span>{sample.name}</span>
+                        {isNextTaskMine(sample.timeline[0]) && <span className='red-dot'></span>}
+                      </p>
                       <p className="sample-description">{sample.description}</p>
                       <div className="sample-status">
                         Status: <span>{getIconNameFromStatus(sample.timeline[0]).status}</span>

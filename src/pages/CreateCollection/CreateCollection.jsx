@@ -70,7 +70,7 @@ const CreateCollection = () => {
     if (data2.error) {
       setError(data2.error);
     } else {
-        alert("Collection created successfully!");
+        messageBox("Collection created successfully!");
         navigate(-1);
     }
   };
