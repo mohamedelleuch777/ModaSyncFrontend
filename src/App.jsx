@@ -41,7 +41,7 @@ function App() {
 
   // Memoize SSE registration
   const registerEventSource = useCallback(() => {
-    const eventSource = new EventSource("http://api-modasync.xilyor.com/api/events");
+    const eventSource = new EventSource("https://api-modasync.xilyor.com/api/events");
     eventSource.onmessage = function(event) {
       const data = JSON.parse(event.data);
       console.log("Received SSE:", data);
