@@ -10,7 +10,7 @@ import { useApi, get, del, put } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
-import { SAMPLE_STATUS, USER_ROLES, getIconNameFromStatus, messageBox } from "../../constants";
+import { SAMPLE_STATUS, USER_ROLES, formatUrl, getIconNameFromStatus, messageBox } from "../../constants";
 import { format } from "date-fns";
 import { enGB, fr } from "date-fns/locale"; // Import French locale
 
@@ -74,7 +74,7 @@ const SampleDetailsPage = () => {
   }
 
   const openConversation = () => {
-    console.log("dddd", token, role)
+    navigate('/conversation', { state: { sample} });
   }
 
   const getMostRecentTimeline = () => {
@@ -258,7 +258,7 @@ const SampleDetailsPage = () => {
       <div className="sample-details-upper-images-container">
         <img 
           ref={mainImageRef} 
-          src={sample.image}
+          src={formatUrl(sample.image)}
           alt="main image"
           onClick={() => setIsImageOverlayShown(true)}
         />
@@ -296,7 +296,7 @@ const SampleDetailsPage = () => {
             <div style={{maxWidth: 80}}>
                 <ButtonSliderWrapper>
                     <section style={{minWidth: '100%'}}>
-                      <img src={sample.image} alt="secondary main-image" className="thumbnail-image active" />
+                      <img src={formatUrl(sample.image)} alt="secondary main-image" className="thumbnail-image active" />
                     </section>
                     <button className="btn-delete-image" onClick={() => deleteImage(sample.id)}>Delete</button>
                 </ButtonSliderWrapper>
@@ -307,7 +307,7 @@ const SampleDetailsPage = () => {
                 <div style={{maxWidth: 80}} key={index}>
                     <ButtonSliderWrapper key={index}>
                         <section style={{minWidth: '100%'}}>
-                          <img src={image.image_url} alt="secondary image" className="thumbnail-image active" />
+                          <img src={formatUrl(image.image_url)} alt="secondary image" className="thumbnail-image active" />
                         </section>
                         <button className="btn-delete-image" onClick={() => deleteImage(image.id)}>Delete</button>
                     </ButtonSliderWrapper>
@@ -343,7 +343,7 @@ const SampleDetailsPage = () => {
               </VerticalTimelineElement>
             )
           }
-          <EmptyElementN_Times count={5} /> 
+          <EmptyElementN_Times count={1} /> 
         </VerticalTimeline>
       </section>
     </div>

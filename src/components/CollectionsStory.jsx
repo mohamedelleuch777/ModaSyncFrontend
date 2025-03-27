@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { get, useApi } from '../hooks/apiHooks';
+import { formatUrl } from '../constants';
 
 function CollectionsStory({ setLoading, setSelectedCollectionId, setCollectionName, setUpdateCollectionView }) {
   const [stories, setStories] = React.useState([]);
@@ -49,12 +50,14 @@ function CollectionsStory({ setLoading, setSelectedCollectionId, setCollectionNa
         <p className='story-label'>{'Create Collection'}</p>
       </div>
       {
-        stories && stories.map((story) => (
-          <div className="story" key={story.id} onClick={(e) => selectStory(story,e)}>
-            <img className='story-image' src={story.image} alt={story.name} />
-            <p className='story-label'>{story.name}</p>
-          </div>
-        ))
+        stories && stories.map(function(story){
+          return (
+            <div className="story" key={story.id} onClick={(e) => selectStory(story,e)}>
+              <img className='story-image' src={formatUrl(story.image)} alt={story.name} />
+              <p className='story-label'>{story.name}</p>
+            </div>
+          )
+        })
       }
     </div>
   );

@@ -4,8 +4,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 // src/constants.js
 // export const API_BASE_URL = 'http://192.168.1.13:9613';
-export const API_BASE_URL = 'http://api-modasync.xilyor.com';
-export const IMAGE_SOURCE_URL = 'http://static.xilyor.com';
+export const API_BASE_URL = 'https://api-modasync.xilyor.com';
+export const IMAGE_SOURCE_URL = 'https://static.xilyor.com';
+export const FORCE_HTTPS = true;
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
 export const DEFAULT_TIMEOUT = 5000;
 export const USER_ROLES = {
@@ -147,4 +148,13 @@ export const getIconNameFromStatus = (timeline) => {
     };
   
     (types[type] || toast.info)(msg);
+  }
+  
+  export const formatUrl = (paramImageURL) => {
+    let imageUrl = paramImageURL;
+    if (imageUrl && FORCE_HTTPS) {
+      imageUrl =  imageUrl.replace('http:', '');
+      imageUrl = "https:" + imageUrl;
+    }
+    return imageUrl;
   }

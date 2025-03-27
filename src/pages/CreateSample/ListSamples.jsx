@@ -8,7 +8,7 @@ import ButtonSliderWrapper from '../../components/ButtonSliderWrapper';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './ListSamples';
 import DynamicIcon from '../../components/DynamicIcon';
-import { getIconNameFromStatus, isNextTaskMine } from '../../constants';
+import { formatUrl, getIconNameFromStatus, isNextTaskMine } from '../../constants';
 
 const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => {
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
               samples.map((sample) => (
                 <ButtonSliderWrapper key={sample.id}>
                   <div className="sample-item" onClick={() => handleSampleSelection(sample)}>
-                    <img className="sample-image" src={sample.image} alt={sample.name} />
+                    <img className="sample-image" src={formatUrl(sample.image)} alt={sample.name} />
                     <div className="sample-info">
                       <p className="sample-name">
                         <span>{sample.name}</span>

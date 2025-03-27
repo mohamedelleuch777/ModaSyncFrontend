@@ -297,7 +297,7 @@ body {
   display: flex;
   position: fixed;
   top: 0;
-  left: calc(-70vw - 28px);
+  left: calc(-70vw - 50px);
   flex-direction: column;
   padding: 10px;
   width: 70vw;
@@ -1156,6 +1156,110 @@ body {
 }
 
 /*  END OF PROFILE PAGE  */
+
+
+/* CONVERSATION PAGE */
+.conversation-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: var(--secondary-color);
+}
+
+.conversation-card {
+  height: calc(100vh - 89px);
+  background-color: var(--tertiary-color);
+  position: relative;
+  left: -15px;
+  width: calc(100vw - 2px);
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.comments-container {
+  flex: 1;
+  padding: 15px;
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: initial;
+}
+
+.conversation-card-comment-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--secondary-color);
+}
+
+.conversation-card-comment-input textarea {
+  border-radius: 30px;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  padding: .6rem 1rem;
+  line-height: 1.7rem;
+  resize: none;
+  max-height: 10rem;
+  width: calc(100% - 90px);
+}
+
+.conversation-card-comment-input textarea::placeholder {
+  font-size: 1rem;
+}
+
+.conversation-card-comment-input button {
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: none;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.conversation-card-comment-container {
+  position: relative;
+  background-color: var(--secondary-color);
+  padding: 14px 20px;
+  border-radius: 10px;
+  /* border-top-left-radius: 0; */
+  max-width: 70%;
+  margin-bottom: 1.5rem;
+}
+
+.conversation-card-comment-container::after {
+  content: '';
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  background-color: var(--secondary-color);
+}
+
+.conversation-card-comment-container.owner {
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  /* border-top-right-radius: 0; */
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.conversation-card-comment-container.owner::after {
+  left: auto;
+  right: -8px;
+  background-color: var(--primary-color);
+}
+
+/*  END OF CONVERSATION PAGE  */
+
 
 @media screen and (max-width: 400px) {
   :root {

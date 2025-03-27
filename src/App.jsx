@@ -12,6 +12,7 @@ import SampleDetailsPage from './pages/SamplesDetails/SampleDetails';
 import AddImageToSample from './pages/SamplesDetails/AddImageToSample';
 import { ToastContainer } from "react-toastify";
 import Profile from './pages/Profile/Profile';
+import Conversation from './pages/Conversation/Conversation';
 
 
 
@@ -70,6 +71,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/conversation" element={<Conversation />} />
           <Route path="/samples-details" element={<SampleDetailsPage />} />
           <Route path="/create-collection" element={<CreateCollection />} />
           <Route path="/create-sub-collection" element={<CreateSubCollection />} />

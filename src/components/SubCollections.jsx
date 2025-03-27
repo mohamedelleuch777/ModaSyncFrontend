@@ -4,6 +4,7 @@ import { BinocularsFill, TrashFill, BuildingFillAdd, XCircleFill, Collection } f
 import LoadingSpinner from './LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import ButtonSliderWrapper from './ButtonSliderWrapper';
+import { formatUrl } from '../constants';
 
 function SubCollections({ selectedCollectionId, collectionName, updateCollectionView, setSelectedSubCollectionId, setSelectedSubCollectionName }) {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -102,7 +103,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
                 <ButtonSliderWrapper key={subCollection.id}>
                   <div className="sub-collection" onClick={() => handleSubCollectionSelection(subCollection)}>
                     {console.log(subCollection)}
-                    <img className='sub-collection-image' src={subCollection.image} alt={subCollection.name} />
+                    <img className='sub-collection-image' src={formatUrl(subCollection.image)} alt={subCollection.name} />
                     <div>
                       <p className='sub-collection-label'>{subCollection.name}</p>
                       <p className='sub-collection-description'>{subCollection.description}</p>

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { formatUrl } from "../constants";
 
 const ZoomableImage = ({ ref, src, alt }) => {
     const img = useRef(null);
@@ -71,7 +72,7 @@ const ZoomableImage = ({ ref, src, alt }) => {
     }, []);
 
     return (
-        <img ref={img} src={src} id="zoomable-img" alt={alt} style={{ width: "100%", maxWidth: "400px", touchAction: "none" }} />
+        <img ref={img} src={formatUrl(src)} id="zoomable-img" alt={alt} style={{ width: "100%", maxWidth: "400px", touchAction: "none" }} />
     );
 };
 
