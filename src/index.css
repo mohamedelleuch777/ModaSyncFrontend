@@ -391,6 +391,7 @@ body {
   background-color: #fff;
   border-radius: 20px 20px 0 0;
   margin-top: 20px;
+  border: solid 2px var(--tertiary-color);
 }
 
 .sub-collections.sub-collections-containter .sub-collection {
@@ -1187,6 +1188,8 @@ body {
   overflow: hidden;
   overflow-y: scroll;
   max-height: initial;
+  border: solid 2px var(--tertiary-color);
+  border-radius: 20px;
 }
 
 .conversation-card-comment-input {
