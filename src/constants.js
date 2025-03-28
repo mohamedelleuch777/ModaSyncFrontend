@@ -158,3 +158,15 @@ export const getIconNameFromStatus = (timeline) => {
     }
     return imageUrl;
   }
+
+  export function notifyApp({ title, text }){
+    const message = {
+      action: "showNotification",
+      payload: {
+        title,
+        text
+      }
+    };
+  
+    window.parent.postMessage(message, "*");
+};

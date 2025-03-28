@@ -13,44 +13,47 @@ import AddImageToSample from './pages/SamplesDetails/AddImageToSample';
 import { ToastContainer } from "react-toastify";
 import Profile from './pages/Profile/Profile';
 import Conversation from './pages/Conversation/Conversation';
+import useSSE from '../src/hooks/useSSE';
+import { notifyApp } from './constants';
 
 
 
 function App() {
   const [selectedSubCollectionId, setSelectedSubCollectionId] = useState(null);
   const [selectedSubCollectionName, setSelectedSubCollectionName] = useState('');
-
+  
   // Memoize service worker registration
   const registerCachingServiceWorker = useCallback(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistration().then((existingRegistration) => {
         if (!existingRegistration) {
           navigator.serviceWorker.register('/service-worker.js', { type: 'module' })
-            .then(registration => {
+          .then(registration => {
               console.log('✅ Service Worker registered with scope:', registration.scope);
             })
             .catch(error => {
               console.log('❌ Service Worker registration failed:', error);
             });
-        } else {
+          } else {
           console.log('🚀 Service Worker already registered:', existingRegistration.scope);
         }
       });
     }
   }, []);
 
-  // Memoize SSE registration
-  const registerEventSource = useCallback(() => {
-    const eventSource = new EventSource("https://api-modasync.xilyor.com/api/events");
-    eventSource.onmessage = function(event) {
-      const data = JSON.parse(event.data);
-      console.log("Received SSE:", data);
-    };
-  }, []);
+  
+  useSSE((data) => {
+    const token = localStorage.getItem('token');
+    if(data.type === 'comment' && token) {
+      notifyApp({
+        title: '🔥 Urgent Alert',
+        text: data.message,
+      });
+    }
+  });
 
   useEffect(() => {
     registerCachingServiceWorker();
-    registerEventSource();
   }, []);
 
   return (

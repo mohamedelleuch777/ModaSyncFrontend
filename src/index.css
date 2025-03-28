@@ -40,6 +40,15 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 100vh;
 }
 
+.noselect {
+  user-select: none;               /* Prevent text selection */
+  -webkit-user-select: none;
+  -ms-user-select: none;
+
+  -webkit-tap-highlight-color: transparent;  /* Remove blue highlight on tap */
+  outline: none;                  /* Remove default focus outline if any */
+}
+
 #root {
   position: fixed;
   display: flex;
@@ -1034,7 +1043,22 @@ body {
   background-color: var(--secondary-color) !important;
 }
 
+.rejected-badge .vertical-timeline-element-icon.shadow-size-small {
+  box-shadow: 0 0px 0 4px var(--secondary-color) !important;
+  background-color: var(--secondary-color) !important;
+}
+
 .ready-badge .vertical-timeline-element-icon.shadow-size-small::before {
+  position: absolute;
+  content: '';
+  width: 10px;
+  height: 50px;
+  background-color: #fff;
+  top: -54px;
+  left: calc(50% - 5px);
+}
+
+.rejected-badge .vertical-timeline-element-icon.shadow-size-small::before {
   position: absolute;
   content: '';
   width: 10px;
@@ -1059,6 +1083,14 @@ body {
 }
 
 .ready-badge .vertical-timeline-element-content-arrow {
+  border-right-color: var(--secondary-color) !important;
+}
+
+.rejected-badge .vertical-timeline-element-content {
+  background-color: var(--secondary-color) !important;
+}
+
+.rejected-badge .vertical-timeline-element-content-arrow {
   border-right-color: var(--secondary-color) !important;
 }
 
@@ -1216,7 +1248,7 @@ body {
   font-size: 1rem;
 }
 
-.conversation-card-comment-input button {
+.conversation-card-comment-input .btn-send-msg {
   border-radius: 50%;
   background-color: var(--primary-color);
   border: none;
@@ -1224,6 +1256,10 @@ body {
   height: 50px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* pointer-events: none; */
 }
 
 .conversation-card-comment-container {

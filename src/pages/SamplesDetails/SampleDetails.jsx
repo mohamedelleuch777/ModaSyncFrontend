@@ -232,7 +232,7 @@ const SampleDetailsPage = () => {
           date: formatTimestamp(sample.timeline[i].timestamp)
         },
         classes: {
-          badge: status === SAMPLE_STATUS.READY ? "ready-badge" : (status === SAMPLE_STATUS.NEW ? "new-badge" : "")
+          badge: status+"-badge" // === SAMPLE_STATUS.READY ? "ready-badge" : (status === SAMPLE_STATUS.NEW ? "new-badge" : "")
         }
       })
     }
