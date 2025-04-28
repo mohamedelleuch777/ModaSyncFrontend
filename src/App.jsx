@@ -15,6 +15,7 @@ import Profile from './pages/Profile/Profile';
 import Conversation from './pages/Conversation/Conversation';
 import useSSE from '../src/hooks/useSSE';
 import { notifyApp } from './constants';
+import { jwtDecode } from "jwt-decode";
 
 
 
@@ -44,11 +45,16 @@ function App() {
   
   useSSE((data) => {
     const token = localStorage.getItem('token');
-    if(data.type === 'comment' && token) {
+    const user = jwtDecode(token).user;
+    if(data.type === 'comment' && user && user.id !== data.userId) {
       notifyApp({
         title: '🔥 Urgent Alert',
         text: data.message,
+        data
       });
+    }
+    else {
+      console.log(data);
     }
   });
 

@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApi, post } from '../../hooks/apiHooks';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError]       = useState('');  
+  const [email, setEmail]         = useState('');
+  const [password, setPassword]   = useState('');
+  const [error, setError]         = useState('');  
+  const [isLoading, setIsLoading] = useState(false);  
   const apiFetch = useApi();
   
   // ✅ Get all collections
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault(); // 🚀 Prevents the form from reloading the page
     setError('');
     const data = await post(apiFetch, '/api/auth/login', {
@@ -25,6 +28,7 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       navigate('/');
     }
+    setIsLoading(false);
   };  
 
   return (
@@ -53,7 +57,9 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="login-button">Sign in</button>
+          <button type="submit" className="login-button">
+            {isLoading ? <LoadingSpinner size={20} spinnerWidth={4}/> : 'Sign In'}
+          </button>
         </form>
         <p className="login-footer">
           Don't have an account?{' '}

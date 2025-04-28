@@ -113,7 +113,7 @@ const AddImageToSample = () => {
             />
           </div>
           <button type="submit" className="create-sample-button">
-            {isLoading ? <LoadingSpinner /> : 'Create Sample'}
+            {isLoading ? <LoadingSpinner /> : 'Add Image To Sample'}
           </button>
         </form>
       </div>

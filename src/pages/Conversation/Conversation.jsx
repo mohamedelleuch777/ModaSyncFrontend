@@ -6,7 +6,6 @@ import Leftmenu from '../../components/Leftmenu';
 import { useApi, get, del, put, post } from '../../hooks/apiHooks';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DynamicIcon from '../../components/DynamicIcon';
-import useSSE from '../../hooks/useSSE';
 import { SAMPLE_STATUS } from '../../constants';
 
 
@@ -25,6 +24,7 @@ const Conversation = () => {
 
   const apiFetch = useApi();
   const textareaRef = useRef(null);
+  const commentsContainerRef = useRef(null);
 
   const checkConversationStatus = () => {
     const timeLine = sample.timeline[0];
@@ -35,6 +35,11 @@ const Conversation = () => {
     }
   };
 
+  const scrollTextArea = () => {
+    if(!commentsContainerRef.current) return
+    commentsContainerRef.current.scrollTop = commentsContainerRef.current.scrollHeight;
+  }
+
   const fetchConversation = async () => {
     try {
       const data = await get(apiFetch, `/api/comments/${sample.id}`, {});
@@ -42,7 +47,7 @@ const Conversation = () => {
         setError(data.error);
       } else {
         setConversations(data);
-        // textareaRef.current.sc
+        scrollTextArea()
       }
     } catch (err) {
       console.error('Error fetching conversations:', err);
@@ -58,6 +63,7 @@ const Conversation = () => {
       textarea.style.height = textarea.scrollHeight + "px";
     }
     setMessage(textarea.value);
+    scrollTextArea()
   }
 
   const sendMessage = async () => {
@@ -77,6 +83,7 @@ const Conversation = () => {
         const evt = { target: textareaRef.current };
         handleTextOverflow(evt);
         fetchConversation();
+        scrollTextArea()
       }
     } catch (err) {
       console.error('Error sending message:', err);
@@ -90,14 +97,8 @@ const Conversation = () => {
     checkConversationStatus();
     setUser(jwtDecode(token).user)
     fetchConversation();
+    scrollTextArea()
   }, []);
-
-  useSSE((data) => {
-    console.log('SSE Update:', data);
-    if(data.type === 'comment') {
-      fetchConversation();
-    }
-  });
   
 
   if(!user) {
@@ -111,7 +112,7 @@ const Conversation = () => {
         {
           isLoading ? <LoadingSpinner /> : (
             <>
-            <div className='comments-container'>
+            <div ref={commentsContainerRef} className='comments-container'>
               {
                 conversations.map((conversation) => (
                   conversation.comment_owner === user.id ? (
