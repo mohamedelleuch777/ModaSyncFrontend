@@ -37,10 +37,42 @@ const TaskList = () => {
     setSelectedSample(data);
   }
 
+  const renderTimeLines = () => {
+    if (timeLines.length == 0) {
+      return (
+        <div className="sample-item task-item">
+          <div className="sample-info">
+            <p className="sample-name">
+              <span>There are no tasks</span>
+            </p>
+          </div>
+        </div>
+      )
+    }
+    else {
+      timeLines.map((timeLine, key) => (
+        <div key={key} className="sample-item task-item" onClick={() => handleSampleSelection(timeLine.sample_id)}>
+          {/* <img className="sample-image" src={formatUrl(sample.image)} alt={sample.name} /> */}
+          <div className="sample-info">
+            <p className="sample-name">
+              {/* <span>{sample.name}</span> */}
+              <span>Sample ID: {timeLine.sample_id}</span>
+              {isNextTaskMine(timeLine) && <span className='red-dot'></span>}
+            </p>
+            {/* <p className="sample-description">{description}</p> */}
+            <div className="sample-status">
+              Status: <span>{getIconNameFromStatus(timeLine).status}</span>
+              <DynamicIcon iconName={getIconNameFromStatus(timeLine).iconName} color="var(--primary-color)" />
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  }
+
   useEffect(() => {
     if (!selectedSample || selectedSample.error) return;
     setIsLoading(true);
-    debugger
     navigate(`/samples-details`, { state: { sample: selectedSample } });
   }, [selectedSample]);
   
@@ -57,25 +89,7 @@ const TaskList = () => {
         {
           isLoading ? <LoadingSpinner /> : (
             <>
-              {
-                timeLines.map((timeLine, key) => (
-                  <div key={key} className="sample-item task-item" onClick={() => handleSampleSelection(timeLine.sample_id)}>
-                    {/* <img className="sample-image" src={formatUrl(sample.image)} alt={sample.name} /> */}
-                    <div className="sample-info">
-                      <p className="sample-name">
-                        {/* <span>{sample.name}</span> */}
-                        <span>Sample ID: {timeLine.sample_id}</span>
-                        {isNextTaskMine(timeLine) && <span className='red-dot'></span>}
-                      </p>
-                      {/* <p className="sample-description">{description}</p> */}
-                      <div className="sample-status">
-                        Status: <span>{getIconNameFromStatus(timeLine).status}</span>
-                        <DynamicIcon iconName={getIconNameFromStatus(timeLine).iconName} color="var(--primary-color)" />
-                      </div>
-                    </div>
-                  </div>
-                ))
-              }
+              { renderTimeLines() }
             </>
           )
         }
