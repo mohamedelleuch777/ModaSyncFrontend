@@ -15,7 +15,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
   // ✅ Get all collections
   const fetchCollections = async () => {
     setIsLoading(true);
-    const data = await get(apiFetch, '/api/subCollections/' + selectedCollectionId, {});
+    const data = await get(apiFetch, '/subCollections/' + selectedCollectionId, {});
     setSubCollections(data);
     setIsLoading(false);
   };
@@ -23,7 +23,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
   // ✅ Delete collections
   const deleteCollection = async () => {
     setIsLoading(true);
-    const data = await del(apiFetch, '/api/collections/' + selectedCollectionId, {});
+    const data = await del(apiFetch, '/collections/' + selectedCollectionId, {});
     if (!data.error) {
       setSubCollections([]);
       updateCollectionView();
@@ -34,7 +34,7 @@ function SubCollections({ selectedCollectionId, collectionName, updateCollection
   // ✅ Delete sub-collections
   const deleteSubCollection = async (subCollection_ID) => {
     setIsLoading(true);
-    const data = await del(apiFetch, '/api/subCollections/' + subCollection_ID, {});
+    const data = await del(apiFetch, '/subCollections/' + subCollection_ID, {});
     if (!data.error) {
       setSubCollections([]);
       updateCollectionView();

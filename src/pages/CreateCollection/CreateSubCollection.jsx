@@ -38,7 +38,7 @@ const CreateSubCollection = () => {
     };
 
     try {
-      const response = await fetch(API_BASE_URL + "/api/pictures/upload", requestOptions);
+      const response = await fetch(API_BASE_URL + "/pictures/upload", requestOptions);
       return await response.json();
     } catch (error) {
       console.error('error', error);
@@ -61,7 +61,7 @@ const CreateSubCollection = () => {
     const imageUrl = data.fileUrl;
     const collectionId = localStorage.selectedCollectionId || -1;
 
-    const data2 = await post(apiFetch, '/api/subCollections', {
+    const data2 = await post(apiFetch, '/subCollections', {
       collectionId: parseInt(collectionId), // Ensure it's a number
       name,
       description,
@@ -72,7 +72,7 @@ const CreateSubCollection = () => {
     if (data2.error) {
       setError(data2.error);
     } else {
-      const data3 = await get(apiFetch, '/api/collections/' + collectionId, {});
+      const data3 = await get(apiFetch, '/collections/' + collectionId, {});
       console.log(data3)
       messageBox("SubCollection created successfully!");
       navigate('/', { state: { selectedCollection: data3 } });

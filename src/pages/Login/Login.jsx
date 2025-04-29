@@ -16,7 +16,7 @@ const Login = () => {
     setIsLoading(true);
     e.preventDefault(); // 🚀 Prevents the form from reloading the page
     setError('');
-    const data = await post(apiFetch, '/api/auth/login', {
+    const data = await post(apiFetch, '/auth/login', {
       emailOrPhone: email,
       password
     });

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HouseFill, PersonFill, BellFill, ListTask, BoxArrowLeft } from 'react-bootstrap-icons';
 import logo from '../assets/img/logo.svg';
+import { APP_VERSION, APP_TITLE } from '../constants';
 
 function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
   const menuItems = [
     { id: 1, name: 'Home', icon: <HouseFill color="white" size={20}/>, action: () => navigate('/') },
     { id: 2, name: 'Profile', icon: <PersonFill color="white" size={20} />, action: () => navigate('/profile')  },
-    { id: 3, name: 'Notifications', icon: <BellFill color="white" size={20} />, action: () => console.log('Notifications')  },
+    // { id: 3, name: 'Notifications', icon: <BellFill color="white" size={20} />, action: () => console.log('Notifications')  },
     { id: 4, name: 'My Task', icon: <ListTask color="white" size={20} />, action: () => console.log('My Task')  },
     { id: 5, name: 'Logout', icon: <BoxArrowLeft color="white" size={20} />, action: () => { delete localStorage.token; navigate('/login') }  }
   ];
@@ -19,7 +20,7 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
       <div className={`leftmenu-overlay ${isMenuOpen ? 'show' : ''}`} onClick={() => setIsMenuOpen(false)}></div>
       <div className={`leftmenu leftmenu-containter ${isMenuOpen ? 'show' : ''}`}>
         <div className="title-container">
-          <i className="app-name">ModaSync v1.0.0</i>
+          <i className="app-name">{APP_TITLE} v{APP_VERSION}</i>
           <img className="logo" src={logo} alt="logo" />
         </div>
         {

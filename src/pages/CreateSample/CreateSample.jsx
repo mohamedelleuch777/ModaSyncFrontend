@@ -38,7 +38,7 @@ const CreateSample = ({ selectedSubCollectionName }) => {
     };
 
     try {
-      const response = await fetch(API_BASE_URL + "/api/pictures/upload", requestOptions);
+      const response = await fetch(API_BASE_URL + "/pictures/upload", requestOptions);
       return await response.json();
     } catch (error) {
       console.error('error', error);
@@ -60,7 +60,7 @@ const CreateSample = ({ selectedSubCollectionName }) => {
     
     const imageUrl = data.fileUrl;
     
-    const data2 = await post(apiFetch, '/api/samples', {
+    const data2 = await post(apiFetch, '/samples', {
       subcollectionId: selectedSubCollectionName,
       name,
       imageUrl

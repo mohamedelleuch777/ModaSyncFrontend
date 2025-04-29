@@ -57,7 +57,7 @@ const SampleDetailsPage = () => {
   }
 
   const fetchSamples_Images = async () => {
-    const images = await get(apiFetch, `/api/pictures/${sample.id}`, {});
+    const images = await get(apiFetch, `/pictures/${sample.id}`, {});
     setImageList(images);
   }
 
@@ -69,7 +69,7 @@ const SampleDetailsPage = () => {
   const deleteImage = async (imageId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this Image?");
     if (!confirmDelete) return;
-    await del(apiFetch, `/api/pictures/${imageId}`, {});
+    await del(apiFetch, `/pictures/${imageId}`, {});
     fetchSamples_Images();
   }
 
@@ -240,7 +240,7 @@ const SampleDetailsPage = () => {
   },[])
 
   const changeStatusTo = async (newStatus) => {
-    const res = await put(apiFetch, `/api/samples/${sample.id}`, {
+    const res = await put(apiFetch, `/samples/${sample.id}`, {
       status: newStatus
     });
     if (res.error) {

@@ -39,7 +39,7 @@ const AddImageToSample = () => {
     };
 
     try {
-      const response = await fetch(API_BASE_URL + "/api/pictures/upload", requestOptions);
+      const response = await fetch(API_BASE_URL + "/pictures/upload", requestOptions);
       return await response.json();
     } catch (error) {
       console.error('error', error);
@@ -65,7 +65,7 @@ const AddImageToSample = () => {
     const imagePath = data.filePath;
     
     
-    const data2 = await post(apiFetch, `/api/pictures/${selectedSample.id}`, {
+    const data2 = await post(apiFetch, `/pictures/${selectedSample.id}`, {
       title,
       imagePath,
       imageUrl

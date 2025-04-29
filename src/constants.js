@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // src/constants.js
-// export const API_BASE_URL = 'http://192.168.1.13:9613';
-export const API_BASE_URL = 'https://api-modasync.xilyor.com';
+// export const API_BASE_URL = 'http://192.168.1.14:9613/api/v1';
+export const API_BASE_URL = 'https://api-modasync.xilyor.com/api/v1';
 export const IMAGE_SOURCE_URL = 'https://static.xilyor.com';
 export const FORCE_HTTPS = true;
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
@@ -50,7 +50,7 @@ export const SAMPLE_STATUS = {
   READY: 'ready'
 }
 export const APP_TITLE = "ModaSync";
-export const APP_VERSION = "1.0.0";
+export const APP_VERSION = "1.5.56";
 
 export const getIconNameFromStatus = (timeline) => {
     switch (timeline.status) {

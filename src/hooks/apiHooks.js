@@ -1,4 +1,3 @@
-// src/api/api.js
 import { useNavigate } from 'react-router-dom';
 
 import { API_BASE_URL } from '../constants';
@@ -65,6 +64,3 @@ export async function del(apiFetch, url) { // Use 'del' instead of 'delete'
   return apiFetch(url, 'DELETE');
 }
 
-// Example Usage (inside a component):
-// const apiFetch = useApi();
-// const data = await post(apiFetch, '/api/users', { name: 'John Doe' });

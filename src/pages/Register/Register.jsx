@@ -26,7 +26,7 @@ const Register = () => {
     try {
       // Replace with your actual register API call.
       console.log('Registering user:', { name, email, password });
-      // Example: await axios.post('/api/register', { name, email, password });
+      // Example: await axios.post('/register', { name, email, password });
       
       // On successful registration, navigate to the login page.
       navigate('/login');

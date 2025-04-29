@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { API_BASE_URL } from '../constants';
 
 const useSSE = (onMessage, options = {}) => {
   useEffect(() => {
-    const url = 'https://api-modasync.xilyor.com/api/events'; // 🔒 Hardcoded SSE URL
+    const url = API_BASE_URL + '/events'; // 🔒 Hardcoded SSE URL
     const eventSource = new EventSource(url, options);
 
     eventSource.onmessage = (event) => {

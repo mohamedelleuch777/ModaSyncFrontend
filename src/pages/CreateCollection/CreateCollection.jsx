@@ -37,7 +37,7 @@ const CreateCollection = () => {
     };
 
     try {
-        const response = await fetch(API_BASE_URL + "/api/pictures/upload", requestOptions);
+        const response = await fetch(API_BASE_URL + "/pictures/upload", requestOptions);
         return await response.json();
     } catch (error) {
         console.error('error', error)
@@ -59,7 +59,7 @@ const CreateCollection = () => {
     
     const imageUrl = data.fileUrl;
     
-    const data2 = await post(apiFetch, '/api/collections', {
+    const data2 = await post(apiFetch, '/collections', {
       name,
       description: "no-description",
       imageUrl

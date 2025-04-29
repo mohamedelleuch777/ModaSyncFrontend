@@ -27,8 +27,8 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
     if (!selectedSubCollectionId) return;
 
     try {
-      // const data = await get(apiFetch, `/api/samples/${selectedSubCollectionId}`, {});
-      const data = await get(apiFetch, `/api/samples/${selectedSubCollectionId}`, {});
+      // const data = await get(apiFetch, `/samples/${selectedSubCollectionId}`, {});
+      const data = await get(apiFetch, `/samples/${selectedSubCollectionId}`, {});
       if (data.error) {
         setError(data.error);
       } else {
@@ -46,7 +46,7 @@ const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => 
     if (!confirmDelete) return;
 
     try {
-      const response = await del(apiFetch, `/api/samples/${sampleId}`);
+      const response = await del(apiFetch, `/samples/${sampleId}`);
       if (response.error) {
         setError(response.error);
       } else {

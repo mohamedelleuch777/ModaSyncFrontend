@@ -42,7 +42,7 @@ const Conversation = () => {
 
   const fetchConversation = async () => {
     try {
-      const data = await get(apiFetch, `/api/comments/${sample.id}`, {});
+      const data = await get(apiFetch, `/comments/${sample.id}`, {});
       if (data.error) {
         setError(data.error);
       } else {
@@ -71,7 +71,7 @@ const Conversation = () => {
     try {
       console.log("send message");
       textareaRef.current.disabled = true
-      const data = await post(apiFetch, `/api/comments`, {
+      const data = await post(apiFetch, `/comments`, {
         sample_id: sample.id,
         comment_text: message
       });

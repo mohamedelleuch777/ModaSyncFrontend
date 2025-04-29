@@ -11,7 +11,7 @@ function CollectionsStory({ setLoading, setSelectedCollectionId, setCollectionNa
   // ✅ Get all collections
   const fetchCollections = async (e) => {
     console.log('fetching collections');
-    const data = await get(apiFetch, '/api/collections', {});
+    const data = await get(apiFetch, '/collections', {});
     setStories(data);
     console.log('done');
     setLoading(false);
