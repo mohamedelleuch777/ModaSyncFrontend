@@ -11,9 +11,9 @@ function Topbar({ setIsMenuOpen }) {
         <List color="white" size={20} /> {/* Render a blue arrow-right icon */}
       </div>
       <div className="buttons-container">
-        <div className="button menu">
-            <ListTask color="white" size={20} /> {/* Render a blue arrow-right icon */}
-        </div>
+        {/* <div className="button menu">
+            <ListTask color="white" size={20} />
+        </div> */}
         <div className="button menu">
             <PersonFill color="white" size={20} onClick={() => navigate('/profile')}/> {/* Render a blue arrow-right icon */}
         </div>
