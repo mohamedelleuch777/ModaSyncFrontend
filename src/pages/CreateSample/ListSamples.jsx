@@ -8,8 +8,12 @@ import ButtonSliderWrapper from '../../components/ButtonSliderWrapper';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import './ListSamples';
 import DynamicIcon from '../../components/DynamicIcon';
-import { formatUrl, getIconNameFromStatus, isNextTaskMine } from '../../constants';
-import { messageBox } from '../../constants';
+import { 
+  formatUrl, 
+  getIconNameFromStatus, 
+  isNextTaskMine,
+  messageBox
+} from '../../constants';
 
 const ListSamples = ({ selectedSubCollectionId, selectedSubCollectionName }) => {
   const navigate = useNavigate();

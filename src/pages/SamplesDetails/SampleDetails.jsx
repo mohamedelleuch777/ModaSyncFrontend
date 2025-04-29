@@ -16,6 +16,9 @@ import { enGB, fr } from "date-fns/locale"; // Import French locale
 
 const SampleDetailsPage = () => {
   const { state: { sample } } = useLocation();
+  if(!sample) {
+    return <>loading...</>;
+  }
   const [token,] = useState(jwtDecode(localStorage.getItem('token'), ""));
   const [role,] = useState(token.role);
   const navigate = useNavigate();
@@ -249,6 +252,10 @@ const SampleDetailsPage = () => {
       messageBox(res.message);
       navigate(-1);
     }
+  }
+
+  if(!sample) {
+    return <div>Loading...</div>
   }
 
   return (
