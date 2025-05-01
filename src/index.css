@@ -1353,9 +1353,14 @@ body {
   font-size: 18px;
 }
 
-
 .reset-password-container .reset-password-card input::placeholder {
   color: var(--tertiary-color);
+}
+
+.reset-password-container .reset-password-card .error-message {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--danger-color);
 }
 
 /* END OF RESET PASSWORD */
