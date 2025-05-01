@@ -171,13 +171,13 @@ export const getIconNameFromStatus = (timeline) => {
     // const overlay = document.createElement('div');
     // overlay.className = 'prompt-toast-overlay';
     // document.body.appendChild(overlay);
+    const overlay = document.createElement('div');
 
     const waitForToastThenAddOverlay = () => {
       const observer = new MutationObserver((mutations, obs) => {
         const toastElement = document.querySelector('#toast');
         if (toastElement) {
           // ✅ Create overlay
-          const overlay = document.createElement('div');
           overlay.className = 'prompt-toast-overlay';
           // ✅ Insert overlay before the toast element
           toastElement.parentNode.insertBefore(overlay, toastElement);

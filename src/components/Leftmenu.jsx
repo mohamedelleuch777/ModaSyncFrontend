@@ -12,7 +12,7 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
     { id: 2, name: 'Profile', icon: <PersonFill color="white" size={20} />, action: () => navigate('/profile')  },
     // { id: 3, name: 'Notifications', icon: <BellFill color="white" size={20} />, action: () => console.log('Notifications')  },
     { id: 3, name: 'My Task', icon: <ListTask color="white" size={20} />, action: () => navigate('/tasks')   },
-    { id: 4, name: 'test', icon: <ListTask color="white" size={20} />, action: () => inputBox("Enter text",(text) => console.log(text)) },
+    { id: 4, name: 'test', icon: <ListTask color="white" size={20} />, action: () => inputBox("Enter Rext",(text) => console.log(text)) },
     { id: 5, name: 'Logout', icon: <BoxArrowLeft color="white" size={20} />, action: () => { delete localStorage.token; navigate('/login') }  }
   ];
 
