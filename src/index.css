@@ -1365,6 +1365,51 @@ body {
 
 /* END OF RESET PASSWORD */
 
+/* RESET PROMPT TOAST */
+
+.prompt-toast-overlay {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 30, 30, 0.4);
+  backdrop-filter: blur(6px);
+  z-index: 9999; /* below toast content */
+}
+
+.prompt-toast-content {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 300px;
+}
+
+.prompt-toast-content input {
+  margin-bottom: 10px;
+  color: #000;
+  /* border: none; */
+  padding: 6px 12px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.prompt-toast-content ~ button {
+  display: none;
+}
+
+div:has(> .prompt-toast-content) {
+  background-color: transparent !important;
+}
+
+/* END OF PROMPT TOAST */
+
 @media screen and (max-width: 400px) {
   :root {
     --after-shift: -26px;

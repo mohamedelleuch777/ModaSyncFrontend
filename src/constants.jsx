@@ -1,6 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PromptToast from "./components/PromptToast";
 
 let API_BASE_URL = '';
 
@@ -154,6 +155,7 @@ export const getIconNameFromStatus = (timeline) => {
   }
 
   export const messageBox = (msg, type = "info") => {
+    
     const types = {
       success: toast.success,
       error: toast.error,
@@ -163,6 +165,53 @@ export const getIconNameFromStatus = (timeline) => {
   
     (types[type] || toast.info)(msg);
   }
+
+  export const inputBox = (label, onSubmit) => {
+    // Create overlay manually in DOM
+    // const overlay = document.createElement('div');
+    // overlay.className = 'prompt-toast-overlay';
+    // document.body.appendChild(overlay);
+
+    const waitForToastThenAddOverlay = () => {
+      const observer = new MutationObserver((mutations, obs) => {
+        const toastElement = document.querySelector('#toast');
+        if (toastElement) {
+          // ✅ Create overlay
+          const overlay = document.createElement('div');
+          overlay.className = 'prompt-toast-overlay';
+          // ✅ Insert overlay before the toast element
+          toastElement.parentNode.insertBefore(overlay, toastElement);
+          // ✅ Stop observing
+          obs.disconnect();
+        }
+      });
+    
+      // Start observing the document for DOM changes
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    };
+
+    waitForToastThenAddOverlay();
+
+    toast((t) => (
+      <PromptToast 
+        label={label}
+        closeToast={
+          () => { toast.dismiss(t.id); document.body.removeChild(overlay); }
+        }
+        onSubmit={(value) => {
+          onSubmit(value);
+          document.body.removeChild(overlay); // remove overlay manually
+        }}
+      />
+    ), {
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+    });
+  };
   
   export const formatUrl = (paramImageURL) => {
     let imageUrl = paramImageURL;

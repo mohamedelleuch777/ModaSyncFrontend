@@ -10,7 +10,6 @@ import CreateSample from './pages/CreateSample/CreateSample';
 import ListSamples from './pages/CreateSample/ListSamples';
 import SampleDetailsPage from './pages/SamplesDetails/SampleDetails';
 import AddImageToSample from './pages/SamplesDetails/AddImageToSample';
-import { ToastContainer } from "react-toastify";
 import Profile from './pages/Profile/Profile';
 import Conversation from './pages/Conversation/Conversation';
 import TaskList from './pages/TaskList/TaskList';
@@ -66,17 +65,7 @@ function App() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
