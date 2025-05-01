@@ -50,7 +50,7 @@ const TaskList = () => {
       )
     }
     else {
-      timeLines.map((timeLine, key) => (
+      return timeLines.map((timeLine, key) => (
         <div key={key} className="sample-item task-item" onClick={() => handleSampleSelection(timeLine.sample_id)}>
           {/* <img className="sample-image" src={formatUrl(sample.image)} alt={sample.name} /> */}
           <div className="sample-info">

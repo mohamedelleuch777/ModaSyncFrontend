@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // src/constants.js
-export const API_BASE_URL = 'http://192.168.1.14:9613/api/v1';
+export const API_BASE_URL = 'http://localhost:9613/api/v1';
 // export const API_BASE_URL = 'https://api-modasync.xilyor.com/api/v1';
 export const IMAGE_SOURCE_URL = 'https://static.xilyor.com';
 export const FORCE_HTTPS = true;
