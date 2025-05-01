@@ -1142,7 +1142,7 @@ body {
 }
 
 /*  PROFILE PAGE  */
-.profile-container {
+.profile-container, .reset-password-container {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
@@ -1153,7 +1153,7 @@ body {
   overflow: hidden;
 }
 
-.profile-container .profile-card {
+.profile-container .profile-card, .reset-password-container .reset-password-card {
   flex: 1;
 }
 
@@ -1172,7 +1172,7 @@ body {
   gap: 20px;
 }
 
-.logout-button {
+.logout-button, .reset-password-button {
   width: 100%;
   background-color: var(--danger-color);
   border-radius: 80px;
@@ -1188,6 +1188,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  margin-bottom: 15px;
+}
+
+.reset-password-button {
+  background-color: var(--success-color);
 }
 
 /*  END OF PROFILE PAGE  */
@@ -1337,6 +1342,23 @@ body {
 }
 
 /*  TASK PAGE  */
+
+/* RESET PASSWORD */
+
+.reset-password-container .reset-password-card input {
+  background: transparent;
+  border: none;
+  color: var(--tertiary-color);
+  outline: none;
+  font-size: 18px;
+}
+
+
+.reset-password-container .reset-password-card input::placeholder {
+  color: var(--tertiary-color);
+}
+
+/* END OF RESET PASSWORD */
 
 @media screen and (max-width: 400px) {
   :root {

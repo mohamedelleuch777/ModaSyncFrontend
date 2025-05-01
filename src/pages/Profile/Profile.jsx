@@ -3,7 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
-import { PersonFill, PersonCircle, EnvelopeFill, TelephoneFill, BriefcaseFill, BoxArrowLeft } from 'react-bootstrap-icons';
+import { 
+  PersonFill, 
+  PersonCircle, 
+  EnvelopeFill, 
+  TelephoneFill, 
+  BriefcaseFill, 
+  BoxArrowLeft, 
+  KeyFill 
+} from 'react-bootstrap-icons';
 
 
 
@@ -34,6 +42,10 @@ const Profile = () => {
             </div>
           )
         }
+        <button className='reset-password-button' onClick={() => navigate('/reset-password')}>
+          <KeyFill color="white" size={20} className="me-2" />
+           Reset Password
+        </button>
         <button className='logout-button' onClick={() => navigate('/login')}>
           <BoxArrowLeft color="white" size={20} className="me-2" />
            Logout

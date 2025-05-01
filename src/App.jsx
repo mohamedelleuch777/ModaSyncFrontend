@@ -17,6 +17,7 @@ import TaskList from './pages/TaskList/TaskList';
 import useSSE from '../src/hooks/useSSE';
 import { notifyApp } from './constants';
 import { jwtDecode } from "jwt-decode";
+import ResetPassword from './pages/ResetPassword/ResetPassword';
 
 
 
@@ -83,6 +84,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/conversation" element={<Conversation />} />
           <Route path="/tasks" element={<TaskList />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/samples-details" element={<SampleDetailsPage />} />
           <Route path="/create-collection" element={<CreateCollection />} />
           <Route path="/create-sub-collection" element={<CreateSubCollection />} />
