@@ -180,14 +180,14 @@ const SampleDetailsPage = () => {
         else if (lastTimeline.status === SAMPLE_STATUS.CUT_PHASE) {
           mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.PREPARING_TRACES)}>✅ Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.READY)}>✅ Confirm</span>
                                   </div>
           tempTimeline.push(mold)
         }
         else if (lastTimeline.status === SAMPLE_STATUS.PREPARING_TRACES) {
           mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.READY)}>✅ Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.CUT_PHASE)}>✅ Confirm</span>
                                   </div>
           tempTimeline.push(mold)
         }
@@ -205,7 +205,7 @@ const SampleDetailsPage = () => {
         if (lastTimeline.status === SAMPLE_STATUS.TESTING) {
           mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.MODELIST}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.CUT_PHASE)}>✅ Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.PREPARING_TRACES)}>✅ Confirm</span>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>📏 Reajust</span>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.REJECTED)}>❌ Reject</span>
                                   </div>
