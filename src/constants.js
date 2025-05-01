@@ -2,8 +2,22 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// src/constants.js
-export const API_BASE_URL = 'http://localhost:9613/api/v1';
+let API_BASE_URL = '';
+
+switch (window.location.host) {
+  case "localhost":
+  case "127.0.0.1":
+  case "localhost:5173":
+  case "127.0.0.1:5173":
+    API_BASE_URL = 'http://localhost:9613/api/v1';
+    break;
+
+  default:
+    API_BASE_URL = 'https://api-modasync.xilyor.com/api/v1';
+    break;
+}
+
+export { API_BASE_URL };
 // export const API_BASE_URL = 'https://api-modasync.xilyor.com/api/v1';
 export const IMAGE_SOURCE_URL = 'https://static.xilyor.com';
 export const FORCE_HTTPS = true;
