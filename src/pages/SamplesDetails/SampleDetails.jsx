@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
-import { BuildingFillAdd, XLg, ZoomIn } from "react-bootstrap-icons";
+import { BuildingFillAdd, InfoCircleFill, XLg, ZoomIn } from "react-bootstrap-icons";
 import DynamicIcon from "../../components/DynamicIcon";
 import ZoomableImage from "../../components/ZoomableImage";
 import ButtonSliderWrapper from "../../components/ButtonSliderWrapper";
@@ -10,7 +10,7 @@ import { useApi, get, del, put } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
-import { SAMPLE_STATUS, USER_ROLES, formatUrl, getIconNameFromStatus, messageBox } from "../../constants";
+import { SAMPLE_STATUS, USER_ROLES, formatUrl, getIconNameFromStatus, inputBox, messageBox } from "../../constants";
 import { format } from "date-fns";
 import { enGB, fr } from "date-fns/locale"; // Import French locale
 
@@ -232,7 +232,8 @@ const SampleDetailsPage = () => {
           title: title,
           subtitle: `by: ${sample.timeline[i].user.role}: ${sample.timeline[i].user.name}`,
           text: "",
-          date: formatTimestamp(sample.timeline[i].timestamp)
+          date: formatTimestamp(sample.timeline[i].timestamp),
+          comment: sample.timeline[i].comment
         },
         classes: {
           badge: status+"-badge" // === SAMPLE_STATUS.READY ? "ready-badge" : (status === SAMPLE_STATUS.NEW ? "new-badge" : "")
@@ -243,16 +244,19 @@ const SampleDetailsPage = () => {
   },[])
 
   const changeStatusTo = async (newStatus) => {
-    // 
-    const res = await put(apiFetch, `/samples/${sample.id}`, {
-      status: newStatus
-    });
-    if (res.error) {
-      messageBox(res.error, 'error');
-    } else {
-      messageBox(res.message);
-      navigate(-1);
-    }
+    inputBox('Add Comment?', async (comment) => {
+      const res = await put(apiFetch, `/samples/${sample.id}`, {
+        status: newStatus,
+        comment
+      });
+      if (res.error) {
+        messageBox(res.error, 'error');
+      } else {
+        messageBox(res.message);
+        navigate(-1);
+      }
+    })
+    
   }
 
   if(!sample) {
@@ -342,7 +346,16 @@ const SampleDetailsPage = () => {
                 icon={<DynamicIcon iconName={data.style.iconName} size={32} color="white" />}
                 onClick={() => console.log(data)}
               >
-                <h3 className="vertical-timeline-element-title">{data.content.title}</h3>
+                <h3 className="vertical-timeline-element-title">
+                  {data.content.title}
+                  {data.content.comment && data.content.comment !== '' && 
+                    <InfoCircleFill 
+                      size={20} 
+                      style={{position: 'relative', top: -2, left: 5}}
+                      onClick={() => messageBox(data.content.comment)}
+                    />
+                  }
+                </h3>
                 <h6 className="vertical-timeline-element-subtitle">{data.content.subtitle}</h6>
                 {/* <p>
                   {data.content.text}

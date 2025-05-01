@@ -172,10 +172,10 @@ export const getIconNameFromStatus = (timeline) => {
     // overlay.className = 'prompt-toast-overlay';
     // document.body.appendChild(overlay);
     const overlay = document.createElement('div');
-
+    const toastElement = document.querySelector('#toast');
     const waitForToastThenAddOverlay = () => {
       const observer = new MutationObserver((mutations, obs) => {
-        const toastElement = document.querySelector('#toast');
+        
         if (toastElement) {
           // ✅ Create overlay
           overlay.className = 'prompt-toast-overlay';
@@ -199,11 +199,14 @@ export const getIconNameFromStatus = (timeline) => {
       <PromptToast 
         label={label}
         closeToast={
-          () => { toast.dismiss(t.id); document.body.removeChild(overlay); }
+          () => { 
+            toast.dismiss(t.id); 
+            document.body.removeChild(overlay); 
+          }
         }
         onSubmit={(value) => {
           onSubmit(value);
-          document.body.removeChild(overlay); // remove overlay manually
+           (document.body.contains(overlay)) && document.body.removeChild(overlay); // remove overlay manually
         }}
       />
     ), {

@@ -1012,6 +1012,13 @@ body {
   margin-left: 20px !important;
 }
 
+.vertical-timeline-element .vertical-timeline-element-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 5px;
+}
+
 /* .vertical-timeline-element-content::after {
   content: var(--after-content, "no date ") !important;
   position: absolute;
