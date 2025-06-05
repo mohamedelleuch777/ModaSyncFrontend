@@ -16,8 +16,15 @@ const stringToColorPair = (str) => {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   const h = hash % 360;
-  const bg = `hsl(${h}, 60%, 50%)`;
-  const text = `hsl(${(h + 180) % 360}, 70%, 30%)`;
+  
+  // Ensure background is dark enough (lightness between 25% and 65%)
+  // and has good saturation (between 50% and 80%)
+  const lightness = 25 + (Math.abs(hash) % 40); // 25% to 65%
+  const saturation = 50 + (Math.abs(hash >> 8) % 30); // 50% to 80%
+  
+  const bg = `hsl(${h}, ${saturation}%, ${lightness}%)`;
+  const text = 'white';
+  
   return [bg, text];
 };
 
@@ -31,7 +38,7 @@ const getInitials = (name) => {
 const formatTimestamp = (timestamp) => {
   if (!timestamp) return '';
   try {
-    return format(new Date(timestamp), "EEE dd-MM-yyyy HH:mm", { locale: enGB });
+    return format(new Date(timestamp), "📅 EEE dd-MM-yyyy ⌚ HH:mm", { locale: enGB });
   } catch {
     return '';
   }
@@ -164,7 +171,7 @@ const Conversation = () => {
                           {conversation.comment_text}
                         </div>
                         <div className="conversation-comment-date">
-                          {formatTimestamp(conversation.timestamp || conversation.created_at)}
+                          {formatTimestamp(conversation.timestamp || conversation.createdAt)}
                         </div>
                       </div>
                     </div>

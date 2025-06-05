@@ -1296,8 +1296,8 @@ body {
 
 .conversation-message {
   display: flex;
-  align-items: flex-end;
-  gap: 10px;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 1.5rem;
 }
 
@@ -1333,7 +1333,7 @@ body {
   /* border-top-right-radius: 0; */
   margin-right: 0;
   margin-left: auto;
-  flex-direction: row-reverse;
+  flex-direction: column;
 }
 
 .conversation-card-comment-container.owner::after {
