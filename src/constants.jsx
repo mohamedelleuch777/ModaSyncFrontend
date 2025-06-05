@@ -14,7 +14,14 @@ switch (window.location.host) {
     break;
 
   default:
-    API_BASE_URL = 'https://api-modasync.xilyor.com/api/v1';
+    const hostWithoutPort = window.location.hostname;
+    const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+    
+    if (ipRegex.test(hostWithoutPort)) {
+      API_BASE_URL = `http://${hostWithoutPort}:9613/api/v1`;
+    } else {
+      API_BASE_URL = 'https://api-modasync.xilyor.com/api/v1';
+    }
     break;
 }
 
