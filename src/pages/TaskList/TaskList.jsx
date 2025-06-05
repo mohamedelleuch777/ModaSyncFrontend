@@ -30,7 +30,7 @@ const TaskList = () => {
     const collection = sample.collection?.name || sample.collection_name || '';
     const sub = sample.subcollection?.name || sample.sub_collection?.name || sample.subcollection_name || '';
     const name = sample.name || '';
-    return [collection, sub, name].filter(Boolean).join(' / ');
+    return [collection, sub, name].filter(Boolean).join(' > ');
   };
 
   const getMyTasks = async () => {
