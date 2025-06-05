@@ -8,6 +8,22 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import DynamicIcon from '../../components/DynamicIcon';
 import { SAMPLE_STATUS } from '../../constants';
 
+const stringToColor = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const h = hash % 360;
+  return `hsl(${h}, 60%, 50%)`;
+};
+
+const getInitials = (name) => {
+  if (!name) return '';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
 
 
 const Conversation = () => {
@@ -28,8 +44,9 @@ const Conversation = () => {
 
   const checkConversationStatus = () => {
     const timeLine = sample.timeline[0];
-    if (timeLine.status === SAMPLE_STATUS.NEW
-      || timeLine.status === SAMPLE_STATUS.IN_REVIEW
+    if (
+      timeLine.status !== SAMPLE_STATUS.READY &&
+      timeLine.status !== SAMPLE_STATUS.REJECTED
     ) {
       setIsConversationActive(true);
     }
@@ -114,21 +131,26 @@ const Conversation = () => {
             <>
             <div ref={commentsContainerRef} className='comments-container'>
               {
-                conversations.map((conversation) => (
-                  conversation.comment_owner === user.id ? (
-                    <div key={conversation.id} className="conversation-card-comment-container owner">
+                conversations.map((conversation) => {
+                  const isOwner = conversation.comment_owner === user.id;
+                  const name = isOwner ? user.name : conversation.user?.name;
+                  const phone = isOwner ? user.phone : conversation.user?.phone;
+                  const initials = getInitials(name);
+                  const color = stringToColor(phone || '');
+                  return (
+                    <div
+                      key={conversation.id}
+                      className={`conversation-card-comment-container ${isOwner ? 'owner' : ''}`}
+                    >
+                      <div className="conversation-avatar" style={{ backgroundColor: color }}>
+                        {initials}
+                      </div>
                       <div className="conversation-card-comment">
                         {conversation.comment_text}
                       </div>
                     </div>
-                  ) : (
-                    <div key={conversation.id} className="conversation-card-comment-container">
-                      <div className="conversation-card-comment">
-                        {conversation.comment_text}
-                      </div>
-                    </div>
-                  )
-                ))
+                  );
+                })
               }
             </div>
             {
