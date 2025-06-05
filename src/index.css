@@ -1326,7 +1326,7 @@ body {
   /* border-top-right-radius: 0; */
   margin-right: 0;
   margin-left: auto;
-  flex-direction: row-reverse;
+  flex-direction: column;
 }
 
 .conversation-card-comment-container.owner::after {
