@@ -1276,6 +1276,18 @@ body {
   /* pointer-events: none; */
 }
 
+.conversation-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
 .conversation-card-comment-container {
   position: relative;
   background-color: var(--secondary-color);
@@ -1284,6 +1296,9 @@ body {
   /* border-top-left-radius: 0; */
   max-width: 70%;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .conversation-card-comment-container::after {
@@ -1303,6 +1318,7 @@ body {
   /* border-top-right-radius: 0; */
   margin-right: 0;
   margin-left: auto;
+  flex-direction: row-reverse;
 }
 
 .conversation-card-comment-container.owner::after {
