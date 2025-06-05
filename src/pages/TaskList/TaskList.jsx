@@ -39,7 +39,7 @@ const TaskList = () => {
     const withPaths = await Promise.all((data || []).map(async (t) => {
       try {
         const sample = await get(apiFetch, '/samples/sample/' + t.sample_id);
-        return { ...t, samplePath: getSamplePath(sample) };
+        return { ...t, samplePath: getSamplePath(sample).join(' > ') };
       } catch {
         return { ...t, samplePath: '' };
       }
