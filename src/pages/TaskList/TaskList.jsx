@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Topbar from '../../components/Topbar';
 import Leftmenu from '../../components/Leftmenu';
 import { useApi, get } from '../../hooks/apiHooks';
@@ -24,13 +24,29 @@ const TaskList = () => {
 
   const apiFetch = useApi();
 
+  const getSamplePath = (sample) => {
+    if (!sample) return '';
+    if (sample.path) return sample.path;
+    const collection = sample.collection?.name || sample.collection_name || '';
+    const sub = sample.subcollection?.name || sample.sub_collection?.name || sample.subcollection_name || '';
+    const name = sample.name || '';
+    return [collection, sub, name].filter(Boolean).join(' / ');
+  };
+
   const getMyTasks = async () => {
     setIsLoading(true);
     const data = await get(apiFetch, '/tasks');
-    console.log(data);
-    setTimeLines(data);
+    const withPaths = await Promise.all((data || []).map(async (t) => {
+      try {
+        const sample = await get(apiFetch, '/samples/sample/' + t.sample_id);
+        return { ...t, samplePath: getSamplePath(sample) };
+      } catch {
+        return { ...t, samplePath: '' };
+      }
+    }));
+    setTimeLines(withPaths);
     setIsLoading(false);
-  }
+  };
 
   const handleSampleSelection = async (sample_id) => {
     const data = await get(apiFetch, '/samples/sample/' + sample_id);
@@ -59,6 +75,9 @@ const TaskList = () => {
               <span>Sample ID: {timeLine.sample_id}</span>
               {isNextTaskMine(timeLine) && <span className='red-dot'></span>}
             </p>
+            {timeLine.samplePath && (
+              <p className="sample-path">{timeLine.samplePath}</p>
+            )}
             {/* <p className="sample-description">{description}</p> */}
             <div className="sample-status">
               Status: <span>{getIconNameFromStatus(timeLine).status}</span>
