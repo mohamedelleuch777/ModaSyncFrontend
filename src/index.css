@@ -1289,8 +1289,8 @@ body {
 
 .conversation-message {
   display: flex;
-  align-items: flex-end;
-  gap: 10px;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 1.5rem;
 }
 

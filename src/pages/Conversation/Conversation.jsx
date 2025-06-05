@@ -16,8 +16,15 @@ const stringToColorPair = (str) => {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
   const h = hash % 360;
-  const bg = `hsl(${h}, 60%, 50%)`;
-  const text = `hsl(${(h + 180) % 360}, 70%, 30%)`;
+  
+  // Ensure background is dark enough (lightness between 25% and 65%)
+  // and has good saturation (between 50% and 80%)
+  const lightness = 25 + (Math.abs(hash) % 40); // 25% to 65%
+  const saturation = 50 + (Math.abs(hash >> 8) % 30); // 50% to 80%
+  
+  const bg = `hsl(${h}, ${saturation}%, ${lightness}%)`;
+  const text = 'white';
+  
   return [bg, text];
 };
 
@@ -37,21 +44,21 @@ const formatTimestamp = (timestamp) => {
   }
 };
 
-const stringToColor = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const h = hash % 360;
-  return `hsl(${h}, 60%, 50%)`;
-};
+// const stringToColor = (str) => {
+//   let hash = 0;
+//   for (let i = 0; i < str.length; i++) {
+//     hash = str.charCodeAt(i) + ((hash << 5) - hash);
+//   }
+//   const h = hash % 360;
+//   return `hsl(${h}, 60%, 50%)`;
+// };
 
-const getInitials = (name) => {
-  if (!name) return '';
-  const parts = name.trim().split(' ');
-  if (parts.length === 1) return parts[0][0].toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-};
+// const getInitials = (name) => {
+//   if (!name) return '';
+//   const parts = name.trim().split(' ');
+//   if (parts.length === 1) return parts[0][0].toUpperCase();
+//   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+// };
 
 
 
