@@ -38,7 +38,7 @@ const getInitials = (name) => {
 const formatTimestamp = (timestamp) => {
   if (!timestamp) return '';
   try {
-    return format(new Date(timestamp), "EEE dd-MM-yyyy HH:mm", { locale: enGB });
+    return format(new Date(timestamp), "📅 EEE dd-MM-yyyy ⌚ HH:mm", { locale: enGB });
   } catch {
     return '';
   }
@@ -187,7 +187,7 @@ const Conversation = () => {
                           {conversation.comment_text}
                         </div>
                         <div className="conversation-comment-date">
-                          {formatTimestamp(conversation.timestamp || conversation.created_at)}
+                          {formatTimestamp(conversation.timestamp || conversation.createdAt)}
                         </div>
                       </div>
                     </div>
