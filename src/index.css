@@ -722,6 +722,13 @@ body {
   animation: pulse 1.5s infinite ease-in-out;
 }
 
+.sample-path {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
 .sample-description {
   display: none;
   font-size: 0.9rem;
