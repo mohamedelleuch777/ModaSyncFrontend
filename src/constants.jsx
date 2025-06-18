@@ -32,13 +32,14 @@ export const FORCE_HTTPS = true;
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
 export const DEFAULT_TIMEOUT = 5000;
 export const USER_ROLES = {
-    // 'Stylist', 'Manager', 'Modelist', 'ExecutiveWorker', 'Tester', 'ProductionResponsible'
+    // 'Stylist', 'Manager', 'Modelist', 'ExecutiveWorker', 'Tester', 'ProductionResponsible', 'Joker'
   MANAGER: 'Manager',
   MODELIST: 'Modelist',
   STYLIST: 'Stylist',
   EXECUTIVE_WORKER: 'ExecutiveWorker',
   TESTER: 'Tester',
-  PRODUCTION_RESPONSIBLE: 'ProductionResponsible'
+  PRODUCTION_RESPONSIBLE: 'ProductionResponsible',
+  JOKER: 'Joker'
 };
 export const SAMPLE_STATUS = {
   // 'new',                  // responsable: stylist
@@ -118,6 +119,12 @@ export const getIconNameFromStatus = (timeline) => {
   export const isNextTaskMine = (timeline) => {
     const token = jwtDecode(localStorage.getItem('token'));
     const role = token.role;
+    
+    // JOKER can see any current task as their own
+    if (role === USER_ROLES.JOKER) {
+      return true;
+    }
+    
     switch(role) {
       case USER_ROLES.STYLIST:
         if (timeline.status === SAMPLE_STATUS.NEW) {

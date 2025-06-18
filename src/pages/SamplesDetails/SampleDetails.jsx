@@ -6,7 +6,8 @@ import { BuildingFillAdd, InfoCircleFill, XLg, ZoomIn } from "react-bootstrap-ic
 import DynamicIcon from "../../components/DynamicIcon";
 import ZoomableImage from "../../components/ZoomableImage";
 import ButtonSliderWrapper from "../../components/ButtonSliderWrapper";
-import { useApi, get, del, put } from "../../hooks/apiHooks";
+import DimensionsPopup from "../../components/DimensionsPopup";
+import { useApi, get, del, put, post } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
@@ -31,6 +32,8 @@ const SampleDetailsPage = () => {
   const [timelineList, setTimelineList] = React.useState([]);
   const [cssPrimaryColor, setCssPrimaryColor] = useState(null);
   const [cssQuaternaryColor, setCssQuaternaryColor] = useState(null);
+  const [showDimensionsPopup, setShowDimensionsPopup] = useState(false);
+  const [currentDimensions, setCurrentDimensions] = useState({ width: '', height: '', id: '' });
 
   const apiFetch = useApi();
 
@@ -203,15 +206,110 @@ const SampleDetailsPage = () => {
         break;
       case USER_ROLES.TESTER:
         if (lastTimeline.status === SAMPLE_STATUS.TESTING) {
-          mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.MODELIST}`;
+          mold.content.subtitle = `to: ${USER_ROLES.PRODUCTION_RESPONSIBLE} or ${USER_ROLES.MODELIST}`;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.PREPARING_TRACES)}>✅ Confirm</span>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>📏 Reajust</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.GETTING_PROD_INFO)}>✅ Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.READJUSTMENT)}>📏 Readjust</span>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.REJECTED)}>❌ Reject</span>
                                   </div>
           tempTimeline.push(mold)
         }
         break;
+      case USER_ROLES.PRODUCTION_RESPONSIBLE:
+        if (lastTimeline.status === SAMPLE_STATUS.GETTING_PROD_INFO) {
+          mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => handleDimensionsEntry()}>📏 Enter Dimensions</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        break;
+      case USER_ROLES.JOKER:
+        // JOKER can perform any action based on current status
+        if (lastTimeline.status === SAMPLE_STATUS.NEW) {
+          mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.EDIT) {
+          mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_REVIEW)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.IN_REVIEW) {
+          mold.content.subtitle = `to: ${USER_ROLES.MODELIST} or to ${USER_ROLES.STYLIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EDIT)}>❌ Reject</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_DEVELOPMENT)}>✅ Approve</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.IN_DEVELOPMENT ||
+                 lastTimeline.status === SAMPLE_STATUS.READJUSTMENT) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.DEVELOPMENT_DONE)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.DEVELOPMENT_DONE ||
+                 lastTimeline.status === SAMPLE_STATUS.EXTERNAL_TASK_DONE) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.EXECUTIVE_WORKER} `;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EXTERNAL_TASK)}>↖️ External Task</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_PRODUCTION)}>⏭️ Execution</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.EXTERNAL_TASK) {
+          mold.content.subtitle = `to: ${USER_ROLES.STYLIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EXTERNAL_TASK_DONE)}>🔚 End External Task</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.IN_PRODUCTION) {
+          mold.content.subtitle = `to: ${USER_ROLES.TESTER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.TESTING)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.TESTING) {
+          mold.content.subtitle = `to: ${USER_ROLES.PRODUCTION_RESPONSIBLE} or ${USER_ROLES.MODELIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.GETTING_PROD_INFO)}>✅ Confirm</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.READJUSTMENT)}>📏 Readjust</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.REJECTED)}>❌ Reject</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.GETTING_PROD_INFO) {
+          mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => handleDimensionsEntry()}>📏 Enter Dimensions</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.CUT_PHASE) {
+          mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.READY)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+        else if (lastTimeline.status === SAMPLE_STATUS.PREPARING_TRACES) {
+          mold.content.subtitle = `to: ${USER_ROLES.MANAGER}`;
+          mold.content.date     = <div>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.CUT_PHASE)}>✅ Confirm</span>
+                                  </div>
+          tempTimeline.push(mold)
+        }
+      break;
     }
     /**
      * end of task logic
@@ -258,6 +356,53 @@ const SampleDetailsPage = () => {
     })
     
   }
+
+  const fetchDimensions = async () => {
+    try {
+      const dimensions = await get(apiFetch, `/samples/sample/${sample.id}/dimensions`);
+      setCurrentDimensions(dimensions || { width: '', height: '', id: '' });
+    } catch (error) {
+      console.error('Failed to fetch dimensions:', error);
+    }
+  };
+
+  const handleDimensionsEntry = async () => {
+    await fetchDimensions();
+    setShowDimensionsPopup(true);
+  };
+
+  const handleDimensionsConfirm = async (dimensions) => {
+    try {
+      const res = await post(apiFetch, `/samples/sample/${sample.id}/dimensions`, dimensions);
+      if (res.error) {
+        messageBox(res.error, 'error');
+      } else {
+        messageBox('Dimensions saved successfully', 'success');
+        setCurrentDimensions(dimensions);
+        setShowDimensionsPopup(false);
+        
+        // After confirming dimensions, move to PREPARING_TRACES
+        inputBox('Add Comment?', async (comment) => {
+          const statusRes = await put(apiFetch, `/samples/${sample.id}`, {
+            status: SAMPLE_STATUS.PREPARING_TRACES,
+            comment
+          });
+          if (statusRes.error) {
+            messageBox(statusRes.error, 'error');
+          } else {
+            messageBox(statusRes.message);
+            navigate(-1);
+          }
+        });
+      }
+    } catch (error) {
+      messageBox('Failed to save dimensions: ' + error.message, 'error');
+    }
+  };
+
+  const handleDimensionsCancel = () => {
+    setShowDimensionsPopup(false);
+  };
 
   if(!sample) {
     return <div>Loading...</div>
@@ -367,6 +512,14 @@ const SampleDetailsPage = () => {
           <EmptyElementN_Times count={1} /> 
         </VerticalTimeline>
       </section>
+
+      <DimensionsPopup
+        isOpen={showDimensionsPopup}
+        onClose={handleDimensionsCancel}
+        onConfirm={handleDimensionsConfirm}
+        initialDimensions={currentDimensions}
+        isEditing={currentDimensions.width !== '' || currentDimensions.height !== '' || currentDimensions.id !== ''}
+      />
     </div>
   );
 };
