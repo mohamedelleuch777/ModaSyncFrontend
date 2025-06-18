@@ -198,11 +198,12 @@ const DimensionsPopup = ({
               justifyContent: 'center',
               gap: '8px',
               fontSize: '14px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              margin: 0
             }}
           >
             <CheckCircleFill size={16} />
-            Confirm Dimensions
+            Confirm
           </button>
           
           <button 
@@ -216,7 +217,8 @@ const DimensionsPopup = ({
               justifyContent: 'center',
               gap: '8px',
               fontSize: '14px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              margin: 0
             }}
           >
             <XCircleFill size={16} />

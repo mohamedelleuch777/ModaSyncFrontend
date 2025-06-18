@@ -220,6 +220,7 @@ const SampleDetailsPage = () => {
           mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
           mold.content.date     = <div>
                                     <span onClick={() => handleDimensionsEntry()}>📏 Enter Dimensions</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.PREPARING_TRACES)}>✅ Confirm</span>
                                   </div>
           tempTimeline.push(mold)
         }
@@ -292,6 +293,7 @@ const SampleDetailsPage = () => {
           mold.content.subtitle = `to: ${USER_ROLES.MODELIST}`;
           mold.content.date     = <div>
                                     <span onClick={() => handleDimensionsEntry()}>📏 Enter Dimensions</span>
+                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.PREPARING_TRACES)}>✅ Confirm</span>
                                   </div>
           tempTimeline.push(mold)
         }
@@ -380,20 +382,6 @@ const SampleDetailsPage = () => {
         messageBox('Dimensions saved successfully', 'success');
         setCurrentDimensions(dimensions);
         setShowDimensionsPopup(false);
-        
-        // After confirming dimensions, move to PREPARING_TRACES
-        inputBox('Add Comment?', async (comment) => {
-          const statusRes = await put(apiFetch, `/samples/${sample.id}`, {
-            status: SAMPLE_STATUS.PREPARING_TRACES,
-            comment
-          });
-          if (statusRes.error) {
-            messageBox(statusRes.error, 'error');
-          } else {
-            messageBox(statusRes.message);
-            navigate(-1);
-          }
-        });
       }
     } catch (error) {
       messageBox('Failed to save dimensions: ' + error.message, 'error');
