@@ -13,6 +13,8 @@ import AddImageToSample from './pages/SamplesDetails/AddImageToSample';
 import Profile from './pages/Profile/Profile';
 import Conversation from './pages/Conversation/Conversation';
 import TaskList from './pages/TaskList/TaskList';
+import UserManagement from './pages/Management/UserManagement';
+import ExternalTaskManagement from './pages/Management/ExternalTaskManagement';
 import useSSE from '../src/hooks/useSSE';
 import { notifyApp } from './constants';
 import { jwtDecode } from "jwt-decode";
@@ -73,6 +75,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/conversation" element={<Conversation />} />
           <Route path="/tasks" element={<TaskList />} />
+          <Route path="/manage-users" element={<UserManagement />} />
+          <Route path="/manage-external-tasks" element={<ExternalTaskManagement />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/samples-details" element={<SampleDetailsPage />} />
           <Route path="/create-collection" element={<CreateCollection />} />

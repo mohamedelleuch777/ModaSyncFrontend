@@ -32,12 +32,13 @@ export const FORCE_HTTPS = true;
 export const IMAGE_SOURCE_PATHNAME = '/736x/g*';
 export const DEFAULT_TIMEOUT = 5000;
 export const USER_ROLES = {
-    // 'Stylist', 'Manager', 'Modelist', 'ExecutiveWorker', 'Tester'
+    // 'Stylist', 'Manager', 'Modelist', 'ExecutiveWorker', 'Tester', 'ProductionResponsible'
   MANAGER: 'Manager',
   MODELIST: 'Modelist',
   STYLIST: 'Stylist',
   EXECUTIVE_WORKER: 'ExecutiveWorker',
-  TESTER: 'Tester'
+  TESTER: 'Tester',
+  PRODUCTION_RESPONSIBLE: 'ProductionResponsible'
 };
 export const SAMPLE_STATUS = {
   // 'new',                  // responsable: stylist
@@ -69,6 +70,7 @@ export const SAMPLE_STATUS = {
   READJUSTMENT: 'readjustment',
   CUT_PHASE: 'cut_phase',
   PREPARING_TRACES: 'preparing_traces',
+  GETTING_PROD_INFO: 'getting_prod_info',
   READY: 'ready'
 }
 export const APP_TITLE = "ModaSync";
@@ -104,6 +106,8 @@ export const getIconNameFromStatus = (timeline) => {
         return {iconName: "Scissors", title: "In Cut Phase", status: SAMPLE_STATUS.CUT_PHASE};
       case SAMPLE_STATUS.PREPARING_TRACES:
         return {iconName: "SignRailroadFill", title: "Preparing Traces", status: SAMPLE_STATUS.PREPARING_TRACES};
+      case SAMPLE_STATUS.GETTING_PROD_INFO:
+        return {iconName: "InfoCircleFill", title: "Getting Production Info", status: SAMPLE_STATUS.GETTING_PROD_INFO};
       case SAMPLE_STATUS.READY:
         return {iconName: "BookmarkStarFill", title: "Ready", status: SAMPLE_STATUS.READY};
       default:
@@ -155,6 +159,11 @@ export const getIconNameFromStatus = (timeline) => {
         break;
       case USER_ROLES.TESTER:
         if (timeline.status === SAMPLE_STATUS.TESTING) {
+          return true;
+        }
+        break;
+      case USER_ROLES.PRODUCTION_RESPONSIBLE:
+        if (timeline.status === SAMPLE_STATUS.GETTING_PROD_INFO) {
           return true;
         }
         break;

@@ -684,7 +684,7 @@ body {
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
   min-width: calc(100% - 2rem);
-  min-height: 5rem;
+  /* min-height: 5rem; */
 }
 
 .sample-image {
@@ -703,7 +703,8 @@ body {
 
 .sample-name {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  align-items: center;
   font-size: 1rem;
   font-weight: bold;
   color: var(--primary-color);

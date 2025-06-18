@@ -39,7 +39,7 @@ const TaskList = () => {
     const withPaths = await Promise.all((data || []).map(async (t) => {
       try {
         const sample = await get(apiFetch, '/samples/sample/' + t.sample_id);
-        return { ...t, samplePath: getSamplePath(sample).join(' > ') };
+        return { ...t, samplePath: getSamplePath(sample) };
       } catch {
         return { ...t, samplePath: '' };
       }
@@ -75,8 +75,15 @@ const TaskList = () => {
               <span>Sample ID: {timeLine.sample_id}</span>
               {isNextTaskMine(timeLine) && <span className='red-dot'></span>}
             </p>
-            {timeLine.samplePath && (
-              <p className="sample-path">{timeLine.samplePath}</p>
+            {timeLine.samplePath && Array.isArray(timeLine.samplePath) && (
+              <p className="sample-path">
+                {timeLine.samplePath.map((path, index) => (
+                  <span key={index}>
+                    {path}
+                    {index < timeLine.samplePath.length - 1 && <span className="path-separator"> → </span>}
+                  </span>
+                ))}
+              </p>
             )}
             {/* <p className="sample-description">{description}</p> */}
             <div className="sample-status">
