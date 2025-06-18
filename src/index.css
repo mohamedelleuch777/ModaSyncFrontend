@@ -687,7 +687,7 @@ body {
   display: flex;
   align-items: center;
   background: #fff;
-  padding: .5rem;
+  padding: 1rem .5rem;
   margin: .5rem;
   box-shadow: 0 0 13px -4px var(--primary-color);
   border-radius: 8px;
@@ -712,7 +712,7 @@ body {
 
 .sample-name {
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
   font-size: 1rem;
   font-weight: bold;
