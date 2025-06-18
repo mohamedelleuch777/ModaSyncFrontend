@@ -447,6 +447,10 @@ body {
   border-radius: 0;
 }
 
+.sub-collections.sub-collections-containter > .sub-collection > section {
+  display: flex;
+}
+
 .sub-collections.sub-collections-containter .sub-collection > div {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -463,7 +467,12 @@ body {
 }
 
 .sub-collections.sub-collections-containter .sub-collection span.sub-collection-image {
-  min-width: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  min-width: 17px;
   min-height: 26px;
   padding: 4px;
   text-align: center;
@@ -793,6 +802,11 @@ body {
 }
 
 .samples-header-collection-name span.cta-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
   min-width: 26px;
   min-height: 26px;
   padding: 4px;
