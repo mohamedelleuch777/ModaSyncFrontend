@@ -130,46 +130,48 @@ const ExternalTaskPopup = ({
               }}>
                 Choose an external provider for this task:
               </p>
-              {providers.map(provider => (
-                <div 
-                  key={provider.id} 
-                  onClick={() => setSelectedProvider(provider)}
-                  style={{
-                    border: selectedProvider?.id === provider.id ? '2px solid var(--primary-color)' : '1px solid #ddd',
-                    borderRadius: '8px',
-                    padding: '15px',
-                    marginBottom: '10px',
-                    cursor: 'pointer',
-                    backgroundColor: selectedProvider?.id === provider.id ? '#f0f8f7' : 'white',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  <div>
+              <div style={{maxHeight: "50vh", overflow: "hidden", overflowY: "scroll"}}>
+                {providers.map(provider => (
+                  <div 
+                    key={provider.id} 
+                    onClick={() => setSelectedProvider(provider)}
+                    style={{
+                      border: selectedProvider?.id === provider.id ? '2px solid var(--primary-color)' : '1px solid #ddd',
+                      borderRadius: '8px',
+                      padding: '15px',
+                      marginBottom: '10px',
+                      cursor: 'pointer',
+                      backgroundColor: selectedProvider?.id === provider.id ? '#f0f8f7' : 'white',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <div>
+                      <div style={{
+                        fontWeight: 'bold',
+                        color: 'var(--primary-color)',
+                        marginBottom: '5px'
+                      }}>
+                        {provider.name}
+                      </div>
+                      <div style={{
+                        color: '#666',
+                        fontSize: '14px'
+                      }}>
+                        {provider.phone}
+                      </div>
+                    </div>
                     <div style={{
-                      fontWeight: 'bold',
                       color: 'var(--primary-color)',
-                      marginBottom: '5px'
+                      fontSize: '20px'
                     }}>
-                      {provider.name}
-                    </div>
-                    <div style={{
-                      color: '#666',
-                      fontSize: '14px'
-                    }}>
-                      {provider.phone}
+                      {selectedProvider?.id === provider.id && <CheckCircleFill />}
                     </div>
                   </div>
-                  <div style={{
-                    color: 'var(--primary-color)',
-                    fontSize: '20px'
-                  }}>
-                    {selectedProvider?.id === provider.id && <CheckCircleFill />}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
           

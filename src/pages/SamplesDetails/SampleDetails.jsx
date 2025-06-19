@@ -332,6 +332,13 @@ const SampleDetailsPage = () => {
      */
     for (let i = 0; i < sample.timeline.length; i++) {
       const { iconName, title, status } = getIconNameFromStatus(sample.timeline[i]);
+      
+      // Create subtitle with external provider info if it's an external task
+      let subtitle = `by: ${sample.timeline[i].user.role}: ${sample.timeline[i].user.name}`;
+      if (sample.timeline[i].status === 'external_task' && sample.timeline[i].provider_name) {
+        subtitle += ` → 🏢 ${sample.timeline[i].provider_name}`;
+      }
+      
       tempTimeline.push({
         style: {
           colors: {
@@ -344,7 +351,7 @@ const SampleDetailsPage = () => {
         },
         content: {
           title: title,
-          subtitle: `by: ${sample.timeline[i].user.role}: ${sample.timeline[i].user.name}`,
+          subtitle: subtitle,
           text: "",
           date: formatTimestamp(sample.timeline[i].timestamp),
           comment: sample.timeline[i].comment
@@ -412,22 +419,46 @@ const SampleDetailsPage = () => {
 
   const handleExternalTaskConfirm = async (selectedProvider) => {
     try {
-      // First, transition to external_task status
       inputBox('Add Comment?', async (comment) => {
-        const statusRes = await put(apiFetch, `/samples/${sample.id}`, {
-          status: SAMPLE_STATUS.EXTERNAL_TASK,
-          comment: comment || `External task assigned to ${selectedProvider.name}`
+        console.log('Attempting external task assignment:', {
+          sample_id: sample.id,
+          provider: selectedProvider,
+          comment: comment
         });
+        
+        // Use the new external provider assignment endpoint
+        const statusRes = await put(apiFetch, `/samples/sample/${sample.id}/external-provider`, {
+          status: SAMPLE_STATUS.EXTERNAL_TASK,
+          external_provider_id: selectedProvider.id,
+          comment: comment || `External task assigned to ${selectedProvider.name}`,
+          due_date: null // Could add due date picker later
+        });
+        
+        console.log('External task assignment response:', statusRes);
         
         if (statusRes.error) {
           messageBox(statusRes.error, 'error');
+          console.error('External task assignment error:', statusRes.error);
         } else {
           messageBox(`Sample assigned to ${selectedProvider.name}`, 'success');
-          // Refresh the page or update state
-          window.location.reload();
+          // Fetch fresh sample data instead of page reload
+          try {
+            const freshSampleData = await get(apiFetch, `/samples/sample/${sample.id}`);
+            console.log('Fresh sample data after assignment:', freshSampleData);
+            // Navigate back with fresh data
+            navigate('/sample-details', { 
+              state: { sample: freshSampleData },
+              replace: true 
+            });
+          } catch (refreshError) {
+            console.error('Error fetching fresh data:', refreshError);
+            // Fallback to page reload if fresh data fetch fails
+            window.location.reload();
+          }
         }
       });
     } catch (error) {
+      console.error('External task assignment exception:', error);
       messageBox('Failed to assign external task: ' + error.message, 'error');
     }
     setShowExternalTaskPopup(false);

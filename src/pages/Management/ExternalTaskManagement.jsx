@@ -4,14 +4,17 @@ import Leftmenu from '../../components/Leftmenu';
 import { useApi, get, post, put, del } from '../../hooks/apiHooks';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { messageBox } from '../../constants';
-import { PlusCircleFill, PencilSquare, TrashFill, BuildingFill, TelephoneFill, BuildingGear } from 'react-bootstrap-icons';
+import { PlusCircleFill, PencilSquare, TrashFill, BuildingFill, TelephoneFill, BuildingGear, ClockFill, PersonFill, EyeFill } from 'react-bootstrap-icons';
 
 const ExternalTaskManagement = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [providers, setProviders] = useState([]);
+  const [externalTasks, setExternalTasks] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProvider, setEditingProvider] = useState(null);
+  const [selectedProvider, setSelectedProvider] = useState(null);
+  const [activeTab, setActiveTab] = useState('providers'); // 'providers' or 'tasks'
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -22,6 +25,7 @@ const ExternalTaskManagement = () => {
 
   useEffect(() => {
     fetchProviders();
+    fetchExternalTasks();
   }, []);
 
   const fetchProviders = async () => {
@@ -34,6 +38,27 @@ const ExternalTaskManagement = () => {
       setProviders([]); // Ensure providers is always an array
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchExternalTasks = async () => {
+    try {
+      const data = await get(apiFetch, '/samples/external-tasks');
+      setExternalTasks(data || []);
+    } catch (error) {
+      messageBox('Failed to fetch external tasks: ' + error.message, 'error');
+      setExternalTasks([]);
+    }
+  };
+
+  const fetchTasksByProvider = async (providerId) => {
+    try {
+      const data = await get(apiFetch, `/samples/external-tasks/provider/${providerId}`);
+      setExternalTasks(data || []);
+      setSelectedProvider(providerId);
+    } catch (error) {
+      messageBox('Failed to fetch provider tasks: ' + error.message, 'error');
+      setExternalTasks([]);
     }
   };
 
@@ -102,17 +127,49 @@ const ExternalTaskManagement = () => {
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       
       <div className="task-card">
-        <div className="page-header" style={{padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #f0f0f0'}}>
+        <div className="page-header" style={{padding: '20px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', alignItems: 'center', borderBottom: '2px solid #f0f0f0'}}>
           <h1 style={{color: 'var(--primary-color)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px'}}>
-            <BuildingGear size={24} /> External Providers
+            <BuildingGear size={24} /> External Task Management
           </h1>
-          <button 
-            className="login-button"
-            style={{width: 'auto', padding: '8px 16px', fontSize: '14px'}}
-            onClick={() => setShowAddForm(true)}
-          >
-            <PlusCircleFill size={16} /> Add Provider
-          </button>
+          <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
+            <div style={{display: 'flex', borderRadius: '8px', border: '1px solid var(--primary-color)', overflow: 'hidden'}}>
+              <button 
+                style={{
+                  padding: '8px 16px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'providers' ? 'var(--primary-color)' : 'white',
+                  color: activeTab === 'providers' ? 'white' : 'var(--primary-color)',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+                onClick={() => setActiveTab('providers')}
+              >
+                Providers
+              </button>
+              <button 
+                style={{
+                  padding: '8px 16px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'tasks' ? 'var(--primary-color)' : 'white',
+                  color: activeTab === 'tasks' ? 'white' : 'var(--primary-color)',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+                onClick={() => {setActiveTab('tasks'); fetchExternalTasks(); setSelectedProvider(null);}}
+              >
+                Tasks
+              </button>
+            </div>
+            {activeTab === 'providers' && (
+              <button 
+                className="login-button"
+                style={{width: 'auto', padding: '8px 16px', fontSize: '14px'}}
+                onClick={() => setShowAddForm(true)}
+              >
+                <PlusCircleFill size={16} /> Add Provider
+              </button>
+            )}
+          </div>
         </div>
 
         {isLoading ? (
@@ -183,7 +240,9 @@ const ExternalTaskManagement = () => {
             )}
 
             <div style={{padding: '0 20px', paddingTop: 20, backgroundColor: "var(--secondary-color)"}}>
-              {providers.map(provider => (
+              {activeTab === 'providers' ? (
+                <>
+                  {providers.map(provider => (
                 <div key={provider.id} className="sample-item" style={{marginBottom: '15px', flexDirection: 'column', alignItems: 'stretch'}}>
                   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
                     <div className="sample-info" style={{flex: 1}}>
@@ -247,12 +306,114 @@ const ExternalTaskManagement = () => {
                     </button>
                   </div>
                 </div>
-              ))}
-              
-              {providers.length === 0 && (
-                <div style={{textAlign: 'center', padding: '40px', color: 'var(--primary-color)'}}>
-                  <p>No external providers found. Add your first provider to get started.</p>
-                </div>
+                  ))}
+                  
+                  {providers.length === 0 && (
+                    <div style={{textAlign: 'center', padding: '40px', color: 'var(--primary-color)'}}>
+                      <p>No external providers found. Add your first provider to get started.</p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div style={{marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+                    <button 
+                      style={{
+                        padding: '8px 16px',
+                        border: '1px solid var(--primary-color)',
+                        borderRadius: '20px',
+                        backgroundColor: selectedProvider === null ? 'var(--primary-color)' : 'white',
+                        color: selectedProvider === null ? 'white' : 'var(--primary-color)',
+                        cursor: 'pointer',
+                        fontSize: '14px'
+                      }}
+                      onClick={() => {fetchExternalTasks(); setSelectedProvider(null);}}
+                    >
+                      All Tasks
+                    </button>
+                    {providers.map(provider => (
+                      <button 
+                        key={provider.id}
+                        style={{
+                          padding: '8px 16px',
+                          border: '1px solid var(--primary-color)',
+                          borderRadius: '20px',
+                          backgroundColor: selectedProvider === provider.id ? 'var(--primary-color)' : 'white',
+                          color: selectedProvider === provider.id ? 'white' : 'var(--primary-color)',
+                          cursor: 'pointer',
+                          fontSize: '14px'
+                        }}
+                        onClick={() => fetchTasksByProvider(provider.id)}
+                      >
+                        {provider.name}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {externalTasks.map(task => (
+                    <div key={task.id} className="sample-item" style={{marginBottom: '15px', flexDirection: 'column', alignItems: 'stretch'}}>
+                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+                        <div className="sample-info" style={{flex: 1}}>
+                          <p className="sample-name" style={{margin: 0, fontSize: '16px', fontWeight: 'bold'}}>
+                            {task.sample_name}
+                          </p>
+                          <p style={{margin: '5px 0', fontSize: '14px', color: '#666'}}>
+                            {task.collection_name} → {task.subcollection_name}
+                          </p>
+                        </div>
+                        <div style={{
+                          padding: '4px 12px',
+                          borderRadius: '15px',
+                          border: 'none',
+                          backgroundColor: task.status === 'external_task' ? 'var(--quaternary-color)' : 'var(--success-color)',
+                          color: 'white',
+                          fontSize: '12px',
+                          fontWeight: 'bold'
+                        }}>
+                          {task.status === 'external_task' ? 'In Progress' : 'Completed'}
+                        </div>
+                      </div>
+                      
+                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '8px'}}>
+                        <div style={{display: 'flex', gap: '20px', fontSize: '14px'}}>
+                          <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                            <BuildingFill size={14} color="var(--primary-color)" />
+                            {task.provider_name}
+                          </span>
+                          <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                            <PersonFill size={14} color="var(--primary-color)" />
+                            {task.assigned_by || 'System'}
+                          </span>
+                          <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                            <ClockFill size={14} color="var(--primary-color)" />
+                            {new Date(task.timestamp).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {task.external_task_due_date && (
+                          <span style={{
+                            fontSize: '12px',
+                            color: new Date(task.external_task_due_date) < new Date() ? 'var(--danger-color)' : 'var(--primary-color)',
+                            fontWeight: 'bold'
+                          }}>
+                            Due: {new Date(task.external_task_due_date).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {task.comment && (
+                        <div style={{marginTop: '10px', padding: '8px', backgroundColor: '#e9ecef', borderRadius: '5px', fontSize: '14px'}}>
+                          <strong>Comment:</strong> {task.comment}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  
+                  {externalTasks.length === 0 && (
+                    <div style={{textAlign: 'center', padding: '40px', color: 'var(--primary-color)'}}>
+                      <p>No external tasks found.</p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </>
