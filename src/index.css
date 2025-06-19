@@ -610,6 +610,8 @@ body {
   padding: 0.8rem;
   font-size: 1rem;
   box-sizing: border-box;
+  color: var(--primary-color);
+  background-color: rgba(109, 164, 156, 0.1);
 }
 
 .create-sample-button {

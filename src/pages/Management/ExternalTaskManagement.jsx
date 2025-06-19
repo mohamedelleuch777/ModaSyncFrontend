@@ -31,6 +31,7 @@ const ExternalTaskManagement = () => {
       setProviders(data || []);
     } catch (error) {
       messageBox('Failed to fetch providers: ' + error.message, 'error');
+      setProviders([]); // Ensure providers is always an array
     } finally {
       setIsLoading(false);
     }

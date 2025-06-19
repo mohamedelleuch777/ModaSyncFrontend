@@ -241,9 +241,12 @@ export const getIconNameFromStatus = (timeline) => {
   
   export const formatUrl = (paramImageURL) => {
     let imageUrl = paramImageURL;
-    if (imageUrl && FORCE_HTTPS) {
-      imageUrl =  imageUrl.replace('http:', '');
-      imageUrl = "https:" + imageUrl;
+    if (imageUrl && FORCE_HTTPS && !imageUrl.startsWith('https:')) {
+      if (imageUrl.startsWith('//')) {
+        imageUrl = 'https:' + imageUrl;
+      } else if (imageUrl.startsWith('http:')) {
+        imageUrl = imageUrl.replace('http:', 'https:');
+      }
     }
     return imageUrl;
   }

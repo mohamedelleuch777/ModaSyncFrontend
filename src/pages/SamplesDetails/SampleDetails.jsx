@@ -7,6 +7,7 @@ import DynamicIcon from "../../components/DynamicIcon";
 import ZoomableImage from "../../components/ZoomableImage";
 import ButtonSliderWrapper from "../../components/ButtonSliderWrapper";
 import DimensionsPopup from "../../components/DimensionsPopup";
+import ExternalTaskPopup from "../../components/ExternalTaskPopup";
 import { useApi, get, del, put, post } from "../../hooks/apiHooks";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -34,6 +35,7 @@ const SampleDetailsPage = () => {
   const [cssQuaternaryColor, setCssQuaternaryColor] = useState(null);
   const [showDimensionsPopup, setShowDimensionsPopup] = useState(false);
   const [currentDimensions, setCurrentDimensions] = useState({ width: '', height: '', id: '' });
+  const [showExternalTaskPopup, setShowExternalTaskPopup] = useState(false);
 
   const apiFetch = useApi();
 
@@ -88,6 +90,10 @@ const SampleDetailsPage = () => {
       return sample.timeline[0];
     }
     return null;
+  }
+
+  const hasReadjustmentInHistory = () => {
+    return sample.timeline.some(timeline => timeline.status === SAMPLE_STATUS.READJUSTMENT);
   }
 
   const readCssVariables = () => {
@@ -148,8 +154,11 @@ const SampleDetailsPage = () => {
         ) {
           mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.EXECUTIVE_WORKER} `;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EXTERNAL_TASK)}>↖️ External Task</span>
+                                    <span onClick={() => handleExternalTaskSelection()}>↖️ External Task</span>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_PRODUCTION)}>⏭️ Execution</span>
+                                    {hasReadjustmentInHistory() && (
+                                      <span onClick={() => changeStatusTo(SAMPLE_STATUS.TESTING)}>🚀 Skip to Testing</span>
+                                    )}
                                   </div>
           tempTimeline.push(mold)
         }
@@ -261,8 +270,13 @@ const SampleDetailsPage = () => {
                  lastTimeline.status === SAMPLE_STATUS.EXTERNAL_TASK_DONE) {
           mold.content.subtitle = `to: ${USER_ROLES.STYLIST} or ${USER_ROLES.EXECUTIVE_WORKER} `;
           mold.content.date     = <div>
-                                    <span onClick={() => changeStatusTo(SAMPLE_STATUS.EXTERNAL_TASK)}>↖️ External Task</span>
+                                    <span onClick={() => handleExternalTaskSelection()}>↖️ External Task</span>
                                     <span onClick={() => changeStatusTo(SAMPLE_STATUS.IN_PRODUCTION)}>⏭️ Execution</span>
+                                    {hasReadjustmentInHistory() && (
+                                      <>
+                                      <span onClick={() => changeStatusTo(SAMPLE_STATUS.TESTING)}>🚀 Skip to Testing</span>
+                                      </>
+                                    )}
                                   </div>
           tempTimeline.push(mold)
         }
@@ -392,6 +406,37 @@ const SampleDetailsPage = () => {
     setShowDimensionsPopup(false);
   };
 
+  const handleExternalTaskSelection = () => {
+    setShowExternalTaskPopup(true);
+  };
+
+  const handleExternalTaskConfirm = async (selectedProvider) => {
+    try {
+      // First, transition to external_task status
+      inputBox('Add Comment?', async (comment) => {
+        const statusRes = await put(apiFetch, `/samples/${sample.id}`, {
+          status: SAMPLE_STATUS.EXTERNAL_TASK,
+          comment: comment || `External task assigned to ${selectedProvider.name}`
+        });
+        
+        if (statusRes.error) {
+          messageBox(statusRes.error, 'error');
+        } else {
+          messageBox(`Sample assigned to ${selectedProvider.name}`, 'success');
+          // Refresh the page or update state
+          window.location.reload();
+        }
+      });
+    } catch (error) {
+      messageBox('Failed to assign external task: ' + error.message, 'error');
+    }
+    setShowExternalTaskPopup(false);
+  };
+
+  const handleExternalTaskCancel = () => {
+    setShowExternalTaskPopup(false);
+  };
+
   if(!sample) {
     return <div>Loading...</div>
   }
@@ -507,6 +552,12 @@ const SampleDetailsPage = () => {
         onConfirm={handleDimensionsConfirm}
         initialDimensions={currentDimensions}
         isEditing={currentDimensions.width !== '' || currentDimensions.height !== '' || currentDimensions.id !== ''}
+      />
+
+      <ExternalTaskPopup
+        isOpen={showExternalTaskPopup}
+        onClose={handleExternalTaskCancel}
+        onConfirm={handleExternalTaskConfirm}
       />
     </div>
   );

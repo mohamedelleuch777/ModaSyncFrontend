@@ -20,6 +20,18 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
     }
   };
 
+  // Check if user can access external task management
+  const canAccessExternalTasks = () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return false;
+      const decodedToken = jwtDecode(token);
+      return [USER_ROLES.MANAGER, USER_ROLES.JOKER, USER_ROLES.STYLIST].includes(decodedToken.role);
+    } catch (error) {
+      return false;
+    }
+  };
+
   const baseMenuItems = [
     { id: 1, name: 'Home', icon: <HouseFill color="white" size={20}/>, action: () => navigate('/') },
     { id: 2, name: 'Profile', icon: <PersonFill color="white" size={20} />, action: () => navigate('/profile')  },
@@ -28,8 +40,11 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
     // { id: 4, name: 'test', icon: <ListTask color="white" size={20} />, action: () => inputBox("Enter Rext",(text) => console.log(text)) },
   ];
 
-  const managerMenuItems = [
+  const managerOnlyMenuItems = [
     { id: 101, name: 'Manage Users', icon: <PeopleFill color="white" size={20} />, action: () => navigate('/manage-users') },
+  ];
+
+  const externalTaskMenuItems = [
     { id: 102, name: 'External Tasks', icon: <BuildingGear color="white" size={20} />, action: () => navigate('/manage-external-tasks') },
   ];
 
@@ -37,7 +52,8 @@ function Leftmenu({ isMenuOpen, setIsMenuOpen }) {
 
   const menuItems = [
     ...baseMenuItems,
-    ...(isManager() ? managerMenuItems : []),
+    ...(isManager() ? managerOnlyMenuItems : []),
+    ...(canAccessExternalTasks() ? externalTaskMenuItems : []),
     logoutItem
   ];
 
