@@ -1477,6 +1477,50 @@ div:has(> .prompt-toast-content) {
 
 /* END OF PROMPT TOAST */
 
+/* iOS Safari keyboard fixes - conversation page only */
+.conversation-container {
+  /* Only apply iOS fixes when inside conversation container */
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific styles for conversation page only */
+  .conversation-container .conversation-card {
+    /* Use conversation-specific viewport height that adjusts to keyboard */
+    height: calc(var(--conversation-vh, 1vh) * 100 - 89px);
+    min-height: calc(var(--conversation-vh, 1vh) * 100 - 89px);
+  }
+  
+  .conversation-container .conversation-card-comment-input {
+    /* Stick to visual viewport bottom on iOS */
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 0px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .conversation-container .comments-container {
+    /* Adjust for fixed input on iOS */
+    margin-bottom: 70px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Fallback for conversation page on mobile devices with viewport issues */
+@media screen and (max-height: 700px) {
+  .conversation-container .conversation-card {
+    height: calc(var(--conversation-vh, 1vh) * 100 - 89px);
+    min-height: calc(var(--conversation-vh, 1vh) * 100 - 89px);
+  }
+}
+
 @media screen and (max-width: 400px) {
   :root {
     --after-shift: -26px;

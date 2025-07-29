@@ -64,11 +64,23 @@ const Conversation = () => {
 
   const checkConversationStatus = () => {
     const timeLine = sample.timeline[0];
+    console.log('🔍 Conversation status check:', {
+      sampleId: sample.id,
+      currentStatus: timeLine.status,
+      isReady: timeLine.status === SAMPLE_STATUS.READY,
+      isRejected: timeLine.status === SAMPLE_STATUS.REJECTED,
+      timeline: sample.timeline
+    });
+    
     if (
       timeLine.status !== SAMPLE_STATUS.READY &&
       timeLine.status !== SAMPLE_STATUS.REJECTED
     ) {
+      console.log('✅ Conversation should be active');
       setIsConversationActive(true);
+    } else {
+      console.log('❌ Conversation disabled - sample is', timeLine.status);
+      setIsConversationActive(false);
     }
   };
 
@@ -103,6 +115,17 @@ const Conversation = () => {
     scrollTextArea()
   }
 
+  const handleTextareaFocus = () => {
+    // iOS keyboard appearance fix: scroll to bottom after a delay
+    setTimeout(scrollTextArea, 300);
+    setTimeout(scrollTextArea, 600); // Additional delay for slower devices
+  }
+
+  const handleTextareaBlur = () => {
+    // Keyboard disappearance: scroll to bottom
+    setTimeout(scrollTextArea, 100);
+  }
+
   const sendMessage = async () => {
     if(message.length === 0) return;
     try {
@@ -135,6 +158,34 @@ const Conversation = () => {
     setUser(jwtDecode(token).user)
     fetchConversation();
     scrollTextArea()
+
+    // iOS Safari keyboard fix: handle viewport height changes (only on conversation page)
+    const isConversationPage = window.location.pathname.includes('/conversation');
+    
+    if (isConversationPage) {
+      const handleViewportChange = () => {
+        // Update CSS custom property for viewport height only for conversation page
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--conversation-vh', `${vh}px`);
+        
+        // Scroll to bottom when keyboard appears/disappears
+        setTimeout(scrollTextArea, 100);
+      };
+
+      // Listen for viewport changes (keyboard show/hide on iOS)
+      window.addEventListener('resize', handleViewportChange);
+      window.addEventListener('orientationchange', handleViewportChange);
+      
+      // Initial call
+      handleViewportChange();
+
+      return () => {
+        window.removeEventListener('resize', handleViewportChange);
+        window.removeEventListener('orientationchange', handleViewportChange);
+        // Clean up the CSS variable when component unmounts
+        document.documentElement.style.removeProperty('--conversation-vh');
+      };
+    }
   }, []);
   
 
@@ -180,12 +231,25 @@ const Conversation = () => {
               }
             </div>
             {
-              isConversationActive && (
+              isConversationActive ? (
                 <div className='conversation-card-comment-input'>
-                  <textarea ref={textareaRef} onInput={handleTextOverflow} rows="1" placeholder="Type a message..."></textarea>
+                  <textarea 
+                    ref={textareaRef} 
+                    onInput={handleTextOverflow} 
+                    onFocus={handleTextareaFocus}
+                    onBlur={handleTextareaBlur}
+                    rows="1" 
+                    placeholder="Type a message..."
+                  ></textarea>
                   <button disabled={message.length === 0} className='btn-send-msg noselect' onClick={sendMessage}>
                     <DynamicIcon iconName={"ChatTextFill"} color='white' />
                   </button>
+                </div>
+              ) : (
+                <div style={{ padding: '10px', textAlign: 'center', color: '#666' }}>
+                  💬 Conversation is not available for samples with status: {sample.timeline[0]?.status}
+                  <br />
+                  <small>Current state: isConversationActive = {isConversationActive.toString()}</small>
                 </div>
               )
             }
