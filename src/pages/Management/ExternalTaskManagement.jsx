@@ -5,6 +5,7 @@ import { useApi, get, post, put, del } from '../../hooks/apiHooks';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { messageBox } from '../../constants';
 import { PlusCircleFill, PencilSquare, TrashFill, BuildingFill, TelephoneFill, BuildingGear, ClockFill, PersonFill, EyeFill } from 'react-bootstrap-icons';
+import { formatDateToTunisiaTime } from '../../utils/dateUtils';
 
 const ExternalTaskManagement = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -386,7 +387,7 @@ const ExternalTaskManagement = () => {
                           </span>
                           <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
                             <ClockFill size={14} color="var(--primary-color)" />
-                            {new Date(task.timestamp).toLocaleDateString()}
+                            {formatDateToTunisiaTime(task.timestamp)}
                           </span>
                         </div>
                         {task.external_task_due_date && (
@@ -395,7 +396,7 @@ const ExternalTaskManagement = () => {
                             color: new Date(task.external_task_due_date) < new Date() ? 'var(--danger-color)' : 'var(--primary-color)',
                             fontWeight: 'bold'
                           }}>
-                            Due: {new Date(task.external_task_due_date).toLocaleDateString()}
+                            Due: {formatDateToTunisiaTime(task.external_task_due_date)}
                           </span>
                         )}
                       </div>

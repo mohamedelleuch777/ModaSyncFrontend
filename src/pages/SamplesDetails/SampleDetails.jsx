@@ -13,8 +13,7 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import 'react-vertical-timeline-component/style.min.css';
 import { jwtDecode } from "jwt-decode";
 import { SAMPLE_STATUS, USER_ROLES, formatUrl, getIconNameFromStatus, inputBox, messageBox } from "../../constants";
-import { format } from "date-fns";
-import { enGB, fr } from "date-fns/locale"; // Import French locale
+import { formatTimestampToTunisiaTime } from "../../utils/dateUtils";
 
 const SampleDetailsPage = () => {
   const { state: { sample } } = useLocation();
@@ -56,9 +55,8 @@ const SampleDetailsPage = () => {
     mainImageRef.current.src = selectedHtmlElement.src;
   };
 
-  function formatTimestamp(timestamp) {
-    return format(new Date(timestamp), "📅 EEE dd-MM-yyyy ⌚ HH:mm", { locale: enGB });
-  }
+  // Use the centralized Tunisia timezone formatting
+  const formatTimestamp = formatTimestampToTunisiaTime;
 
   const makeZoom = () => {
     zoomWindowImageRef.current.src = mainImageRef.current.src

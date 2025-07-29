@@ -7,8 +7,7 @@ import { useApi, get, del, put, post } from '../../hooks/apiHooks';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DynamicIcon from '../../components/DynamicIcon';
 import { SAMPLE_STATUS } from '../../constants';
-import { format } from 'date-fns';
-import { enGB } from 'date-fns/locale';
+import { formatTimestampToTunisiaTime } from '../../utils/dateUtils';
 
 const stringToColorPair = (str) => {
   let hash = 0;
@@ -35,14 +34,8 @@ const getInitials = (name) => {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 };
 
-const formatTimestamp = (timestamp) => {
-  if (!timestamp) return '';
-  try {
-    return format(new Date(timestamp), "📅 EEE dd-MM-yyyy ⌚ HH:mm", { locale: enGB });
-  } catch {
-    return '';
-  }
-};
+// Use the centralized Tunisia timezone formatting
+const formatTimestamp = formatTimestampToTunisiaTime;
 
 
 
