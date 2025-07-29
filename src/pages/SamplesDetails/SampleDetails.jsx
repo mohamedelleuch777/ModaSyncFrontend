@@ -566,10 +566,10 @@ const SampleDetailsPage = () => {
             <ZoomIn  color="#444" size={52} style={{position: 'absolute', top: 10, left: 11}}/>
             <ZoomIn onClick={makeZoom} color="#fff" size={50} style={{position: 'relative', zIndex: 1}}/>
           </div>
-          <div style={{position: "absolute", right: 51, bottom: -1, cursor: "pointer"}} onClick={showImageInfo}>
+          <div style={{position: "absolute", right: 60, bottom: -1, cursor: "pointer"}} onClick={showImageInfo}>
             <InfoCircleFill size={30} color="#fff" />
           </div>
-          <span style={{position: "absolute", right: 7, bottom: 0}} onClick={openConversation}>
+          <span style={{position: "absolute", right: 20, bottom: 0}} onClick={openConversation}>
             <DynamicIcon iconName="ChatFill" size={30} color="#fff" />
           </span>
         </div> }
