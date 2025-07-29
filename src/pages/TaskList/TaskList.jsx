@@ -66,33 +66,48 @@ const TaskList = () => {
       )
     }
     else {
-      return timeLines.map((timeLine, key) => (
-        <div key={key} className="sample-item task-item" onClick={() => handleSampleSelection(timeLine.sample_id)}>
-          {/* <img className="sample-image" src={formatUrl(sample.image)} alt={sample.name} /> */}
-          <div className="sample-info">
-            <p className="sample-name">
-              {/* <span>{sample.name}</span> */}
-              <span>Sample ID: {timeLine.sample_id}</span>
-              {isNextTaskMine(timeLine) && <span className='red-dot'></span>}
-            </p>
-            {timeLine.samplePath && Array.isArray(timeLine.samplePath) && (
-              <p className="sample-path">
-                {timeLine.samplePath.map((path, index) => (
-                  <span key={index}>
-                    {path}
-                    {index < timeLine.samplePath.length - 1 && <span className="path-separator"> → </span>}
-                  </span>
-                ))}
+      return timeLines.map((timeLine, key) => {
+        // samplePath is already an array: [collection, subcollection, sample]
+        const pathParts = Array.isArray(timeLine.samplePath) ? timeLine.samplePath : [];
+        const collectionName = pathParts[0] || '';
+        const subcollectionName = pathParts[1] || '';
+        const sampleName = pathParts[2] || `Sample ${timeLine.sample_id}`;
+        
+        return (
+          <div key={key} className="sample-item task-item" onClick={() => handleSampleSelection(timeLine.sample_id)}>
+            <div className="sample-info">
+              <p className="sample-name">
+                <span>🏷️ {sampleName}</span>
+                {isNextTaskMine(timeLine) && <span className='red-dot'></span>}
               </p>
-            )}
-            {/* <p className="sample-description">{description}</p> */}
-            <div className="sample-status">
-              Status: <span>{getIconNameFromStatus(timeLine).status}</span>
-              <DynamicIcon iconName={getIconNameFromStatus(timeLine).iconName} color="var(--primary-color)" />
+              
+              {/* Collection line */}
+              {collectionName && (
+                <p className="sample-path">
+                  <span>🗂️ {collectionName}</span>
+                </p>
+              )}
+              
+              {/* Subcollection line */}
+              {subcollectionName && (
+                <p className="sample-path">
+                  <span>📂 {subcollectionName}</span>
+                </p>
+              )}
+              
+              <div className="sample-status">
+                Status: <span>{getIconNameFromStatus(timeLine).status}</span>
+                <DynamicIcon iconName={getIconNameFromStatus(timeLine).iconName} color="var(--primary-color)" />
+              </div>
+              
+              {/* ID at bottom */}
+              <p style={{ fontSize: '12px', color: '#adb5bd', margin: '4px 0 0 0' }}>
+                ID: {timeLine.sample_id}
+              </p>
             </div>
           </div>
-        </div>
-      ))
+        )
+      })
     }
   }
 
