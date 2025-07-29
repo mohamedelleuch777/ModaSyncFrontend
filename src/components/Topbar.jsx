@@ -20,7 +20,15 @@ function Topbar({ setIsMenuOpen, breadcrumb }) {
         color: 'white',
         fontWeight: '600'
       }}>
-        <span>
+        <span style={{
+          backgroundColor: 'var(--primary-color)',
+          color: 'white',
+          padding: '8px 24px',
+          borderRadius: '12px',
+          fontSize: '14px',
+          fontWeight: '500',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+        }}>
           🏷️ {sample.name}
         </span>
       </div>
