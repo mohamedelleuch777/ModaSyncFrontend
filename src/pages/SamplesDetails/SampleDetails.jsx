@@ -573,20 +573,6 @@ const SampleDetailsPage = () => {
             <DynamicIcon iconName="ChatFill" size={30} color="#fff" />
           </span>
         </div> }
-        <div className="zoom-window" style={{display: isShowZoomWindow ? 'flex' : 'none'}}>
-          <XLg size={35} color="#df0000" style={{position: 'absolute', top: 10, right: 11, zIndex: 1}} onClick={() => setIsShowZoomWindow(false)}/>
-          {/* <img 
-            ref={zoomWindowImageRef}
-            className="zoom-window-image" 
-            src="https://t3.ftcdn.net/jpg/03/34/79/68/360_F_334796865_VVTjg49nbLgQPG6rgKDjVqSb5XUhBVsW.jpg" 
-            alt="main image"
-          /> */}
-          <ZoomableImage 
-            ref={setZoomWindowImageRef}
-            src="https://t3.ftcdn.net/jpg/03/34/79/68/360_F_334796865_VVTjg49nbLgQPG6rgKDjVqSb5XUhBVsW.jpg" 
-            alt="main image" 
-          />
-        </div>
         {showImageInfoNotification && (
           <div style={{
             position: 'absolute',
@@ -700,6 +686,16 @@ const SampleDetailsPage = () => {
         onClose={handleExternalTaskCancel}
         onConfirm={handleExternalTaskConfirm}
       />
+
+      {/* Zoom window - positioned outside container for fullscreen */}
+      <div className="zoom-window" style={{display: isShowZoomWindow ? 'flex' : 'none'}}>
+        <XLg size={35} color="#df0000" style={{position: 'absolute', top: 20, right: 20, zIndex: 10000}} onClick={() => setIsShowZoomWindow(false)}/>
+        <ZoomableImage 
+          ref={setZoomWindowImageRef}
+          src={mainImageRef.current?.src || formatUrl(sample.image)}
+          alt="main image" 
+        />
+      </div>
     </div>
   );
 };
