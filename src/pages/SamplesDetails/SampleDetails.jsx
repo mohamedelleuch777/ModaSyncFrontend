@@ -36,6 +36,7 @@ const SampleDetailsPage = () => {
   const [showDimensionsPopup, setShowDimensionsPopup] = useState(false);
   const [currentDimensions, setCurrentDimensions] = useState({ width: '', height: '', id: '' });
   const [showExternalTaskPopup, setShowExternalTaskPopup] = useState(false);
+  const [showImageInfoNotification, setShowImageInfoNotification] = useState(false);
 
   const apiFetch = useApi();
 
@@ -468,6 +469,24 @@ const SampleDetailsPage = () => {
     setShowExternalTaskPopup(false);
   };
 
+  const getImageCreationDate = () => {
+    if (sample.timeline && sample.timeline.length > 0) {
+      // Get the earliest timeline entry (creation date)
+      const earliestEntry = sample.timeline[sample.timeline.length - 1];
+      return formatTimestamp(earliestEntry.timestamp);
+    }
+    return "Creation date not available";
+  };
+
+  const showImageInfo = (e) => {
+    e.stopPropagation();
+    setShowImageInfoNotification(true);
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      setShowImageInfoNotification(false);
+    }, 3000);
+  };
+
   if(!sample) {
     return <div>Loading...</div>
   }
@@ -488,6 +507,9 @@ const SampleDetailsPage = () => {
             <ZoomIn  color="#444" size={52} style={{position: 'absolute', top: 10, left: 11}}/>
             <ZoomIn onClick={makeZoom} color="#fff" size={50} style={{position: 'relative', zIndex: 1}}/>
           </div>
+          <div style={{position: "absolute", right: 51, bottom: -1, cursor: "pointer"}} onClick={showImageInfo}>
+            <InfoCircleFill size={30} color="#fff" />
+          </div>
           <span style={{position: "absolute", right: 7, bottom: 0}} onClick={openConversation}>
             <DynamicIcon iconName="ChatFill" size={30} color="#fff" />
           </span>
@@ -506,6 +528,24 @@ const SampleDetailsPage = () => {
             alt="main image" 
           />
         </div>
+        {showImageInfoNotification && (
+          <div style={{
+            position: 'absolute',
+            bottom: '50px',
+            right: '10px',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            color: '#fff',
+            padding: '10px 15px',
+            borderRadius: '8px',
+            fontSize: '14px',
+            zIndex: 10,
+            maxWidth: '250px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+          }}>
+            <strong>Image Creation Date:</strong><br />
+            {getImageCreationDate()}
+          </div>
+        )}
         <div className="thumbnail-container" onClick={selectImage}>
             <div>
               { (role === USER_ROLES.STYLIST) &&
