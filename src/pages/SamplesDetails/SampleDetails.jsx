@@ -546,113 +546,14 @@ const SampleDetailsPage = () => {
 
   return (
     <div className="sample-details-container">
-      <Topbar setIsMenuOpen={setIsMenuOpen}/>
+      <Topbar 
+        setIsMenuOpen={setIsMenuOpen}
+        breadcrumb={{
+          sample: sample,
+          onNavigate: navigate
+        }}
+      />
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-      
-      {/* Sample Path Breadcrumb */}
-      <div style={{
-        padding: '15px 20px',
-        backgroundColor: '#f8f9fa',
-        borderBottom: '1px solid #e9ecef',
-        fontSize: '14px',
-        color: '#6c757d',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        flexWrap: 'wrap'
-      }}>
-        <span style={{ color: 'var(--primary-color)', fontWeight: '500' }}>📍 Path:</span>
-        
-        {/* Dashboard Link */}
-        <span 
-          style={{ 
-            color: '#495057', 
-            fontWeight: '500',
-            cursor: 'pointer',
-            textDecoration: 'none',
-            transition: 'color 0.2s'
-          }}
-          onClick={() => navigate('/')}
-          onMouseEnter={(e) => e.target.style.color = 'var(--primary-color)'}
-          onMouseLeave={(e) => e.target.style.color = '#495057'}
-        >
-          🏠 Dashboard
-        </span>
-        <span style={{ color: '#adb5bd' }}>›</span>
-        
-        {sample.parentCollectionName && (
-          <>
-            <span 
-              style={{ 
-                color: '#495057', 
-                fontWeight: '500',
-                cursor: sample.parentCollectionId ? 'pointer' : 'default',
-                textDecoration: 'none',
-                transition: 'color 0.2s'
-              }}
-              onClick={() => {
-                if (sample.parentCollectionId) {
-                  navigate('/', { 
-                    state: { 
-                      selectedCollection: { 
-                        id: sample.parentCollectionId, 
-                        name: sample.parentCollectionName 
-                      } 
-                    } 
-                  })
-                }
-              }}
-              onMouseEnter={(e) => {
-                if (sample.parentCollectionId) {
-                  e.target.style.color = 'var(--primary-color)'
-                }
-              }}
-              onMouseLeave={(e) => e.target.style.color = '#495057'}
-            >
-              🗂️ {sample.parentCollectionName}
-            </span>
-            <span style={{ color: '#adb5bd' }}>›</span>
-          </>
-        )}
-        
-        {sample.parentSubCollectionName && (
-          <>
-            <span 
-              style={{ 
-                color: '#495057', 
-                fontWeight: '500',
-                cursor: sample.parentSubCollectionId ? 'pointer' : 'default',
-                textDecoration: 'none',
-                transition: 'color 0.2s'
-              }}
-              onClick={() => {
-                if (sample.parentSubCollectionId) {
-                  navigate('/list-samples', { 
-                    state: { 
-                      selectedSubCollectionId: sample.parentSubCollectionId,
-                      selectedSubCollectionName: sample.parentSubCollectionName
-                    } 
-                  })
-                }
-              }}
-              onMouseEnter={(e) => {
-                if (sample.parentSubCollectionId) {
-                  e.target.style.color = 'var(--primary-color)'
-                }
-              }}
-              onMouseLeave={(e) => e.target.style.color = '#495057'}
-            >
-              📂 {sample.parentSubCollectionName}
-            </span>
-            <span style={{ color: '#adb5bd' }}>›</span>
-          </>
-        )}
-        
-        <span style={{ color: 'var(--primary-color)', fontWeight: '600' }}>
-          🏷️ {sample.name}
-        </span>
-      </div>
-      
       <div className="sample-details-upper-images-container">
         <img 
           ref={mainImageRef} 
