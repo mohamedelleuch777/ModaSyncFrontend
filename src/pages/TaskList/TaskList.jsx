@@ -75,7 +75,7 @@ const TaskList = () => {
         
         return (
           <div key={key} className="sample-item task-item" onClick={() => handleSampleSelection(timeLine.sample_id)}>
-            <div className="sample-info" style={{ padding: '0', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+            <div className="sample-info" style={{ padding: '0', backgroundColor: '#f8f9fa', borderRadius: '8px 8px 0 0' }}>
               <p className="sample-name" style={{
                 fontSize: '18px',
                 fontWeight: '600',
