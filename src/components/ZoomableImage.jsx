@@ -8,20 +8,40 @@ const ZoomableImage = ({ ref, src, alt }) => {
     let isDragging = false;
     let dragStart = { x: 0, y: 0 };
     let lastTouch = { x: 0, y: 0 };
+    let tx = 0;
+    let ty = 0;
+    let scale = 1;
 
     useEffect(() => {
         if (!img.current) return;
 
-        var tx = 0;
-        var ty = 0;
-        var scale = 1;
+        const resetZoom = () => {
+            tx = 0;
+            ty = 0;
+            scale = 1;
+            applyTransform();
+        };
 
         // 🖱️ Desktop: Zoom with Mouse Wheel (CTRL + Scroll)
         const handleWheel = (e) => {
             e.preventDefault();
             if (e.ctrlKey) {
+                const rect = img.current.getBoundingClientRect();
+                const screenCenterX = window.innerWidth / 2;
+                const screenCenterY = window.innerHeight / 2;
+                
+                // Calculate zoom origin relative to screen center
+                const originX = screenCenterX - rect.left - rect.width / 2;
+                const originY = screenCenterY - rect.top - rect.height / 2;
+                
                 let s = Math.exp(-e.deltaY / 100);
-                scale *= s;
+                const newScale = scale * s;
+                
+                // Adjust translation to zoom from screen center
+                tx += originX * (1 - s);
+                ty += originY * (1 - s);
+                
+                scale = newScale;
             } else {
                 let direction = -1;
                 tx += e.deltaX * direction;
@@ -74,9 +94,25 @@ const ZoomableImage = ({ ref, src, alt }) => {
             e.preventDefault();
             
             if (e.touches.length === 2) {
-                // Two fingers: zoom
+                // Two fingers: zoom from screen center
+                const rect = img.current.getBoundingClientRect();
+                const screenCenterX = window.innerWidth / 2;
+                const screenCenterY = window.innerHeight / 2;
+                
+                // Calculate zoom origin relative to screen center
+                const originX = screenCenterX - rect.left - rect.width / 2;
+                const originY = screenCenterY - rect.top - rect.height / 2;
+                
                 let newDistance = getDistance(e.touches);
-                scale = startScale * (newDistance / startDistance);
+                const scaleRatio = newDistance / startDistance;
+                const newScale = startScale * scaleRatio;
+                
+                // Adjust translation to zoom from screen center
+                const scaleDiff = newScale / scale;
+                tx += originX * (1 - scaleDiff);
+                ty += originY * (1 - scaleDiff);
+                
+                scale = newScale;
                 applyTransform();
             } else if (e.touches.length === 1 && isDragging) {
                 // One finger: pan
@@ -124,7 +160,13 @@ const ZoomableImage = ({ ref, src, alt }) => {
         // Set initial cursor style
         img.current.style.cursor = 'grab';
         
-        ref(img);
+        // Expose reset function
+        if (ref) {
+            ref({
+                current: img.current,
+                reset: resetZoom
+            });
+        }
 
         return () => {
             // 🔄 Cleanup Listeners on Unmount

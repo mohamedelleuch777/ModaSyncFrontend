@@ -92,6 +92,13 @@ const SampleDetailsPage = () => {
     setIsShowZoomWindow(true)
   }
 
+  const closeZoom = () => {
+    if (zoomWindowImageRef && zoomWindowImageRef.reset) {
+      zoomWindowImageRef.reset();
+    }
+    setIsShowZoomWindow(false);
+  }
+
   const fetchSamples_Images = async () => {
     const images = await get(apiFetch, `/pictures/${sample.id}`, {});
     setImageList(images);
@@ -689,7 +696,7 @@ const SampleDetailsPage = () => {
 
       {/* Zoom window - positioned outside container for fullscreen */}
       <div className="zoom-window" style={{display: isShowZoomWindow ? 'flex' : 'none'}}>
-        <XLg size={35} color="#df0000" style={{position: 'absolute', top: 20, right: 20, zIndex: 10000}} onClick={() => setIsShowZoomWindow(false)}/>
+        <XLg size={35} color="#df0000" style={{position: 'absolute', top: 20, right: 20, zIndex: 10000}} onClick={closeZoom}/>
         <ZoomableImage 
           ref={setZoomWindowImageRef}
           src={mainImageRef.current?.src || formatUrl(sample.image)}
