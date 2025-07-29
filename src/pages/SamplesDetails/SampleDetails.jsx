@@ -36,6 +36,7 @@ const SampleDetailsPage = () => {
   const [currentDimensions, setCurrentDimensions] = useState({ width: '', height: '', id: '' });
   const [showExternalTaskPopup, setShowExternalTaskPopup] = useState(false);
   const [showImageInfoNotification, setShowImageInfoNotification] = useState(false);
+  const [currentSelectedImage, setCurrentSelectedImage] = useState(null); // Track currently selected image
 
   const apiFetch = useApi();
 
@@ -43,16 +44,44 @@ const SampleDetailsPage = () => {
     e.stopPropagation();
     let selectedHtmlElement = e.target;
     if(selectedHtmlElement.tagName !== 'IMG') return;
-    while (!selectedHtmlElement.classList.contains('thumbnail-container')) {
-      selectedHtmlElement = selectedHtmlElement.parentElement;
-    }
-    const listOfAllStories = selectedHtmlElement.querySelectorAll('.thumbnail-image');
-    listOfAllStories.forEach(thumbnailImage => {
+    
+    // Clear all active states
+    const allThumbnails = document.querySelectorAll('.thumbnail-image');
+    allThumbnails.forEach(thumbnailImage => {
       thumbnailImage.classList.remove('active');
     });
-    selectedHtmlElement = e.target;
+    
+    // Set new active state
     selectedHtmlElement.classList.add('active');
     mainImageRef.current.src = selectedHtmlElement.src;
+    
+    // Track which image is selected for info display using data attributes
+    const imageType = selectedHtmlElement.getAttribute('data-image-type');
+    
+    if (imageType === 'main') {
+      // Main sample image selected
+      setCurrentSelectedImage('main');
+    } else if (imageType === 'additional') {
+      // Find the selected additional image by ID
+      const imageId = selectedHtmlElement.getAttribute('data-image-id');
+      const selectedAdditionalImage = imageList.find(img => 
+        img.id.toString() === imageId
+      );
+      setCurrentSelectedImage(selectedAdditionalImage || 'main');
+    } else {
+      // Fallback: try to match by src
+      const selectedSrc = selectedHtmlElement.src;
+      const mainImageSrc = formatUrl(sample.image);
+      
+      if (selectedSrc === mainImageSrc) {
+        setCurrentSelectedImage('main');
+      } else {
+        const selectedAdditionalImage = imageList.find(img => 
+          formatUrl(img.image_url) === selectedSrc
+        );
+        setCurrentSelectedImage(selectedAdditionalImage || 'main');
+      }
+    }
   };
 
   // Use the centralized Tunisia timezone formatting
@@ -106,6 +135,8 @@ const SampleDetailsPage = () => {
   React.useEffect(() => {
     readCssVariables();
     fetchSamples_Images();
+    // Initialize with main image selected
+    setCurrentSelectedImage('main');
     console.log(sample)
     const tempTimeline = []
     /**
@@ -468,11 +499,35 @@ const SampleDetailsPage = () => {
   };
 
   const getImageCreationDate = () => {
-    if (sample.timeline && sample.timeline.length > 0) {
-      // Get the earliest timeline entry (creation date)
-      const earliestEntry = sample.timeline[sample.timeline.length - 1];
-      return formatTimestamp(earliestEntry.timestamp);
+    // If no image is selected or main image is selected, show sample creation date
+    if (!currentSelectedImage || currentSelectedImage === 'main') {
+      if (sample.timeline && sample.timeline.length > 0) {
+        // Get the earliest timeline entry (creation date)
+        const earliestEntry = sample.timeline[sample.timeline.length - 1];
+        return formatTimestamp(earliestEntry.timestamp);
+      }
+      return "Creation date not available";
     }
+    
+    // For additional images, show their individual creation date
+    if (currentSelectedImage && typeof currentSelectedImage === 'object') {
+      // Check various possible timestamp fields that might exist in the image object
+      const imageTimestamp = currentSelectedImage.created_at || 
+                           currentSelectedImage.createdAt || 
+                           currentSelectedImage.timestamp ||
+                           currentSelectedImage.date_created;
+      
+      if (imageTimestamp) {
+        return formatTimestamp(imageTimestamp);
+      }
+    }
+    
+    // Fallback to sample creation date if image date is not available
+    if (sample.timeline && sample.timeline.length > 0) {
+      const earliestEntry = sample.timeline[sample.timeline.length - 1];
+      return `${formatTimestamp(earliestEntry.timestamp)} (sample date)`;
+    }
+    
     return "Creation date not available";
   };
 
@@ -555,7 +610,12 @@ const SampleDetailsPage = () => {
             <div style={{maxWidth: 80}}>
                 <ButtonSliderWrapper>
                     <section style={{minWidth: '100%'}}>
-                      <img src={formatUrl(sample.image)} alt="secondary main-image" className="thumbnail-image active" />
+                      <img 
+                        src={formatUrl(sample.image)} 
+                        alt="secondary main-image" 
+                        className="thumbnail-image active" 
+                        data-image-type="main"
+                      />
                     </section>
                     <button className="btn-delete-image" onClick={() => deleteImage(sample.id)}>Delete</button>
                 </ButtonSliderWrapper>
@@ -566,7 +626,13 @@ const SampleDetailsPage = () => {
                 <div style={{maxWidth: 80}} key={index}>
                     <ButtonSliderWrapper key={index}>
                         <section style={{minWidth: '100%'}}>
-                          <img src={formatUrl(image.image_url)} alt="secondary image" className="thumbnail-image active" />
+                          <img 
+                            src={formatUrl(image.image_url)} 
+                            alt="secondary image" 
+                            className="thumbnail-image active" 
+                            data-image-type="additional"
+                            data-image-id={image.id}
+                          />
                         </section>
                         <button className="btn-delete-image" onClick={() => deleteImage(image.id)}>Delete</button>
                     </ButtonSliderWrapper>
