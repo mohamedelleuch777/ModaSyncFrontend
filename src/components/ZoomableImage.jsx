@@ -27,21 +27,22 @@ const ZoomableImage = ({ ref, src, alt }) => {
             e.preventDefault();
             if (e.ctrlKey) {
                 const rect = img.current.getBoundingClientRect();
-                const screenCenterX = window.innerWidth / 2;
-                const screenCenterY = window.innerHeight / 2;
                 
-                // Calculate zoom origin relative to screen center
-                const originX = screenCenterX - rect.left - rect.width / 2;
-                const originY = screenCenterY - rect.top - rect.height / 2;
+                // Use mouse position or screen center as zoom point
+                const zoomPointX = e.clientX || window.innerWidth / 2;
+                const zoomPointY = e.clientY || window.innerHeight / 2;
+                
+                // Calculate position relative to image
+                const offsetX = zoomPointX - rect.left - rect.width / 2;
+                const offsetY = zoomPointY - rect.top - rect.height / 2;
                 
                 let s = Math.exp(-e.deltaY / 100);
-                const newScale = scale * s;
                 
-                // Adjust translation to zoom from screen center
-                tx += originX * (1 - s);
-                ty += originY * (1 - s);
+                // Adjust translation to zoom towards zoom point
+                tx += offsetX * (1 - s);
+                ty += offsetY * (1 - s);
                 
-                scale = newScale;
+                scale *= s;
             } else {
                 let direction = -1;
                 tx += e.deltaX * direction;
@@ -94,25 +95,27 @@ const ZoomableImage = ({ ref, src, alt }) => {
             e.preventDefault();
             
             if (e.touches.length === 2) {
-                // Two fingers: zoom from screen center
+                // Two fingers: zoom from center point between fingers
                 const rect = img.current.getBoundingClientRect();
-                const screenCenterX = window.innerWidth / 2;
-                const screenCenterY = window.innerHeight / 2;
                 
-                // Calculate zoom origin relative to screen center
-                const originX = screenCenterX - rect.left - rect.width / 2;
-                const originY = screenCenterY - rect.top - rect.height / 2;
+                // Calculate center point between the two touches
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const zoomPointX = (touch1.clientX + touch2.clientX) / 2;
+                const zoomPointY = (touch1.clientY + touch2.clientY) / 2;
+                
+                // Calculate position relative to image
+                const offsetX = zoomPointX - rect.left - rect.width / 2;
+                const offsetY = zoomPointY - rect.top - rect.height / 2;
                 
                 let newDistance = getDistance(e.touches);
-                const scaleRatio = newDistance / startDistance;
-                const newScale = startScale * scaleRatio;
+                const s = newDistance / startDistance;
                 
-                // Adjust translation to zoom from screen center
-                const scaleDiff = newScale / scale;
-                tx += originX * (1 - scaleDiff);
-                ty += originY * (1 - scaleDiff);
+                // Adjust translation to zoom towards touch center point
+                tx += offsetX * (1 - s);
+                ty += offsetY * (1 - s);
                 
-                scale = newScale;
+                scale = startScale * s;
                 applyTransform();
             } else if (e.touches.length === 1 && isDragging) {
                 // One finger: pan

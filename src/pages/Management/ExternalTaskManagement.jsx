@@ -128,12 +128,37 @@ const ExternalTaskManagement = () => {
       <Leftmenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       
       <div className="task-card">
-        <div className="page-header" style={{padding: '20px', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', alignItems: 'center', borderBottom: '2px solid #f0f0f0'}}>
-          <h1 style={{color: 'var(--primary-color)', margin: 0, display: 'flex', alignItems: 'center', gap: '10px'}}>
-            <BuildingGear size={24} /> External Task Management
-          </h1>
-          <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
-            <div style={{display: 'flex', borderRadius: '8px', border: '1px solid var(--primary-color)', overflow: 'hidden'}}>
+        <div className="page-header" style={{
+          padding: '16px 24px', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          flexWrap: 'wrap', 
+          alignItems: 'center', 
+          borderBottom: '1px solid #e9ecef',
+          background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+          borderRadius: '20px 20px 0 0'
+        }}>
+          <div>
+            <h1 style={{
+              color: 'var(--primary-color)', 
+              marginBottom: 20,
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px',
+              fontSize: '20px',
+              fontWeight: '600'
+            }}>
+              <BuildingGear size={22} /> External Task Management
+            </h1>
+          </div>
+          <div style={{display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap'}}>
+            <div style={{
+              display: 'flex', 
+              borderRadius: '10px', 
+              border: '2px solid var(--primary-color)', 
+              overflow: 'hidden',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.08)'
+            }}>
               <button 
                 style={{
                   padding: '8px 16px',
@@ -141,11 +166,16 @@ const ExternalTaskManagement = () => {
                   backgroundColor: activeTab === 'providers' ? 'var(--primary-color)' : 'white',
                   color: activeTab === 'providers' ? 'white' : 'var(--primary-color)',
                   cursor: 'pointer',
-                  fontSize: '14px'
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
                 }}
                 onClick={() => setActiveTab('providers')}
               >
-                Providers
+                🏢 Providers
               </button>
               <button 
                 style={{
@@ -154,20 +184,40 @@ const ExternalTaskManagement = () => {
                   backgroundColor: activeTab === 'tasks' ? 'var(--primary-color)' : 'white',
                   color: activeTab === 'tasks' ? 'white' : 'var(--primary-color)',
                   cursor: 'pointer',
-                  fontSize: '14px'
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
                 }}
                 onClick={() => {setActiveTab('tasks'); fetchExternalTasks(); setSelectedProvider(null);}}
               >
-                Tasks
+                📋 Tasks
               </button>
             </div>
             {activeTab === 'providers' && (
               <button 
-                className="login-button"
-                style={{width: 'auto', padding: '8px 16px', fontSize: '14px'}}
+                style={{
+                  background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)',
+                  border: 'none',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 3px 8px rgba(109, 164, 156, 0.3)',
+                  transition: 'all 0.2s ease'
+                }}
                 onClick={() => setShowAddForm(true)}
+                onMouseEnter={(e) => e.target.style.transform = 'translateY(-1px)'}
+                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
               >
-                <PlusCircleFill size={16} /> Add Provider
+                <PlusCircleFill size={14} /> Add Provider
               </button>
             )}
           </div>
@@ -184,55 +234,155 @@ const ExternalTaskManagement = () => {
                 left: 0,
                 width: '100vw',
                 height: '100vh',
-                backgroundColor: 'rgba(0,0,0,0.5)',
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                backdropFilter: 'blur(8px)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                zIndex: 1000
+                zIndex: 1000,
+                animation: 'fadeIn 0.3s ease'
               }}>
                 <div style={{
                   backgroundColor: 'white',
-                  padding: '30px',
-                  borderRadius: '15px',
+                  padding: '32px',
+                  borderRadius: '20px',
                   width: '90%',
-                  maxWidth: '400px'
+                  maxWidth: '450px',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  animation: 'modalSlideIn 0.3s ease'
                 }}>
-                  <h3 style={{color: 'var(--primary-color)', marginBottom: '20px', textAlign: 'center'}}>
-                    {editingProvider ? 'Edit Provider' : 'Add New Provider'}
-                  </h3>
-                  <form onSubmit={handleSubmit} className="create-sample-form">
-                    <div className="form-group">
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '24px',
+                    paddingBottom: '16px',
+                    borderBottom: '1px solid #f0f0f0'
+                  }}>
+                    <h3 style={{
+                      color: 'var(--primary-color)', 
+                      margin: 0, 
+                      fontSize: '20px',
+                      fontWeight: '600',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}>
+                      {editingProvider ? '✏️ Edit Provider' : '➕ Add New Provider'}
+                    </h3>
+                  </div>
+                  <form onSubmit={handleSubmit}>
+                    <div style={{marginBottom: '20px'}}>
+                      <label style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        color: 'var(--primary-color)',
+                        fontSize: '14px',
+                        fontWeight: '500'
+                      }}>
+                        🏢 Provider Name
+                      </label>
                       <input
                         type="text"
-                        className="form-input"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         required
-                        placeholder="Provider Name"
+                        placeholder="Enter provider name"
+                        style={{
+                          width: '100%',
+                          padding: '12px 16px',
+                          border: '2px solid #e9ecef',
+                          borderRadius: '12px',
+                          fontSize: '14px',
+                          transition: 'border-color 0.2s ease',
+                          boxSizing: 'border-box'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
+                        onBlur={(e) => e.target.style.borderColor = '#e9ecef'}
                       />
                     </div>
-                    <div className="form-group">
+                    <div style={{marginBottom: '28px'}}>
+                      <label style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        color: 'var(--primary-color)',
+                        fontSize: '14px',
+                        fontWeight: '500'
+                      }}>
+                        📞 Phone Number
+                      </label>
                       <input
                         type="tel"
-                        className="form-input"
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
                         required
-                        placeholder="Phone Number"
+                        placeholder="Enter phone number"
+                        style={{
+                          width: '100%',
+                          padding: '12px 16px',
+                          border: '2px solid #e9ecef',
+                          borderRadius: '12px',
+                          fontSize: '14px',
+                          transition: 'border-color 0.2s ease',
+                          boxSizing: 'border-box'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
+                        onBlur={(e) => e.target.style.borderColor = '#e9ecef'}
                       />
                     </div>
 
-                    <div style={{display: 'flex', gap: '10px'}}>
-                      <button type="submit" className="login-button" style={{flex: 1}}>
-                        {editingProvider ? 'Update Provider' : 'Create Provider'}
-                      </button>
+                    <div style={{
+                      display: 'flex', 
+                      gap: '12px',
+                      paddingTop: '16px',
+                      borderTop: '1px solid #f0f0f0'
+                    }}>
                       <button 
                         type="button" 
-                        className="reset-password-button" 
-                        style={{flex: 1, backgroundColor: '#666'}}
                         onClick={cancelForm}
+                        style={{
+                          flex: 1,
+                          background: 'white',
+                          border: '2px solid #e9ecef',
+                          color: '#666',
+                          padding: '12px 24px',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.borderColor = '#ddd';
+                          e.target.style.backgroundColor = '#f8f9fa';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.borderColor = '#e9ecef';
+                          e.target.style.backgroundColor = 'white';
+                        }}
                       >
-                        Cancel
+                        ✕ Cancel
+                      </button>
+                      <button 
+                        type="submit" 
+                        style={{
+                          flex: 1,
+                          background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%)',
+                          border: 'none',
+                          color: 'white',
+                          padding: '12px 24px',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          boxShadow: '0 4px 12px rgba(109, 164, 156, 0.3)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => e.target.style.transform = 'translateY(-1px)'}
+                        onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+                      >
+                        {editingProvider ? '✓ Update Provider' : '✓ Create Provider'}
                       </button>
                     </div>
                   </form>
@@ -240,178 +390,468 @@ const ExternalTaskManagement = () => {
               </div>
             )}
 
-            <div style={{padding: '0 20px', paddingTop: 20, backgroundColor: "var(--secondary-color)"}}>
+            <div style={{
+              padding: '24px 32px', 
+              paddingTop: 24, 
+              background: 'white',
+              minHeight: 'calc(100vh - 200px)'
+            }}>
               {activeTab === 'providers' ? (
                 <>
-                  {providers.map(provider => (
-                <div key={provider.id} className="sample-item" style={{marginBottom: '15px', flexDirection: 'column', alignItems: 'stretch'}}>
-                  <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
-                    <div className="sample-info" style={{flex: 1}}>
-                      <p className="sample-name" style={{margin: 0}}>
-                        <BuildingFill size={16} color="var(--primary-color)" style={{marginRight: '8px'}} />
-                        {provider.name}
-                      </p>
-                      <p style={{margin: '5px 0', fontSize: '14px', color: '#666'}}>
-                        <TelephoneFill size={14} style={{marginRight: '5px'}} />
-                        {provider.phone}
-                      </p>
-                    </div>
-                    <div style={{display: 'flex', gap: '8px'}}>
-                      <button 
-                        style={{
-                          padding: '5px 8px',
-                          borderRadius: '5px',
-                          border: 'none',
-                          backgroundColor: 'var(--primary-color)',
-                          color: 'white',
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => handleEdit(provider)}
-                      >
-                        <PencilSquare size={14} />
-                      </button>
-                      <button 
-                        style={{
-                          padding: '5px 8px',
-                          borderRadius: '5px',
-                          border: 'none',
-                          backgroundColor: 'var(--danger-color)',
-                          color: 'white',
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => handleDelete(provider.id, provider.name)}
-                      >
-                        <TrashFill size={14} />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <span style={{fontSize: '14px', color: 'var(--primary-color)'}}>
-                      Status: {provider.active !== false ? 'Active' : 'Inactive'}
-                    </span>
-                    
-                    <button
-                      style={{
-                        padding: '4px 12px',
-                        borderRadius: '15px',
-                        border: 'none',
-                        backgroundColor: provider.active !== false ? 'var(--success-color)' : '#666',
-                        color: 'white',
-                        cursor: 'pointer',
-                        fontSize: '12px'
+                  <div style={{
+                    display: 'grid',
+                    gap: '20px',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))'
+                  }}>
+                    {providers.map(provider => (
+                      <div key={provider.id} style={{
+                        background: 'white',
+                        border: '1px solid #e9ecef',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                        transition: 'all 0.3s ease',
+                        position: 'relative',
+                        overflow: 'hidden'
                       }}
-                      onClick={() => toggleProviderStatus(provider.id, provider.active !== false)}
-                    >
-                      {provider.active !== false ? 'Deactivate' : 'Activate'}
-                    </button>
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                      }}>
+                        
+                        {/* Status indicator */}
+                        <div style={{
+                          position: 'absolute',
+                          top: '16px',
+                          right: '16px',
+                          width: '12px',
+                          height: '12px',
+                          borderRadius: '50%',
+                          backgroundColor: provider.active !== false ? 'var(--success-color)' : '#ccc'
+                        }}></div>
+                        
+                        {/* Provider header */}
+                        <div style={{marginBottom: '16px'}}>
+                          <h3 style={{
+                            margin: 0,
+                            fontSize: '18px',
+                            fontWeight: '600',
+                            color: 'var(--primary-color)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            marginBottom: '8px'
+                          }}>
+                            🏢 {provider.name}
+                          </h3>
+                          <p style={{
+                            margin: 0,
+                            fontSize: '14px',
+                            color: '#666',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}>
+                            📞 {provider.phone}
+                          </p>
+                        </div>
+                        
+                        {/* Status section */}
+                        <div style={{
+                          background: provider.active !== false 
+                            ? 'linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%)' 
+                            : 'linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%)',
+                          padding: '12px 16px',
+                          borderRadius: '12px',
+                          marginBottom: '16px',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}>
+                          <span style={{
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            color: provider.active !== false ? 'var(--success-color)' : '#666'
+                          }}>
+                            {provider.active !== false ? '✅ Active' : '⏸️ Inactive'}
+                          </span>
+                          <button
+                            style={{
+                              padding: '6px 12px',
+                              borderRadius: '8px',
+                              border: 'none',
+                              backgroundColor: provider.active !== false ? 'rgba(217, 0, 0, 0.1)' : 'var(--success-color)',
+                              color: provider.active !== false ? 'var(--danger-color)' : 'white',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              transition: 'all 0.2s ease'
+                            }}
+                            onClick={() => toggleProviderStatus(provider.id, provider.active !== false)}
+                            onMouseEnter={(e) => {
+                              if (provider.active !== false) {
+                                e.target.style.backgroundColor = 'rgba(217, 0, 0, 0.2)';
+                              } else {
+                                e.target.style.backgroundColor = 'var(--secondary-color)';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (provider.active !== false) {
+                                e.target.style.backgroundColor = 'rgba(217, 0, 0, 0.1)';
+                              } else {
+                                e.target.style.backgroundColor = 'var(--success-color)';
+                              }
+                            }}
+                          >
+                            {provider.active !== false ? 'Deactivate' : 'Activate'}
+                          </button>
+                        </div>
+                        
+                        {/* Action buttons */}
+                        <div style={{display: 'flex', gap: '8px'}}>
+                          <button 
+                            style={{
+                              flex: 1,
+                              padding: '10px 16px',
+                              borderRadius: '10px',
+                              border: '2px solid var(--primary-color)',
+                              backgroundColor: 'white',
+                              color: 'var(--primary-color)',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '6px',
+                              transition: 'all 0.2s ease'
+                            }}
+                            onClick={() => handleEdit(provider)}
+                            onMouseEnter={(e) => {
+                              e.target.style.backgroundColor = 'var(--primary-color)';
+                              e.target.style.color = 'white';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.backgroundColor = 'white';
+                              e.target.style.color = 'var(--primary-color)';
+                            }}
+                          >
+                            <PencilSquare size={14} /> Edit
+                          </button>
+                          <button 
+                            style={{
+                              flex: 1,
+                              padding: '10px 16px',
+                              borderRadius: '10px',
+                              border: '2px solid var(--danger-color)',
+                              backgroundColor: 'white',
+                              color: 'var(--danger-color)',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '6px',
+                              transition: 'all 0.2s ease'
+                            }}
+                            onClick={() => handleDelete(provider.id, provider.name)}
+                            onMouseEnter={(e) => {
+                              e.target.style.backgroundColor = 'var(--danger-color)';
+                              e.target.style.color = 'white';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.backgroundColor = 'white';
+                              e.target.style.color = 'var(--danger-color)';
+                            }}
+                          >
+                            <TrashFill size={14} /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-                  ))}
                   
                   {providers.length === 0 && (
-                    <div style={{textAlign: 'center', padding: '40px', color: 'var(--primary-color)'}}>
-                      <p>No external providers found. Add your first provider to get started.</p>
+                    <div style={{
+                      textAlign: 'center', 
+                      padding: '60px 40px',
+                      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+                      borderRadius: '16px',
+                      border: '1px solid #e9ecef'
+                    }}>
+                      <div style={{fontSize: '64px', marginBottom: '16px'}}>🏢</div>
+                      <h3 style={{color: 'var(--primary-color)', marginBottom: '8px'}}>No Providers Found</h3>
+                      <p style={{color: '#666', margin: 0}}>Add your first external provider to get started with task management.</p>
                     </div>
                   )}
                 </>
               ) : (
                 <>
-                  <div style={{marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+                  <div style={{
+                    marginBottom: '24px', 
+                    display: 'flex', 
+                    gap: '12px', 
+                    flexWrap: 'wrap',
+                    padding: '16px',
+                    background: 'linear-gradient(135deg, #f0f8f7 0%, #e6f3f0 100%)',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(109, 164, 156, 0.2)'
+                  }}>
+                    <span style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: 'var(--primary-color)',
+                      alignSelf: 'center',
+                      marginRight: '8px'
+                    }}>
+                      🔍 Filter by Provider:
+                    </span>
                     <button 
                       style={{
                         padding: '8px 16px',
-                        border: '1px solid var(--primary-color)',
+                        border: '2px solid var(--primary-color)',
                         borderRadius: '20px',
                         backgroundColor: selectedProvider === null ? 'var(--primary-color)' : 'white',
                         color: selectedProvider === null ? 'white' : 'var(--primary-color)',
                         cursor: 'pointer',
-                        fontSize: '14px'
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        transition: 'all 0.2s ease',
+                        boxShadow: selectedProvider === null ? '0 2px 8px rgba(109, 164, 156, 0.3)' : 'none'
                       }}
                       onClick={() => {fetchExternalTasks(); setSelectedProvider(null);}}
+                      onMouseEnter={(e) => {
+                        if (selectedProvider !== null) {
+                          e.target.style.backgroundColor = 'var(--primary-color)';
+                          e.target.style.color = 'white';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedProvider !== null) {
+                          e.target.style.backgroundColor = 'white';
+                          e.target.style.color = 'var(--primary-color)';
+                        }
+                      }}
                     >
-                      All Tasks
+                      📋 All Tasks
                     </button>
                     {providers.map(provider => (
                       <button 
                         key={provider.id}
                         style={{
                           padding: '8px 16px',
-                          border: '1px solid var(--primary-color)',
+                          border: '2px solid var(--primary-color)',
                           borderRadius: '20px',
                           backgroundColor: selectedProvider === provider.id ? 'var(--primary-color)' : 'white',
                           color: selectedProvider === provider.id ? 'white' : 'var(--primary-color)',
                           cursor: 'pointer',
-                          fontSize: '14px'
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          transition: 'all 0.2s ease',
+                          boxShadow: selectedProvider === provider.id ? '0 2px 8px rgba(109, 164, 156, 0.3)' : 'none'
                         }}
                         onClick={() => fetchTasksByProvider(provider.id)}
+                        onMouseEnter={(e) => {
+                          if (selectedProvider !== provider.id) {
+                            e.target.style.backgroundColor = 'var(--primary-color)';
+                            e.target.style.color = 'white';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (selectedProvider !== provider.id) {
+                            e.target.style.backgroundColor = 'white';
+                            e.target.style.color = 'var(--primary-color)';
+                          }
+                        }}
                       >
-                        {provider.name}
+                        🏢 {provider.name}
                       </button>
                     ))}
                   </div>
                   
-                  {externalTasks.map(task => (
-                    <div key={task.id} className="sample-item" style={{marginBottom: '15px', flexDirection: 'column', alignItems: 'stretch'}}>
-                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
-                        <div className="sample-info" style={{flex: 1}}>
-                          <p className="sample-name" style={{margin: 0, fontSize: '16px', fontWeight: 'bold'}}>
-                            {task.sample_name}
-                          </p>
-                          <p style={{margin: '5px 0', fontSize: '14px', color: '#666'}}>
-                            {task.collection_name} → {task.subcollection_name}
-                          </p>
-                        </div>
+                  <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+                    {externalTasks.map(task => (
+                      <div key={task.id} style={{
+                        background: 'white',
+                        border: '1px solid #e9ecef',
+                        borderRadius: '16px',
+                        padding: '20px',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+                      }}>
+                        
+                        {/* Task header */}
                         <div style={{
-                          padding: '4px 12px',
-                          borderRadius: '15px',
-                          border: 'none',
-                          backgroundColor: task.status === 'external_task' ? 'var(--quaternary-color)' : 'var(--success-color)',
-                          color: 'white',
-                          fontSize: '12px',
-                          fontWeight: 'bold'
+                          display: 'flex', 
+                          justifyContent: 'space-between', 
+                          alignItems: 'flex-start', 
+                          marginBottom: '16px'
                         }}>
-                          {task.status === 'external_task' ? 'In Progress' : 'Completed'}
-                        </div>
-                      </div>
-                      
-                      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8f9fa', padding: '10px', borderRadius: '8px'}}>
-                        <div style={{display: 'flex', gap: '20px', fontSize: '14px'}}>
-                          <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-                            <BuildingFill size={14} color="var(--primary-color)" />
-                            {task.provider_name}
-                          </span>
-                          <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-                            <PersonFill size={14} color="var(--primary-color)" />
-                            {task.assigned_by || 'System'}
-                          </span>
-                          <span style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-                            <ClockFill size={14} color="var(--primary-color)" />
-                            {formatDateToTunisiaTime(task.timestamp)}
-                          </span>
-                        </div>
-                        {task.external_task_due_date && (
-                          <span style={{
+                          <div style={{flex: 1}}>
+                            <h3 style={{
+                              margin: 0,
+                              fontSize: '18px',
+                              fontWeight: '600',
+                              color: 'var(--primary-color)',
+                              marginBottom: '6px'
+                            }}>
+                              🏷️ {task.sample_name}
+                            </h3>
+                            <p style={{
+                              margin: 0,
+                              fontSize: '14px',
+                              color: '#666',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px'
+                            }}>
+                              📂 {task.collection_name} → {task.subcollection_name}
+                            </p>
+                          </div>
+                          <div style={{
+                            padding: '6px 16px',
+                            borderRadius: '12px',
+                            border: 'none',
+                            background: task.status === 'external_task' 
+                              ? 'linear-gradient(135deg, var(--quaternary-color) 0%, #d6619a 100%)' 
+                              : 'linear-gradient(135deg, var(--success-color) 0%, #2d7a2d 100%)',
+                            color: 'white',
                             fontSize: '12px',
-                            color: new Date(task.external_task_due_date) < new Date() ? 'var(--danger-color)' : 'var(--primary-color)',
-                            fontWeight: 'bold'
+                            fontWeight: '600',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px'
                           }}>
-                            Due: {formatDateToTunisiaTime(task.external_task_due_date)}
-                          </span>
+                            {task.status === 'external_task' ? '🔄 In Progress' : '✅ Completed'}
+                          </div>
+                        </div>
+                        
+                        {/* Task details */}
+                        <div style={{
+                          background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+                          padding: '16px',
+                          borderRadius: '12px',
+                          marginBottom: task.comment ? '16px' : '0'
+                        }}>
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                            gap: '12px',
+                            fontSize: '14px'
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              padding: '8px 12px',
+                              background: 'white',
+                              borderRadius: '8px',
+                              border: '1px solid rgba(109, 164, 156, 0.2)'
+                            }}>
+                              <BuildingFill size={16} color="var(--primary-color)" />
+                              <span style={{fontWeight: '500'}}>{task.provider_name}</span>
+                            </div>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              padding: '8px 12px',
+                              background: 'white',
+                              borderRadius: '8px',
+                              border: '1px solid rgba(109, 164, 156, 0.2)'
+                            }}>
+                              <PersonFill size={16} color="var(--primary-color)" />
+                              <span style={{fontWeight: '500'}}>{task.assigned_by || 'System'}</span>
+                            </div>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              padding: '8px 12px',
+                              background: 'white',
+                              borderRadius: '8px',
+                              border: '1px solid rgba(109, 164, 156, 0.2)'
+                            }}>
+                              <ClockFill size={16} color="var(--primary-color)" />
+                              <span style={{fontWeight: '500', fontSize: '13px'}}>{formatDateToTunisiaTime(task.timestamp)}</span>
+                            </div>
+                            {task.external_task_due_date && (
+                              <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                padding: '8px 12px',
+                                background: new Date(task.external_task_due_date) < new Date() 
+                                  ? 'linear-gradient(135deg, #ffeaea 0%, #ffcccc 100%)' 
+                                  : 'white',
+                                borderRadius: '8px',
+                                border: new Date(task.external_task_due_date) < new Date()
+                                  ? '1px solid rgba(217, 0, 0, 0.3)'
+                                  : '1px solid rgba(109, 164, 156, 0.2)'
+                              }}>
+                                <span style={{fontSize: '16px'}}>⏰</span>
+                                <span style={{
+                                  fontWeight: '500',
+                                  fontSize: '13px',
+                                  color: new Date(task.external_task_due_date) < new Date() ? 'var(--danger-color)' : 'inherit'
+                                }}>
+                                  Due: {formatDateToTunisiaTime(task.external_task_due_date)}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Comment section */}
+                        {task.comment && (
+                          <div style={{
+                            background: 'linear-gradient(135deg, #e6f3f0 0%, #f0f8f7 100%)',
+                            padding: '12px 16px',
+                            borderRadius: '12px',
+                            border: '1px solid rgba(109, 164, 156, 0.2)'
+                          }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              gap: '8px'
+                            }}>
+                              <span style={{fontSize: '16px'}}>💬</span>
+                              <div>
+                                <strong style={{color: 'var(--primary-color)', fontSize: '14px'}}>Comment:</strong>
+                                <p style={{margin: '4px 0 0 0', fontSize: '14px', color: '#666'}}>{task.comment}</p>
+                              </div>
+                            </div>
+                          </div>
                         )}
                       </div>
-                      
-                      {task.comment && (
-                        <div style={{marginTop: '10px', padding: '8px', backgroundColor: '#e9ecef', borderRadius: '5px', fontSize: '14px'}}>
-                          <strong>Comment:</strong> {task.comment}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                   
                   {externalTasks.length === 0 && (
-                    <div style={{textAlign: 'center', padding: '40px', color: 'var(--primary-color)'}}>
-                      <p>No external tasks found.</p>
+                    <div style={{
+                      textAlign: 'center', 
+                      padding: '60px 40px',
+                      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+                      borderRadius: '16px',
+                      border: '1px solid #e9ecef'
+                    }}>
+                      <div style={{fontSize: '64px', marginBottom: '16px'}}>📋</div>
+                      <h3 style={{color: 'var(--primary-color)', marginBottom: '8px'}}>No External Tasks Found</h3>
+                      <p style={{color: '#666', margin: 0}}>
+                        {selectedProvider ? 'This provider has no assigned tasks yet.' : 'No external tasks have been assigned to any providers.'}
+                      </p>
                     </div>
                   )}
                 </>
