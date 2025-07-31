@@ -606,7 +606,7 @@ const SampleDetailsPage = () => {
                 </button>
               }
             </div>
-            <div style={{maxWidth: 80}}>
+            <div style={{width: 80, maxWidth: 80}}>
                 <ButtonSliderWrapper>
                     <section style={{minWidth: '100%'}}>
                       <img 

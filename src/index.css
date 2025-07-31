@@ -792,7 +792,7 @@ body {
 }
 
 .list-samples-card {
-  height: calc(100% - 90px);
+  height: calc(100% - 129px);
   background: white;
   padding: 1rem;
   border-radius: 20px 20px 0 0;
@@ -999,7 +999,7 @@ body {
   transform: translateX(-50%);
   display: flex;
   flex-direction: row;
-  width: calc(100% - 3rem);
+  width: calc(100% - 30px);
   height: calc(45vh - 50px);
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 20px;
@@ -1010,6 +1010,7 @@ body {
 
 .sample-details-upper-images-container > img {
   width: 75%;
+  max-width: 75%;
   object-fit: cover;
   border-radius: 20px 0 0 20px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -1037,8 +1038,8 @@ body {
 }
 
 .sample-details-container .thumbnail-container {
-  width: 25%;
-  padding: 15px 10px;
+  width: 22%;
+  padding: 5px 10px;
   overflow: hidden;
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.1);
@@ -1701,6 +1702,12 @@ div:has(> .prompt-toast-content) {
     margin-bottom: 70px;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
+
+  /* iOS-specific styles for list-samples page */
+  .list-samples-container .list-samples-card {
+    height: calc(var(--conversation-vh, 1vh) * 100 - 129px);
+    min-height: calc(var(--conversation-vh, 1vh) * 100 - 129px);
+  }
 }
 
 /* Fallback for conversation page on mobile devices with viewport issues */
@@ -1708,6 +1715,12 @@ div:has(> .prompt-toast-content) {
   .conversation-container .conversation-card {
     height: calc(var(--conversation-vh, 1vh) * 100 - 89px);
     min-height: calc(var(--conversation-vh, 1vh) * 100 - 89px);
+  }
+
+  /* Fallback for list-samples page on mobile devices with viewport issues */
+  .list-samples-container .list-samples-card {
+    height: calc(var(--conversation-vh, 1vh) * 100 - 129px);
+    min-height: calc(var(--conversation-vh, 1vh) * 100 - 129px);
   }
 }
 
